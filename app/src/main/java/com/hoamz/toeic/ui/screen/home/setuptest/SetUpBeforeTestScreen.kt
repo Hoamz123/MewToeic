@@ -272,10 +272,10 @@ fun StickHeaderInSetUpScreen(
     Row (
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 10.dp)
-            .padding(start = 16.dp),
+            .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
+        Spacer(modifier = Modifier.width(16.dp))
         IconButton(
             onClick = {
                 onClickBack()

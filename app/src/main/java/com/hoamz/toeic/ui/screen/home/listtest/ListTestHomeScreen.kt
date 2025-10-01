@@ -101,6 +101,10 @@ fun ListTestHomeScreen(
                 }
                 Text(
                     text = "Recent Activity",
+                    modifier = Modifier.clickable{
+                        isShowRecent = !isShowRecent
+                        listTestViewModel.controllerStateListCurrent(isShowRecent)
+                    },
                     fontWeight = FontWeight.Normal
                 )
                 Spacer(modifier = Modifier.width(8.dp))

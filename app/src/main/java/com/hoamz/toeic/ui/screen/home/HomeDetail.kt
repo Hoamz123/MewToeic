@@ -346,7 +346,7 @@ fun CircularProgressIndicatorWithText(
 ) {
     val progress = score.toFloat() / total.toFloat()
 
-    val color : Color = if(score <= 5) Color.Red else if(score <= 15) Color.Yellow else Color.Red
+    val color : Color = if(score <= 5) Color.Red else if(score <= 15) Color.Yellow else Color.Green
 
     Box(
         contentAlignment = Alignment.Center,

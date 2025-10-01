@@ -40,11 +40,16 @@ import com.hoamz.toeic.ui.screen.wrongscreen.WrongScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.lifecycle.compose.currentStateAsState
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.navigation
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.ui.screen.home.resultdetail.ShowResultDetail
 import com.hoamz.toeic.ui.screen.home.showanswer.ShowAnswer
 import com.hoamz.toeic.ui.screen.home.showanswer.ShowAnswerViewModel
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
+import com.hoamz.toeic.ui.screen.splash.SplashScreen
 
 @Composable
 fun HomeScreen(
@@ -62,37 +67,42 @@ fun HomeScreen(
     }
 
     val navController = rememberNavController()
-    val listMainHome = listItemMenu.map { it.route }
+//    val listMainHome = listItemMenu.map { it.route }
     Box(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-    ){
+    ) {
+
         NavHost(
-            navController = navController,
-            startDestination = HomeNavScreen.ListTestScreen.route
-        ){
-            composable(route = HomeNavScreen.ListTestScreen.route){
-                ListTestHomeScreen(
-                    navController = navController,
-                    mainViewModel = mainViewModel,
-                    testViewModel = testViewModel
-                )
+            navController = navController, startDestination = "splash"
+        ) {
+            //splash
+            composable(route = "splash") {
+                SplashScreen {
+                    navController.navigate("home") {
+                        popUpTo("splash") {
+                            inclusive = true
+                        }
+                    }
+                }
             }
 
-            composable(route = HomeNavScreen.WrongScreen.route){
-                WrongScreen()
-            }
+            mainHome(
+                navController = navController,
+                mainViewModel = mainViewModel,
+                testViewModel = testViewModel
+            )
 
-            composable(route = HomeNavScreen.SetupScreen.route){
+            //cac man hinh chi tiet
+            composable(route = HomeNavScreen.SetupScreen.route) {
                 SetUpBeforeTestScreen(
                     navController = navController,
                     mainViewModel = mainViewModel
                 )
-
             }
 
-            composable(route = HomeNavScreen.ResultScreen.route){
+            composable(route = HomeNavScreen.ResultScreen.route) {
                 ResultScreen(
                     navController = navController,
                     testViewModel = testViewModel,
@@ -100,7 +110,7 @@ fun HomeScreen(
                 )
             }
 
-            composable(route = HomeNavScreen.TestScreen.route){
+            composable(route = HomeNavScreen.TestScreen.route) {
                 TestScreen(
                     navController = navController,
                     mainViewModel = mainViewModel,
@@ -108,7 +118,7 @@ fun HomeScreen(
                 )
             }
 
-            composable(route = HomeNavScreen.ShowAnswers.route){
+            composable(route = HomeNavScreen.ShowAnswers.route) {
                 ShowAnswer(
                     navController = navController,
                     testViewModel = testViewModel,
@@ -116,7 +126,7 @@ fun HomeScreen(
                 )
             }
 
-            composable(route = HomeNavScreen.ResultDetail.route){
+            composable(route = HomeNavScreen.ResultDetail.route) {
                 ShowResultDetail(
                     navController = navController,
                     testViewModel = testViewModel,
@@ -124,18 +134,73 @@ fun HomeScreen(
                     showAnswerViewModel = showAnswerViewModel
                 )
             }
+        }
+    }
+}
+
+fun NavGraphBuilder.mainHome(
+    navController: NavHostController,
+    mainViewModel: MainViewModel,
+    testViewModel: TestViewModel,
+){
+    navigation(startDestination = HomeNavScreen.ListTestScreen.route,
+        route = "main_home"){
+        composable(
+            "home"
+        ){
+            MainHome(
+                rootNavController = navController,
+                mainViewModel = mainViewModel,
+                testViewModel = testViewModel
+            )
+        }
+    }
+}
+
+@Composable
+fun MainHome(
+    modifier: Modifier = Modifier,
+    rootNavController: NavController,
+    mainViewModel: MainViewModel,
+    testViewModel: TestViewModel,
+) {
+    val listItemMenu by remember {
+        mutableStateOf(listOf(
+            ItemBottomNav("Home", HomeNavScreen.ListTestScreen.route,Icons.Outlined.Home),
+            ItemBottomNav("Wrong", HomeNavScreen.WrongScreen.route,Icons.Rounded.ErrorOutline),
+            ItemBottomNav("Vocabulary", HomeNavScreen.Vocabulary.route,Icons.Outlined.Bookmarks)
+        ))
+    }
+
+    val navController = rememberNavController()
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+    ){
+
+        NavHost(navController = navController,
+            startDestination = HomeNavScreen.ListTestScreen.route){
+            composable(route = HomeNavScreen.ListTestScreen.route){
+                ListTestHomeScreen(
+                    navController = rootNavController,
+                    mainViewModel = mainViewModel,
+                    testViewModel = testViewModel
+                )
+            }
+            composable(route = HomeNavScreen.WrongScreen.route){
+                WrongScreen()
+            }
 
             composable(route = HomeNavScreen.Vocabulary.route){
                 Vocabulary()
             }
         }
-//
+
         val navBackStackEntry = navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry.value?.destination?.route
-        val lifeCycle = navBackStackEntry.value?.lifecycle?.currentStateAsState()?.value
-        //neu route la 1 trong 3 thanh phan cua thanh bottom bar -> hien thi bottom bar
-        if(currentDestination in listMainHome && lifeCycle == Lifecycle.State.RESUMED){
-            Row (
+        Row (
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 5.dp)
@@ -162,7 +227,6 @@ fun HomeScreen(
                     }
                 }
             }
-        }
     }
 }
 

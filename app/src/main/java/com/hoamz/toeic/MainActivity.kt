@@ -69,46 +69,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             ToeicTheme {
                 val navController = rememberNavController()
-
-
-//                Column(
-////                    modifier = Modifier.fillMaxSize()
-////                        .padding(10.dp),
-////                    verticalArrangement = Arrangement.Center,
-////                    horizontalAlignment = Alignment.CenterHorizontally
-////                ) {
-////                    FlashCard(
-////                        front = "Hello",
-////                        back = "Ni hao"
-////                    )
-////                }
-
-
-                // FlashCard
-
-                NavHost(
+                Column (
                     modifier = Modifier
                         .fillMaxSize()
                         .background(color = Color.LightGray.copy(0.1f)),
-                    navController = navController,
-                    startDestination = "splash"
                 ){
-                    composable(route = "splash"){
-                        SplashScreen {
-                            navController.navigate("home"){
-                                popUpTo("splash"){
-                                    inclusive = true
-                                }
-                            }
-                        }
-                    }
-                    composable(route = "home"){
-                        HomeScreen(
-                            mainViewModel = mainViewModel,
-                            testViewModel = testViewModel,
-                            showAnswerViewModel = showAnswerViewModel
-                        )
-                    }
+                    HomeScreen(
+                        mainViewModel = mainViewModel,
+                        testViewModel = testViewModel,
+                        showAnswerViewModel = showAnswerViewModel
+                    )
                 }
             }
         }
