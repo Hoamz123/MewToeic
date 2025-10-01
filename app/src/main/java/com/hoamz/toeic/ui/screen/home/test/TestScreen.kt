@@ -1,0 +1,653 @@
+package com.hoamz.toeic.ui.screen.home.test
+
+import android.annotation.SuppressLint
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material.icons.outlined.FormatSize
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.CloseSegment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.room.util.TableInfo
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.hoamz.toeic.R
+import com.hoamz.toeic.baseviewmodel.MainViewModel
+import com.hoamz.toeic.data.local.Question
+import com.hoamz.toeic.ui.screen.home.HomeNavScreen
+import com.hoamz.toeic.ui.screen.home.setuptest.StickHeaderInSetUpScreen
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+
+@Composable
+fun TestScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    mainViewModel: MainViewModel,
+    testViewModel : TestViewModel
+) {
+
+    //lay ra trang thai test mode/no test mode
+    //lay ra time test
+    val isTestMode by mainViewModel.isTestMode.collectAsState()
+    val timeDoTest by mainViewModel.timeTest.collectAsState()
+
+    //lay index trc do da gui qua mainViewmodel tu Home
+    val indexClicked by mainViewModel.testNumber.collectAsState()
+    var isShowLoading by remember {
+        mutableStateOf(true)
+    }
+    LaunchedEffect(Unit) {
+        delay(2000)
+        isShowLoading = false
+    }
+
+    LaunchedEffect(Unit) {
+        mainViewModel.freshQuestion(number = indexClicked)
+        mainViewModel.freshDefaultAnswer(number = indexClicked)
+    }
+    val listQuestion : List<Question> by mainViewModel.listQuestion.collectAsState()
+    val listDefaultAnswer : List<Answer> by mainViewModel.listDefaultAnswerQuestion.collectAsState()
+
+    LaunchedEffect(listDefaultAnswer) {
+        if (listDefaultAnswer.isNotEmpty()) {
+            testViewModel.setUpListAnswer(listDefaultAnswer)
+        }
+    }
+
+    //hien thi loading khi chua load xong du lieu
+    if(isShowLoading){
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            val composition by rememberLottieComposition(
+                spec = LottieCompositionSpec.Asset("cat3.json")
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                contentAlignment = Alignment.Center
+            ){
+                LottieAnimation(
+                    composition = composition,
+                    iterations = LottieConstants.IterateForever
+                )
+            }
+        }
+    }
+    else{
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            val pagerQuestionState = rememberPagerState(initialPage = 0) {
+                listQuestion.size
+            }
+
+            var isShowDialog by rememberSaveable {
+                mutableStateOf(false)
+            }
+
+            var doneTest by rememberSaveable {
+                mutableStateOf(false)
+            }
+            TopBarTestScreen(numberQuestion = pagerQuestionState.currentPage + 1,
+                isTestMode = isTestMode,
+                timeDoTest = timeDoTest,
+                onClickBack = {
+//                navController.popBackStack()
+                isShowDialog = true
+            },
+                onClickSubmit = {state ->
+                    if(state == 1){
+                        //nop chu dong
+                        //->show dialog o day
+                    }
+                    //neu ko la nop bi dong
+                    doneTest = true
+                }, onClickShowHint = {
+
+                })
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ){
+                val scope = rememberCoroutineScope()
+                HorizontalPager(
+                    state = pagerQuestionState
+                ) { index ->
+                    ViewDisplayQuestion(
+                        numberQuestion = index + 1,
+                        question = listQuestion[index],
+                        testViewModel = testViewModel,
+                        isTestModel = isTestMode
+                    ){indexUserClicked,indexCorrectAnswer ->
+                        //luu lai cau tra loi cua user
+                        val answerOfUser = Answer(indexQuestion = pagerQuestionState.currentPage, indexUserClicked = indexUserClicked, indexCorrectAnswer = indexCorrectAnswer)
+                        testViewModel.addAfterUserAnswer(answerOfUser)
+                        if(pagerQuestionState.currentPage < listQuestion.size-1){
+                            scope.launch {
+                                delay(700)
+                                pagerQuestionState.animateScrollToPage(
+                                    pagerQuestionState.currentPage + 1,
+                                        animationSpec = tween(
+                                        durationMillis = 700,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                )
+                            }
+                        }
+                        else{
+                            //neu khong phai test mode -> tu dong nop luon
+                            if(!isTestMode){
+                                doneTest = true
+                            }
+                        }
+                    }
+                }
+
+                LaunchedEffect(doneTest) {
+                    if(doneTest){
+                        navController.navigate(HomeNavScreen.ResultScreen.route){
+                            popUpTo(HomeNavScreen.TestScreen.route){
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                    }
+                }
+
+                if(isShowDialog){
+                    DialogAskUserQuitOrSubmit(
+                        modifier = Modifier.align(Alignment.Center),
+                        textTitle = "Do you want to quit?",
+                        textDescription = "You will lose the progress of the lesson if you quit now",
+                        textAction = "Quit",
+                        navController = navController,
+                        onClickDismiss = {
+                            isShowDialog = false
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ViewDisplayQuestion(
+    modifier: Modifier = Modifier,
+    numberQuestion : Int,
+    question: Question,
+    testViewModel: TestViewModel,
+    isTestModel: Boolean,
+    onNextQuestion :(Int,Int) ->Unit,
+    //idClick cai user click
+    //indexCorrect cai dap an dung
+) {
+
+    //trang thai click / cua 4 cau hoi
+    val stateClicked by testViewModel.answeredQuestions.collectAsState()
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+    ){
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            item {
+                Box(
+                    modifier = Modifier.size(width = 100.dp, height = 10.dp)
+                )
+            }
+            item {
+                ViewQuestion(
+                    question = question
+                )
+            }
+            item {
+                Box(
+                    modifier = Modifier.size(width = 100.dp, height = 300.dp)
+                )
+            }
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .navigationBarsPadding()
+                .padding(vertical = 10.dp)
+        ) {
+            Text(
+                text = "Question $numberQuestion",
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Magenta,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .size(width = 100.dp, height = 2.dp)
+                    .padding(start = 10.dp)
+                    .background(color = Color.Magenta)
+            )
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround
+            ){
+                val choice = mapOf(
+                    0 to "A",
+                    1 to "B",
+                    2 to "C",
+                    3 to "D"
+                )
+                var clickAnswer by rememberSaveable {
+                    mutableIntStateOf(-1)
+                }
+
+                val indexCorrect = if(question.A == question.answer) 0
+                else if(question.B == question.answer) 1
+                else if(question.C == question.answer) 2
+                else 3
+
+                val clicked = stateClicked[numberQuestion] ?: false
+
+                repeat(4){index ->
+                    AnswerChoice(
+                        choice = choice[index].toString(),
+                        idSelected = index == clickAnswer,
+                        isTestMode = isTestModel,
+                        isClicked = if(!isTestModel) clicked else index == clickAnswer,
+                        isCorrect = index == indexCorrect
+                    ) {
+                        if(!isTestModel){
+                            //neu ko phai test mode -> cho click 1 lan
+                            if(!clicked){
+                                //khi click xong ms cho biet dap an
+                                clickAnswer = index
+                                testViewModel.answeredQuestion(numberQuestion)
+                                onNextQuestion(clickAnswer,indexCorrect)//sang cau moi
+                            }
+                        }
+                        else{
+                            clickAnswer = index
+                            onNextQuestion(clickAnswer,indexCorrect)//sang cau moi
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//0 = A,1 = B,2 = C,3 = D
+
+@Composable
+fun AnswerChoice(
+    modifier: Modifier = Modifier,
+    choice : String,
+    idSelected : Boolean,
+    isTestMode: Boolean,
+    isCorrect : Boolean,
+    isClicked : Boolean,
+    onClick :() -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .size(40.dp)
+            .clip(CircleShape)
+            .clickable {
+                onClick()
+            },
+        shape = CircleShape,
+        border = BorderStroke(width = 1.dp, color = if(isClicked && (idSelected && isCorrect || !idSelected && isCorrect || idSelected)) Color.Transparent else Color.Black),
+        colors = CardDefaults.cardColors(
+            containerColor = if(!isTestMode){
+                if(!isClicked) Color.White
+                else{
+                    when {
+                        idSelected && isCorrect -> Color.Green//chon dung
+                        idSelected && !isCorrect -> Color.Red.copy(0.8f)//chon sai thi mau do
+                        !idSelected && isCorrect -> Color.Green
+                        else -> Color.White
+                    }
+                }
+            }
+            else{
+                if(isClicked) Color.Magenta.copy(0.8f)
+                else Color.White
+            }
+        )
+    ){
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ){
+            Text(
+                text = choice,
+                color = if(isClicked && (idSelected && isCorrect || !idSelected && isCorrect || idSelected)) Color.White else Color.Black.copy(0.6f),
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    }
+}
+
+@Composable
+fun ViewQuestion(
+    modifier: Modifier = Modifier,
+    question : Question
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 10.dp, end = 10.dp),
+        shape = RoundedCornerShape(10.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 2.dp
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.White)
+        ) {
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = Color.Magenta.copy(0.3f))
+            ){
+                Text(
+                    modifier = Modifier.padding(10.dp),
+                    text = question.question
+                )
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    text = "A. ${question.A}",
+                    fontWeight = FontWeight.Normal
+                )
+                Text(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    text = "B. ${question.B}",
+                    fontWeight = FontWeight.Normal
+                )
+                Text(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    text = "C. ${question.C}",
+                    fontWeight = FontWeight.Normal)
+                Text(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    text = "D. ${question.D}",
+                    fontWeight = FontWeight.Normal
+                )
+            }
+        }
+    }
+}
+
+@SuppressLint("DefaultLocale")
+@Composable
+fun TopBarTestScreen(
+    modifier: Modifier = Modifier,
+    numberQuestion : Int,
+    isTestMode : Boolean,
+    timeDoTest : Int,
+    onClickBack :() -> Unit,
+    onClickShowHint :() -> Unit,
+    onClickSubmit :(Int) -> Unit,
+) {
+    Row (
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp)
+            .padding(start = 16.dp, end = 20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ){
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            IconButton(
+                onClick = {
+                    onClickBack()
+                },
+                modifier = Modifier
+                    .clip(CircleShape)
+            ) {
+                Icon(Icons.Default.ArrowBackIos,
+                    contentDescription = null)
+            }
+            Text(
+                text = "Question $numberQuestion",
+                fontWeight = FontWeight.Normal,
+            )
+        }
+
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(20.dp)
+        ){
+            if(isTestMode){
+                var timeTest by remember {
+                    mutableIntStateOf(timeDoTest * 60)
+                }
+
+                LaunchedEffect(Unit) {
+                    while(timeTest > 0){
+                        delay(1000)//gia lap de lay 1s
+                        timeTest--
+                    }
+                }
+
+                val minutes = timeTest / 60
+                val second = timeTest % 60
+
+                Text(
+                    text = String.format("%02d:%02d",minutes,second),
+                    fontWeight = FontWeight.SemiBold,
+                    color = if(timeTest < 60) Color.Red.copy(0.8f) else Color.Green
+                )
+
+                if(timeTest == 0){
+                    //{0) la nop do het thoi gian
+                    onClickSubmit(0)
+                }
+                Text(
+                    text ="Submit",
+                    modifier = Modifier
+                        .clickable{
+                            onClickSubmit(1)//(1) la nop chu dong
+                        },
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+            else{
+                Text(
+                    text ="Explain",
+                    modifier = Modifier
+                        .clickable{
+                            onClickShowHint()
+                        },
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
+    }
+}
+
+//hien thi khi user nhan <
+@Composable
+fun DialogAskUserQuitOrSubmit(
+    modifier: Modifier = Modifier,
+    textTitle : String,
+    textDescription : String,
+    textAction : String,
+    onClickDismiss:() -> Unit,
+    navController: NavController,
+) {
+
+    var isShow by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    if(isShow){
+        Dialog(
+            onDismissRequest = {
+                isShow = false
+                onClickDismiss()
+            }
+        ) {
+            Card(
+                modifier = modifier.fillMaxWidth()
+                    .wrapContentHeight(),
+                shape = RoundedCornerShape(12.dp),
+                elevation = CardDefaults.elevatedCardElevation(
+                    defaultElevation = 5.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White
+                )
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Icon(
+                            Icons.Filled.QuestionMark,
+                            contentDescription = null,
+                            tint = Color.Red.copy(0.8f)
+                        )
+                        Text(
+                            text = textTitle, fontWeight = FontWeight.Bold, fontSize = 20.sp
+                        )
+                    }
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        text = textDescription,
+                        fontWeight = FontWeight.Normal
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Button(
+                            modifier = Modifier.size(width = 80.dp, height = 35.dp),
+                            contentPadding = PaddingValues(vertical = 8.dp),
+                            onClick = {
+                                isShow = false
+                                navController.popBackStack()
+                            }, shape = RoundedCornerShape(5.dp), colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Blue.copy(0.4f)
+                            )
+                        ) {
+                            Text(
+                                text = textAction, color = Color.White, fontWeight = FontWeight.Normal
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Button(
+                            modifier = Modifier.size(width = 80.dp, height = 35.dp),
+                            contentPadding = PaddingValues(vertical = 8.dp),
+                            onClick = {
+                                onClickDismiss()
+                            }, shape = RoundedCornerShape(5.dp), colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.White
+                            ), border = BorderStroke(width = 0.8.dp, color = Color.Gray)
+                        ) {
+                            Text(
+                                text = "Cancel",
+                                color = Color.Black.copy(0.8f),
+                                fontWeight = FontWeight.Normal
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

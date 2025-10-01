@@ -1,0 +1,272 @@
+{
+  "1": {
+    "A": "suffer",
+    "B": "suffers",
+    "C": "suffering",
+    "D": "suffered",
+    "answer": "suffered",
+    "question": "The assets of Marble Faun Publishing Company ___ last quarter when one of their main local distributors went out of business.",
+    "explain": "Đáp án đúng là 'suffered' vì câu sử dụng thì quá khứ đơn để diễn tả sự kiện xảy ra trong quá khứ ('last quarter'). 'Suffered' là dạng quá khứ của động từ 'suffer', phù hợp với ngữ cảnh tài sản của công ty bị ảnh hưởng tiêu cực."
+  },
+  "2": {
+    "A": "him",
+    "B": "his",
+    "C": "himself",
+    "D": "he",
+    "answer": "his",
+    "question": "Indie film director Luke Steele will be in London for the premiere of ___ new movie.",
+    "explain": "Đáp án đúng là 'his' vì cần một đại từ sở hữu để chỉ bộ phim mới thuộc về Luke Steele. 'His' là đại từ sở hữu phù hợp với danh từ 'movie'."
+  },
+  "3": {
+    "A": "full",
+    "B": "complete",
+    "C": "all",
+    "D": "total",
+    "answer": "all",
+    "question": "Laboratory employees are expected to wear a name tag and carry identification at ___ times.",
+    "explain": "Đáp án đúng là 'all' vì cụm từ 'at all times' là cách diễn đạt chuẩn trong tiếng Anh, nghĩa là 'mọi lúc'. Các lựa chọn khác không phù hợp với ngữ cảnh này."
+  },
+  "4": {
+    "A": "method",
+    "B": "guide",
+    "C": "staff",
+    "D": "role",
+    "answer": "guide",
+    "explain": "Đáp án đúng là 'guide' vì câu cần một danh từ chỉ tài liệu hoặc sách hướng dẫn đào tạo. 'Guide' phù hợp nhất với ngữ cảnh về mẹo giảng dạy ngôn ngữ thứ hai.",
+    "question": "The latest training ___ contains tips on teaching a second language to international students."
+  },
+  "5": {
+    "A": "qualified",
+    "B": "qualifications",
+    "C": "qualify",
+    "D": "qualifying",
+    "answer": "qualifications",
+    "question": "Once you have your resume with references and ___ , please submit it to the Human Resources Department on the 3rd floor.",
+    "explain": "Đáp án đúng là 'qualifications' vì câu cần danh từ số nhiều để chỉ các bằng cấp hoặc trình độ đi kèm với hồ sơ xin việc. 'Qualifications' phù hợp nhất trong ngữ cảnh này."
+  },
+  "6": {
+    "A": "soon",
+    "B": "shortly",
+    "C": "recently",
+    "D": "yet",
+    "answer": "recently",
+    "question": "Ursa Major Corp. has ___ negotiated a deal with a Russian competitor in surveying the Kamchatka Peninsula.",
+    "explain": "Đáp án đúng là 'recently' vì câu sử dụng thì hiện tại hoàn thành ('has negotiated') và cần một trạng từ chỉ thời gian gần đây. 'Recently' phù hợp với ngữ cảnh này."
+  },
+  "7": {
+    "A": "having",
+    "B": "will have",
+    "C": "was having",
+    "D": "has",
+    "answer": "was having",
+    "question": "Ms. Cho relayed her concerns about the company's financial situation while she ___ a meeting with the manager.",
+    "explain": "Đáp án đúng là 'was having' vì câu sử dụng thì quá khứ tiếp diễn để diễn tả hành động đang xảy ra trong quá khứ khi một hành động khác (relayed) diễn ra."
+  },
+  "8": {
+    "A": "necessary",
+    "B": "necessarily",
+    "C": "necessitate",
+    "D": "necessity",
+    "answer": "necessary",
+    "question": "Whether it is ___ to register for a student discount card depends on the needs of the individual.",
+    "explain": "Đáp án đúng là 'necessary' vì câu cần một tính từ để bổ nghĩa cho việc đăng ký thẻ giảm giá. 'Necessary' phù hợp với ngữ cảnh này."
+  },
+  "9": {
+    "A": "materials",
+    "B": "sessions",
+    "C": "experiences",
+    "D": "positions",
+    "answer": "sessions",
+    "question": "Even experienced clerks are encouraged to attend training ___ to keep them updated on new ideas in the world of banking.",
+    "explain": "Đáp án đúng là 'sessions' vì câu cần danh từ số nhiều chỉ các buổi đào tạo. 'Sessions' phù hợp với ngữ cảnh đào tạo ngân hàng."
+  },
+  "10": {
+    "A": "they",
+    "B": "them",
+    "C": "their",
+    "D": "themselves",
+    "answer": "themselves",
+    "question": "Workers are advised not to operate certain machines by ___ .",
+    "explain": "Đáp án đúng là 'themselves' vì cụm từ 'by themselves' có nghĩa là 'một mình', phù hợp với ngữ cảnh khuyên công nhân không tự vận hành máy móc."
+  },
+  "11": {
+    "A": "construct",
+    "B": "constructive",
+    "C": "construction",
+    "D": "constructed",
+    "answer": "construction",
+    "question": "The ___ of a discount department store was delayed by the protests of several members of the community.",
+    "explain": "Đáp án đúng là 'construction' vì câu cần danh từ chỉ hành động xây dựng cửa hàng. 'Construction' phù hợp với ngữ cảnh này."
+  },
+  "12": {
+    "A": "large",
+    "B": "largely",
+    "C": "largest",
+    "D": "larger",
+    "answer": "largely",
+    "question": "Ms. Maria Perreira is ___ responsible for some of our company's most successful marketing campaigns.",
+    "explain": "Đáp án đúng là 'largely' vì câu cần trạng từ để bổ nghĩa cho mức độ trách nhiệm. 'Largely' có nghĩa là 'phần lớn' và phù hợp với ngữ cảnh."
+  },
+  "13": {
+    "A": "estimates",
+    "B": "sponsors",
+    "C": "deliverance",
+    "D": "relocations",
+    "answer": "estimates",
+    "question": "Mr. Singh requested ___ from several catering companies before making his decision.",
+    "explain": "Đáp án đúng là 'estimates' vì câu cần danh từ số nhiều chỉ báo giá từ các công ty dịch vụ ăn uống. 'Estimates' phù hợp với ngữ cảnh này."
+  },
+  "14": {
+    "A": "despite",
+    "B": "due to",
+    "C": "provided that",
+    "D": "because",
+    "answer": "due to",
+    "question": "Our apartment building's occupancy increased ___ the efforts of our knowledgeable and friendly rental agent, Ms. Gova.",
+    "explain": "Đáp án đúng là 'due to' vì câu cần giới từ chỉ nguyên nhân dẫn đến sự gia tăng tỷ lệ lấp đầy. 'Due to' phù hợp với ngữ cảnh này."
+  },
+  "15": {
+    "A": "among",
+    "B": "since",
+    "C": "within",
+    "D": "whereas",
+    "answer": "within",
+    "question": "Those employees wishing to change departments ___ the company may send their inquiries to Mr. Alvarez.",
+    "explain": "Đáp án đúng là 'within' vì câu cần giới từ chỉ phạm vi trong nội bộ công ty. 'Within' phù hợp với ngữ cảnh này."
+  },
+  "16": {
+    "A": "procedure",
+    "B": "layer",
+    "C": "accessory",
+    "D": "quality",
+    "answer": "quality",
+    "question": "The New Economic Quarterly criticized the ___ of all new products produced by Yun Sung Industrial Co., Ltd.",
+    "explain": "Đáp án đúng là 'quality' vì câu cần danh từ chỉ chất lượng sản phẩm bị phê bình. 'Quality' phù hợp với ngữ cảnh này."
+  },
+  "17": {
+    "A": "led",
+    "B": "leads",
+    "C": "leader",
+    "D": "leading",
+    "answer": "leading",
+    "question": "One of the ___ international research facilities in botany is located at the Hoskin Museum of Natural History.",
+    "explain": "Đáp án đúng là 'leading' vì câu cần tính từ chỉ cơ sở nghiên cứu hàng đầu. 'Leading' phù hợp với ngữ cảnh này."
+  },
+  "18": {
+    "A": "instituted",
+    "B": "proved",
+    "C": "decided",
+    "D": "resembled",
+    "answer": "instituted",
+    "question": "In order to ensure customer safety, the government has ___ a new set of guidelines for pharmaceutical companies.",
+    "explain": "Đáp án đúng là 'instituted' vì câu cần động từ ở thì hiện tại hoàn thành chỉ hành động thiết lập hướng dẫn mới. 'Instituted' phù hợp với ngữ cảnh này."
+  },
+  "19": {
+    "A": "allowing",
+    "B": "allows",
+    "C": "allowance",
+    "D": "allowably",
+    "answer": "allowing",
+    "question": "Welton Textiles Inc. made a net profit of $ million, ___ it to fund its expansion across the continent.",
+    "explain": "Đáp án đúng là 'allowing' vì câu cần dạng gerund của động từ 'allow' để diễn tả kết quả của lợi nhuận. 'Allowing' phù hợp với ngữ cảnh này."
+  },
+  "20": {
+    "A": "comparative",
+    "B": "envious",
+    "C": "pleased",
+    "D": "ambitious",
+    "answer": "ambitious",
+    "question": "Our ___ production goals will be directed by a skilled team of qualified managers.",
+    "explain": "Đáp án đúng là 'ambitious' vì câu cần tính từ mô tả mục tiêu sản xuất đầy tham vọng. 'Ambitious' phù hợp với ngữ cảnh này."
+  },
+  "21": {
+    "A": "increasingly",
+    "B": "increasing",
+    "C": "increased",
+    "D": "increase",
+    "answer": "increasingly",
+    "question": "Prattchet Co. has ___ turned to making most of its products from recycled materials.",
+    "explain": "Đáp án đúng là 'increasingly' vì câu cần trạng từ chỉ sự gia tăng dần trong việc sử dụng vật liệu tái chế. 'Increasingly' phù hợp với ngữ cảnh này."
+  },
+  "22": {
+    "A": "Bringing",
+    "B": "Helping",
+    "C": "Maintaining",
+    "D": "Promoting",
+    "answer": "Maintaining",
+    "question": "___ our financial goals for this year may require cutting back on some overhead costs.",
+    "explain": "Đáp án đúng là 'Maintaining' vì câu cần dạng gerund làm chủ ngữ, chỉ hành động duy trì mục tiêu tài chính. 'Maintaining' phù hợp với ngữ cảnh này."
+  },
+  "23": {
+    "A": "of",
+    "B": "for",
+    "C": "with",
+    "D": "to",
+    "answer": "with",
+    "question": "Heidelberg Publishing Co. offers employees ___ performance bonuses to encourage success.",
+    "explain": "Đáp án đúng là 'with' vì cụm từ 'offer with' được sử dụng để chỉ việc cung cấp tiền thưởng dựa trên hiệu suất. 'With' phù hợp với ngữ cảnh này."
+  },
+  "24": {
+    "A": "gradually",
+    "B": "nearly",
+    "C": "exclusively",
+    "D": "precisely",
+    "answer": "exclusively",
+    "question": "An anniversary dinner was held ___ for high-ranking officials in the corporation.",
+    "explain": "Đáp án đúng là 'exclusively' vì câu cần trạng từ chỉ sự kiện chỉ dành riêng cho các quan chức cấp cao. 'Exclusively' phù hợp với ngữ cảnh này."
+  },
+  "25": {
+    "A": "During",
+    "B": "Until",
+    "C": "After",
+    "D": "When",
+    "answer": "When",
+    "question": "___ contacting our Human Resources Department by phone, please include your contact information.",
+    "explain": "Đáp án đúng là 'When' vì câu cần liên từ chỉ thời điểm liên hệ với phòng nhân sự. 'When' phù hợp với ngữ cảnh này."
+  },
+  "26": {
+    "A": "satisfied",
+    "B": "spacious",
+    "C": "considerable",
+    "D": "capable",
+    "answer": "spacious",
+    "question": "Because of the added guests from our allied financial firm, a more ___ meeting room had to be used than usual.",
+    "explain": "Đáp án đúng là 'spacious' vì câu cần tính từ mô tả phòng họp rộng rãi hơn do có thêm khách. 'Spacious' phù hợp với ngữ cảnh này."
+  },
+  "27": {
+    "A": "energy",
+    "B": "energize",
+    "C": "energetic",
+    "D": "energetically",
+    "answer": "energetic",
+    "question": "Ms. Richards has been an exceptionally ___ member of the marketing team, providing Billingsgate Enterprises with great service for nine years.",
+    "explain": "Đáp án đúng là 'energetic' vì câu cần tính từ mô tả thành viên đội tiếp thị năng động. 'Energetic' phù hợp với ngữ cảnh này."
+  },
+  "28": {
+    "A": "Subsequently",
+    "B": "However",
+    "C": "Meanwhile",
+    "D": "Despite",
+    "answer": "Despite",
+    "question": "___ his falling out with his former employer, Mr. Lee still meets with some of his old co-workers from time to time.",
+    "explain": "Đáp án đúng là 'Despite' vì câu cần liên từ chỉ sự tương phản giữa việc bất hòa với chủ cũ và việc vẫn gặp đồng nghiệp. 'Despite' phù hợp với ngữ cảnh này."
+  },
+  "29": {
+    "A": "appreciation",
+    "B": "appreciative",
+    "C": "appreciating",
+    "D": "appreciates",
+    "answer": "appreciation",
+    "question": "The chief financial officer of Waterhouse Inc. is expressing ___ concerning his predecessor's informative advice.",
+    "explain": "Đáp án đúng là 'appreciation' vì câu cần danh từ chỉ sự biết ơn đối với lời khuyên của người tiền nhiệm. 'Appreciation' phù hợp với ngữ cảnh này."
+  },
+  "30": {
+    "A": "competed",
+    "B": "became",
+    "C": "continued",
+    "D": "thought",
+    "answer": "became",
+    "question": "Since opening last year, Savannah Safari Park quickly ___ one of the leading recreational spots in the region.",
+    "explain": "Đáp án đúng là 'became' vì câu cần động từ ở thì quá khứ đơn để chỉ việc công viên trở thành điểm vui chơi hàng đầu. 'Became' phù hợp với ngữ cảnh này."
+  }
+}

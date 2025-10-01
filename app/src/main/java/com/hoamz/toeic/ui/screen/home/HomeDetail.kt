@@ -1,0 +1,386 @@
+package com.hoamz.toeic.ui.screen.home
+
+import android.widget.ProgressBar
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowRight
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.sharp.Favorite
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ProgressIndicatorDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.airbnb.lottie.compose.LottieAnimatable
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.hoamz.toeic.R
+import com.hoamz.toeic.data.local.Question
+import kotlinx.coroutines.delay
+
+@Composable
+fun TopBarHome(
+    modifier: Modifier = Modifier,
+    username : String,
+    coin : Int,
+) {
+    Row (
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 10.dp, end = 16.dp),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        Row (
+            modifier = Modifier
+                .weight(1f)
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Image(
+                painter = painterResource(R.drawable.img_5),
+                contentDescription = null,
+                contentScale = ContentScale.Inside,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+            )
+
+            Spacer(modifier = Modifier.width(10.dp))
+
+            Text(
+                text = username,
+                fontWeight = FontWeight.Light,
+                fontFamily = FontFamily.Default
+            )
+        }
+
+        Row (
+            modifier = Modifier
+                .size(width = 60.dp, height = 30.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(color = Color.White),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ){
+            Icon(
+                Icons.Filled.LocalFireDepartment,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(24.dp)
+                    .padding(start = 5.dp),
+                tint = Color.Red.copy(0.6f)
+            )
+            Text(
+                text = coin.toString(),
+                modifier = Modifier.padding(end = 5.dp)
+            )
+        }
+    }
+}
+
+//view animation
+@Composable
+fun LottieHorizontal(
+    modifier: Modifier = Modifier
+) {
+    val listLottie = listOf(
+        "cat1.json",
+        "cat2.json",
+        "cat6.json"
+    )
+
+    val pagerState = rememberPagerState(initialPage = 0){
+        listLottie.size
+    }
+
+    LaunchedEffect(Unit) {
+        while (true){
+            delay(5000)
+            val currentPage = (pagerState.currentPage + 1) % listLottie.size
+            pagerState.animateScrollToPage(currentPage,
+                animationSpec = tween(
+                    durationMillis = 2000,
+                    easing = FastOutSlowInEasing
+                )
+            )
+        }
+    }
+
+    Card (
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(130.dp)
+            .padding(10.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 3.dp
+        ),
+    ){
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxSize()
+        ) {page ->
+            LottieAnim(
+                anim = listLottie[page],
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
+
+@Composable
+fun LottieAnim(
+    modifier: Modifier = Modifier,
+    anim : String
+) {
+    val composition by rememberLottieComposition(
+        spec = LottieCompositionSpec.Asset(anim)
+    )
+
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ){
+        LottieAnimation(composition = composition, iterations = LottieConstants.IterateForever)
+    }
+}
+
+@Composable
+fun ListTest(
+    modifier: Modifier = Modifier,
+    onClickCategories :() -> Unit,
+    onClickTest :(Int) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "Categories",
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Icon(
+                Icons.Default.ArrowRight,
+                contentDescription = null,
+                modifier = Modifier.clickable{
+                    onClickCategories()
+                },
+                tint = Color.LightGray
+            )
+        }
+        Box(
+            modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ){
+            LazyRow(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(3.dp),
+                contentPadding = PaddingValues(vertical = 5.dp)
+            ) {
+                items(10) { index ->
+                    CardTest(testNumber = (index + 1).toString()){
+                        onClickTest(index)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CardTest(
+    modifier: Modifier = Modifier,
+    testNumber : String,
+    onClick :() -> Unit
+) {
+    if(testNumber != "0"){
+        Spacer(modifier = Modifier.width(5.dp))
+    }
+    Card(
+        modifier = Modifier
+            .size(70.dp)
+            .clickable{
+                onClick()
+            },
+        shape = RoundedCornerShape(10.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 3.dp
+        )
+    ){
+        Box(
+            modifier = Modifier.fillMaxSize()
+                .background(color = Color.Magenta.copy(0.4f)),
+            contentAlignment = Alignment.Center
+        ){
+            Text(
+                text = "Test $testNumber"
+            )
+        }
+
+    }
+    Spacer(modifier = Modifier.width(5.dp))
+}
+
+@Composable
+fun TestCurrent(
+    nameTest : String,
+    numberQuestion : Int,
+    numberCorrect : Int,
+    modifier: Modifier = Modifier,
+    onClick :() -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth()
+            .padding(8.dp)
+            .clickable{
+                onClick()
+            },
+        shape = RoundedCornerShape(10.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 2.dp
+        ),
+    ){
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceAround
+        ){
+            Column(
+                modifier = Modifier.weight(2f)
+                    .padding(12.dp)
+            ) {
+                Text(
+                    text = nameTest,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = "$numberQuestion Question",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal
+                )
+            }
+            CircularProgressIndicatorWithText(
+                score = numberCorrect,
+                total = numberQuestion,
+                modifier = Modifier.weight(1f),
+                size = 65
+            )
+        }
+    }
+}
+
+@Composable
+fun CircularProgressIndicatorWithText(
+    score: Int,
+    total: Int,
+    size : Int,
+    modifier: Modifier = Modifier,
+    strokeWidth: Dp = 5.dp,
+) {
+    val progress = score.toFloat() / total.toFloat()
+
+    val color : Color = if(score <= 5) Color.Red else if(score <= 15) Color.Yellow else Color.Red
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.size(size.dp)
+            .padding(8.dp)
+    ) {
+
+        CircularProgressIndicator(
+            progress = { 1f },
+            modifier = Modifier.fillMaxSize(),
+            color = color.copy(alpha = 0.1f),
+            strokeWidth = strokeWidth - 1.dp,
+            trackColor = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
+            strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap,
+        )
+
+        CircularProgressIndicator(
+            progress = {
+                progress
+            },
+            modifier = Modifier.fillMaxSize(),
+            color = color,
+            strokeWidth = strokeWidth,
+            trackColor = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
+            strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap,
+        )
+
+        Text(
+            text = "$score/$total",
+            fontSize = 12.sp
+        )
+    }
+}
+
+
+
+

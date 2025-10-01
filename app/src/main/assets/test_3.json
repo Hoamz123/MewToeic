@@ -1,0 +1,272 @@
+{
+  "61": {
+    "A": "among",
+    "B": "up",
+    "C": "at",
+    "D": "of",
+    "answer": "at",
+    "question": "Either the marketing director or the sales manager will represent Centum Construction Inc. ___ the Bexco Architecture Conference.",
+    "explain": "Đáp án đúng là 'at' vì cụm từ 'represent at' được sử dụng để chỉ việc đại diện tại một hội nghị. 'At' phù hợp với ngữ cảnh này."
+  },
+  "62": {
+    "A": "instruct",
+    "B": "instructing",
+    "C": "instructions",
+    "D": "instructional",
+    "answer": "instructions",
+    "question": "Your new coffee machine comes with detailed ___ which will help you use it more effectively.",
+    "explain": "Đáp án đúng là 'instructions' vì câu cần danh từ số nhiều chỉ hướng dẫn sử dụng máy pha cà phê. 'Instructions' phù hợp với ngữ cảnh này."
+  },
+  "63": {
+    "A": "When",
+    "B": "Before",
+    "C": "Whereas",
+    "D": "Since",
+    "answer": "Since",
+    "question": "___ she joined our company three years ago, Mrs. Mashimo has greatly expanded our customer base.",
+    "explain": "Đáp án đúng là 'Since' vì câu cần liên từ chỉ thời điểm bắt đầu từ khi bà Mashimo gia nhập công ty. 'Since' phù hợp với ngữ cảnh này."
+  },
+  "64": {
+    "A": "universe",
+    "B": "universal",
+    "C": "universally",
+    "D": "universality",
+    "answer": "universally",
+    "question": "Neobucks has more than C, stores in the United States and 25 other countries, and its logo is ___ recognizable.",
+    "explain": "Đáp án đúng là 'universally' vì câu cần trạng từ chỉ mức độ nhận diện logo trên toàn cầu. 'Universally' phù hợp với ngữ cảnh này."
+  },
+  "65": {
+    "A": "complete",
+    "B": "completion",
+    "C": "completed",
+    "D": "completely",
+    "answer": "complete",
+    "question": "If you would like to comment on a recent experience with us, please ___ a customer satisfaction survey before leaving your room.",
+    "explain": "Đáp án đúng là 'complete' vì câu cần động từ chỉ hành động hoàn thành khảo sát. 'Complete' phù hợp với ngữ cảnh này."
+  },
+  "66": {
+    "A": "approve",
+    "B": "express",
+    "C": "register",
+    "D": "record",
+    "answer": "register",
+    "question": "As space is limited, be sure to contact Bill in the personnel department a minimum of three days in advance to ___ for a workshop.",
+    "explain": "Đáp án đúng là 'register' vì câu cần động từ chỉ hành động đăng ký tham gia hội thảo. 'Register' phù hợp với ngữ cảnh này."
+  },
+  "67": {
+    "A": "environment",
+    "B": "participation",
+    "C": "reaction",
+    "D": "incident",
+    "answer": "environment",
+    "question": "As a manager, you are also responsible for maintaining a work ___ that is comfortable and ergonomically safe.",
+    "explain": "Đáp án đúng là 'environment' vì câu cần danh từ chỉ môi trường làm việc thoải mái và an toàn. 'Environment' phù hợp với ngữ cảnh này."
+  },
+  "68": {
+    "A": "heavy",
+    "B": "forceful",
+    "C": "steep",
+    "D": "strict",
+    "answer": "steep",
+    "question": "The tree-lined trails and ___ slopes make Whistler Mountain a dangerous place to ride, even for experienced cyclists.",
+    "explain": "Đáp án đúng là 'steep' vì câu cần tính từ mô tả địa hình dốc của núi Whistler. 'Steep' phù hợp với ngữ cảnh này."
+  },
+  "69": {
+    "A": "any of",
+    "B": "each",
+    "C": "all",
+    "D": "every",
+    "answer": "all",
+    "question": "Many people prefer to shop at The Bay Department Store as it offers a lifetime warranty on ___ purchases.",
+    "explain": "Đáp án đúng là 'all' vì câu cần từ chỉ tất cả các giao dịch mua sắm được bảo hành trọn đời. 'All' phù hợp với ngữ cảnh này."
+  },
+  "70": {
+    "A": "act",
+    "B": "progress",
+    "C": "chance",
+    "D": "number",
+    "answer": "act",
+    "question": "In an unprecedented ___ of generosity, Patty DeDominic, the founder of DeDominic & Associates, pledged a $1-million donation that will help local charities.",
+    "explain": "Đáp án đúng là 'act' vì câu cần danh từ chỉ hành động hào phóng của việc quyên góp. 'Act' phù hợp với ngữ cảnh này."
+  },
+  "71": {
+    "A": "calendar",
+    "B": "intention",
+    "C": "deadline",
+    "D": "admission",
+    "answer": "deadline",
+    "question": "Satyam Computer Services Ltd. has extended the ___ for submitting applications for the marketing manager position to April 13th.",
+    "explain": "Đáp án đúng là 'deadline' vì câu cần danh từ chỉ thời hạn nộp đơn xin việc. 'Deadline' phù hợp với ngữ cảnh này."
+  },
+  "72": {
+    "A": "later",
+    "B": "recent",
+    "C": "further",
+    "D": "following",
+    "answer": "later",
+    "question": "If mechanical problems occur at the time of your scheduled trip, alternatives will be discussed with you whether to reschedule the trip for a ___ time.",
+    "explain": "Đáp án đúng là 'later' vì câu cần tính từ chỉ thời điểm sau đó để sắp xếp lại chuyến đi. 'Later' phù hợp với ngữ cảnh này."
+  },
+  "73": {
+    "A": "estimate",
+    "B": "estimates",
+    "C": "estimated",
+    "D": "estimating",
+    "answer": "estimate",
+    "question": "All work will be discussed in detail before a written ___ is given to any client.",
+    "explain": "Đáp án đúng là 'estimate' vì câu cần danh từ chỉ báo giá bằng văn bản cung cấp cho khách hàng. 'Estimate' phù hợp với ngữ cảnh này."
+  },
+  "74": {
+    "A": "recalled",
+    "B": "collaborated",
+    "C": "provided",
+    "D": "employed",
+    "answer": "collaborated",
+    "question": "We have ___ with community groups and business partners to support local economic development projects.",
+    "explain": "Đáp án đúng là 'collaborated' vì câu cần động từ ở thì hiện tại hoàn thành chỉ hành động hợp tác với các nhóm cộng đồng. 'Collaborated' phù hợp với ngữ cảnh này."
+  },
+  "75": {
+    "A": "approached",
+    "B": "detailed",
+    "C": "probable",
+    "D": "loyal",
+    "answer": "detailed",
+    "question": "All sales representatives should know ___ information about the product they are selling and be able to answer any questions.",
+    "explain": "Đáp án đúng là 'detailed' vì câu cần tính từ mô tả thông tin chi tiết về sản phẩm. 'Detailed' phù hợp với ngữ cảnh này."
+  },
+  "76": {
+    "A": "making",
+    "B": "make",
+    "C": "makes",
+    "D": "made",
+    "answer": "make",
+    "question": "Mountain Equipment Co-op. has deeply discounted their winter items to ___ room for the new spring merchandise.",
+    "explain": "Đáp án đúng là 'make' vì câu cần động từ nguyên thể trong cụm 'to make room for' (dọn chỗ cho). 'Make' phù hợp với ngữ cảnh này."
+  },
+  "77": {
+    "A": "in",
+    "B": "through",
+    "C": "with",
+    "D": "along",
+    "answer": "in",
+    "question": "While ___ a foreign country, it would be wise to take only what you will absolutely need during the day and leave anything else in the safe in your hotel room.",
+    "explain": "Đáp án đúng là 'in' vì cụm từ 'while in a foreign country' là cách dùng đúng để chỉ thời gian ở nước ngoài. 'In' phù hợp với ngữ cảnh này."
+  },
+  "78": {
+    "A": "those",
+    "B": "them",
+    "C": "whose",
+    "D": "which",
+    "answer": "those",
+    "question": "At the annual stockholders' meeting, large printed material will be made available on request for ___ with visual impairment.",
+    "explain": "Đáp án đúng là 'those' vì câu cần đại từ chỉ những người bị khiếm thị. 'Those' phù hợp với ngữ cảnh này."
+  },
+  "79": {
+    "A": "what",
+    "B": "that",
+    "C": "which",
+    "D": "those",
+    "answer": "that",
+    "question": "A recent survey indicates ___ young women in particular are showing a strong preference for online shopping.",
+    "explain": "Đáp án đúng là 'that' vì câu cần liên từ để dẫn dắt mệnh đề chỉ kết quả khảo sát. 'That' phù hợp với ngữ cảnh này."
+  },
+  "80": {
+    "A": "responsibility",
+    "B": "responsibilities",
+    "C": "responsible",
+    "D": "responsibly",
+    "answer": "responsible",
+    "question": "The office manager is ___ for supporting staff members and ensuring that their work is done efficiently.",
+    "explain": "Đáp án đúng là 'responsible' vì câu cần tính từ trong cụm 'be responsible for' (chịu trách nhiệm cho). 'Responsible' phù hợp với ngữ cảnh này."
+  },
+  "81": {
+    "A": "her",
+    "B": "hers",
+    "C": "herself",
+    "D": "she",
+    "answer": "she",
+    "question": "After Rachel had worked for the company for more than 10 years, ___ was finally promoted to a managerial position.",
+    "explain": "Đáp án đúng là 'she' vì câu cần đại từ chủ ngữ chỉ Rachel được thăng chức. 'She' phù hợp với ngữ cảnh này."
+  },
+  "82": {
+    "A": "between",
+    "B": "both",
+    "C": "either",
+    "D": "rather",
+    "answer": "both",
+    "question": "Mr. Jackson expressed a strong desire to increase ___ the company's revenue and the number of employees.",
+    "explain": "Đáp án đúng là 'both' vì câu cần từ chỉ hai yếu tố được tăng (doanh thu và số nhân viên). 'Both' phù hợp với ngữ cảnh này."
+  },
+  "83": {
+    "A": "produce",
+    "B": "produces",
+    "C": "product",
+    "D": "producing",
+    "answer": "produces",
+    "question": "Kelvin Video System's most recent model ___ vivid images on its screen.",
+    "explain": "Đáp án đúng là 'produces' vì câu cần động từ ở thì hiện tại đơn để chỉ khả năng của mẫu mới nhất. 'Produces' phù hợp với ngữ cảnh này."
+  },
+  "84": {
+    "A": "From",
+    "B": "Of",
+    "C": "For",
+    "D": "By",
+    "answer": "For",
+    "question": "___ further information, please don't hesitate to call our customer service center at A-.",
+    "explain": "Đáp án đúng là 'For' vì cụm từ 'for further information' là cách dùng đúng để chỉ việc cung cấp thêm thông tin. 'For' phù hợp với ngữ cảnh này."
+  },
+  "85": {
+    "A": "Enter",
+    "B": "Entries",
+    "C": "Being entered",
+    "D": "Entering",
+    "answer": "Entries",
+    "question": "___ for the annual GRR contest should be submitted by no later than December 1st.",
+    "explain": "Đáp án đúng là 'Entries' vì câu cần danh từ số nhiều chỉ các bài dự thi. 'Entries' phù hợp với ngữ cảnh này."
+  },
+  "86": {
+    "A": "easily",
+    "B": "easy",
+    "C": "easing",
+    "D": "ease",
+    "answer": "easily",
+    "question": "Clients of Bank of America can ___ gain access to their accounts 24 hours a day throughout the year.",
+    "explain": "Đáp án đúng là 'easily' vì câu cần trạng từ chỉ cách thức truy cập tài khoản dễ dàng. 'Easily' phù hợp với ngữ cảnh này."
+  },
+  "87": {
+    "A": "excellent",
+    "B": "interested",
+    "C": "grateful",
+    "D": "absolute",
+    "answer": "excellent",
+    "question": "The president of the company gave credit for the increased number of sales to the ___ work done by his staff.",
+    "explain": "Đáp án đúng là 'excellent' vì câu cần tính từ mô tả công việc xuất sắc của nhân viên. 'Excellent' phù hợp với ngữ cảnh này."
+  },
+  "88": {
+    "A": "where",
+    "B": "when",
+    "C": "there",
+    "D": "why",
+    "answer": "there",
+    "question": "Although the owner of the company wasn't able to attend the meeting, his secretary was ___ to take important notes for him.",
+    "explain": "Đáp án đúng là 'there' vì câu cần trạng từ chỉ địa điểm (cuộc họp) mà thư ký có mặt để ghi chú. 'There' phù hợp với ngữ cảnh này."
+  },
+  "89": {
+    "A": "even though",
+    "B": "because of",
+    "C": "since",
+    "D": "besides",
+    "answer": "because of",
+    "question": "The Wall Street banks collapsed ___ the uncertainty that investors had about the American economy.",
+    "explain": "Đáp án đúng là 'because of' vì câu cần cụm từ chỉ nguyên nhân dẫn đến sự sụp đổ của các ngân hàng. 'Because of' phù hợp với ngữ cảnh này."
+  },
+  "90": {
+    "A": "begin",
+    "B": "hurry",
+    "C": "prevent",
+    "D": "enhance",
+    "answer": "prevent",
+    "question": "Wiping out the company's data on retiring workers' computers may ___ any leak concerning crucial information aboutthe company.",
+    "explain": "Đáp án đúng là 'prevent' vì câu cần động từ chỉ hành động ngăn chặn rò rỉ thông tin. 'Prevent' phù hợp với ngữ cảnh này."
+  }
+}
