@@ -129,7 +129,7 @@ fun HomeScreen(
                 Vocabulary()
             }
         }
-
+//
         val navBackStackEntry = navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry.value?.destination?.route
         val lifeCycle = navBackStackEntry.value?.lifecycle?.currentStateAsState()?.value
