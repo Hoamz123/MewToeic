@@ -1,6 +1,7 @@
 package com.hoamz.toeic.ui.screen.home.test
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -76,8 +77,10 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hoamz.toeic.R
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.Question
+import com.hoamz.toeic.ui.screen.home.ExplainAnswerView
 import com.hoamz.toeic.ui.screen.home.HomeNavScreen
 import com.hoamz.toeic.ui.screen.home.setuptest.StickHeaderInSetUpScreen
+import com.hoamz.toeic.utils.Contains
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -152,10 +155,22 @@ fun TestScreen(
             var isShowDialog by rememberSaveable {
                 mutableStateOf(false)
             }
+            var isShowDialogSubmit by rememberSaveable {
+                mutableStateOf(false)
+            }
 
             var doneTest by rememberSaveable {
                 mutableStateOf(false)
             }
+
+            var onShowSheet by rememberSaveable {
+                mutableStateOf(false)
+            }
+
+            var explainContent by rememberSaveable {
+                mutableStateOf("")
+            }
+
             TopBarTestScreen(numberQuestion = pagerQuestionState.currentPage + 1,
                 isTestMode = isTestMode,
                 timeDoTest = timeDoTest,
@@ -167,11 +182,17 @@ fun TestScreen(
                     if(state == 1){
                         //nop chu dong
                         //->show dialog o day
+                        isShowDialogSubmit = true
                     }
-                    //neu ko la nop bi dong
-                    doneTest = true
-                }, onClickShowHint = {
+                    else{
+                        //neu ko la nop bi dong
+                        doneTest = true
+                    }
 
+                }, onClickShowHint = {
+                    //show sheet o day
+                    explainContent = listQuestion[pagerQuestionState.currentPage].explain
+                    onShowSheet = true
                 })
             Box(
                 modifier = Modifier.fillMaxSize()
@@ -179,7 +200,7 @@ fun TestScreen(
                 val scope = rememberCoroutineScope()
                 HorizontalPager(
                     state = pagerQuestionState
-                ) { index ->
+                ) { index ->//index nay lam trong vong for
                     ViewDisplayQuestion(
                         numberQuestion = index + 1,
                         question = listQuestion[index],
@@ -210,6 +231,15 @@ fun TestScreen(
                     }
                 }
 
+                if(onShowSheet){
+                    ExplainAnswerView(
+                        onShowSheet = true,
+                        content = explainContent
+                    ) {value->
+                        onShowSheet = value
+                    }
+                }
+
                 LaunchedEffect(doneTest) {
                     if(doneTest){
                         navController.navigate(HomeNavScreen.ResultScreen.route){
@@ -221,12 +251,28 @@ fun TestScreen(
                     }
                 }
 
+                if(isShowDialogSubmit){
+                    DialogAskUserQuitOrSubmit(
+                        modifier = Modifier.align(Alignment.Center),
+                        textTitle = Contains.ASK_SUBMIT,
+                        textDescription = Contains.DESCRIPTION_ASK,
+                        textAction = Contains.SUBMIT,
+                        navController = navController,
+                        onClickDismiss = {
+                            isShowDialogSubmit = false
+                        },
+                        onSubmitted = {
+                            doneTest = true
+                        }
+                    )
+                }
+
                 if(isShowDialog){
                     DialogAskUserQuitOrSubmit(
                         modifier = Modifier.align(Alignment.Center),
-                        textTitle = "Do you want to quit?",
-                        textDescription = "You will lose the progress of the lesson if you quit now",
-                        textAction = "Quit",
+                        textTitle = Contains.ASK_QUIT,
+                        textDescription = Contains.DESCRIPTION_QUIT,
+                        textAction = Contains.QUIT,
                         navController = navController,
                         onClickDismiss = {
                             isShowDialog = false
@@ -284,12 +330,6 @@ fun ViewDisplayQuestion(
                 .navigationBarsPadding()
                 .padding(vertical = 10.dp)
         ) {
-            Text(
-                text = "Question $numberQuestion",
-                fontWeight = FontWeight.SemiBold,
-                color = Color.Magenta,
-                modifier = Modifier.padding(start = 16.dp)
-            )
             Box(
                 modifier = Modifier
                     .size(width = 100.dp, height = 2.dp)
@@ -504,6 +544,7 @@ fun TopBarTestScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ){
+
             if(isTestMode){
                 var timeTest by remember {
                     mutableIntStateOf(timeDoTest * 60)
@@ -561,6 +602,7 @@ fun DialogAskUserQuitOrSubmit(
     textAction : String,
     onClickDismiss:() -> Unit,
     navController: NavController,
+    onSubmitted : (() -> Unit)? = null
 ) {
 
     var isShow by rememberSaveable {
@@ -620,7 +662,11 @@ fun DialogAskUserQuitOrSubmit(
                             contentPadding = PaddingValues(vertical = 8.dp),
                             onClick = {
                                 isShow = false
-                                navController.popBackStack()
+                                if(textAction != Contains.SUBMIT){
+                                    navController.popBackStack()
+                                }else{
+                                    onSubmitted?.invoke()
+                                }
                             }, shape = RoundedCornerShape(5.dp), colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Blue.copy(0.4f)
                             )

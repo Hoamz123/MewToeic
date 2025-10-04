@@ -1,5 +1,6 @@
 package com.hoamz.toeic.ui.screen.home
 
+import android.util.Log
 import android.widget.ProgressBar
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -7,6 +8,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,22 +27,37 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.sharp.Favorite
+import androidx.compose.material3.BottomAppBarState
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.BottomSheetScaffoldState
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,8 +68,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,7 +82,9 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hoamz.toeic.R
 import com.hoamz.toeic.data.local.Question
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun TopBarHome(
@@ -260,8 +282,8 @@ fun CardTest(
     }
     Card(
         modifier = Modifier
-            .size(70.dp)
-            .clickable{
+            .size(60.dp)
+            .clickable {
                 onClick()
             },
         shape = RoundedCornerShape(10.dp),
@@ -270,7 +292,8 @@ fun CardTest(
         )
     ){
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .background(color = Color.Magenta.copy(0.4f)),
             contentAlignment = Alignment.Center
         ){
@@ -292,9 +315,10 @@ fun TestCurrent(
     onClick :() -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(8.dp)
-            .clickable{
+            .clickable {
                 onClick()
             },
         shape = RoundedCornerShape(10.dp),
@@ -311,7 +335,8 @@ fun TestCurrent(
             horizontalArrangement = Arrangement.SpaceAround
         ){
             Column(
-                modifier = Modifier.weight(2f)
+                modifier = Modifier
+                    .weight(2f)
                     .padding(12.dp)
             ) {
                 Text(
@@ -350,7 +375,8 @@ fun CircularProgressIndicatorWithText(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.size(size.dp)
+        modifier = Modifier
+            .size(size.dp)
             .padding(8.dp)
     ) {
 
@@ -378,6 +404,120 @@ fun CircularProgressIndicatorWithText(
             text = "$score/$total",
             fontSize = 12.sp
         )
+    }
+}
+
+//bottom sheet show  explain cua hoi
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ExplainAnswerView(
+    modifier: Modifier = Modifier,
+    content : String? = null,
+    onShowSheet : Boolean,
+    onHideSheet :(Boolean) -> Unit
+) {
+    val modalBottomSheet = rememberModalBottomSheetState()
+
+    val scope = rememberCoroutineScope()
+
+    val hideSheet = {
+        scope.launch {
+            modalBottomSheet.hide()
+        }
+    }
+
+    if(onShowSheet){
+        ModalBottomSheet(
+            sheetState = modalBottomSheet,
+            containerColor = Color.Transparent,
+            dragHandle = { null },
+            scrimColor = Color.Transparent,
+            onDismissRequest = {
+                hideSheet().invokeOnCompletion {
+                    onHideSheet(false)
+                }
+            }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.Transparent)
+                    .height(500.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier = Modifier.size(width = 100.dp, height = 20.dp)
+                        .clip(RoundedCornerShape(topEnd = 8.dp, topStart = 8.dp))
+                        .background(color = Color.DarkGray.copy(0.3f)),
+                    contentAlignment = Alignment.Center
+                ){
+                    Column(
+                        modifier = Modifier.fillMaxSize()
+                            .padding(start = 5.dp, end = 5.dp),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth()
+                                .height(2.dp)
+                                .background(color = Color.White.copy(0.5f))
+                        )
+                        Spacer(modifier = Modifier.height(3.dp))
+                        Box(
+                            modifier = Modifier.fillMaxWidth()
+                                .height(2.dp)
+                                .background(Color.White.copy(0.5f))
+                        )
+                    }
+                }
+
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                        .clip(shape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)),
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
+                            .height(60.dp)
+                            .background(color = Color.Magenta.copy(0.6f)),
+                        contentAlignment = Alignment.CenterStart
+                    ){
+                        Text(
+                            text = "Explain",
+                            modifier = Modifier.padding(start = 16.dp),
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White
+                        )
+
+                        IconButton(
+                            onClick = {
+                                hideSheet().invokeOnCompletion {
+                                    onHideSheet(false)
+                                }
+                            },
+                            modifier = Modifier.align(Alignment.CenterEnd)
+                                .padding(end = 10.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_exit),
+                                contentDescription = null,
+                                tint = Color.Unspecified
+                            )
+                        }
+
+                    }
+                    Column(
+                        modifier = Modifier.fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                            .background(color = Color.White)
+                            .padding(start = 10.dp, end = 10.dp, top = 10.dp)
+                    ) {
+                        Text(
+                            text = content ?: "null",
+                            color = Color.Black
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 

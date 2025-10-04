@@ -203,7 +203,7 @@ fun MainHome(
         Row (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 5.dp)
+                    .padding(vertical = 10.dp)
                     .shadow(elevation = 50.dp)
                     .align(alignment = Alignment.BottomCenter)
                     .background(color = Color.White)

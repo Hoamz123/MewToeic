@@ -124,6 +124,7 @@ fun ShowResultDetail(
                 }
             ) {
                 //hien thi bottomSheet
+
             }
 
             Box(

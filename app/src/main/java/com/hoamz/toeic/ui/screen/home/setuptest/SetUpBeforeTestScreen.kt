@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -129,12 +130,13 @@ fun SetUpBeforeTestScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(150.dp),
+                        .height(130.dp),
                     contentAlignment = Alignment.Center
                 ){
                     LottieAnimation(
+                        modifier = Modifier.size(120.dp),
                         composition = composition,
-                        iterations = LottieConstants.IterateForever
+                        iterations = LottieConstants.IterateForever//vo han
                     )
                 }
                 Spacer(modifier = Modifier.height(15.dp))
@@ -157,7 +159,7 @@ fun SetUpBeforeTestScreen(
                         fontWeight = FontWeight.Normal
                     )
                     Box (
-                        modifier = Modifier.width(100.dp),
+                        modifier = Modifier.width(80.dp),
                         contentAlignment = Alignment.Center
                     ){
                         Switch(
@@ -256,7 +258,7 @@ fun SetUpBeforeTestScreen(
 
             item {
                 Box(
-                    modifier = Modifier.size(width = 100.dp, height = 200.dp)
+                    modifier = Modifier.size(width = 100.dp, height = 100.dp)
                 )
             }
         }

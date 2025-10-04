@@ -15,8 +15,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -27,6 +29,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -34,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -49,6 +53,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.ui.screen.home.BottomMenuItem
+import com.hoamz.toeic.ui.screen.home.ExplainAnswerView
 import com.hoamz.toeic.ui.screen.home.HomeScreen
 import com.hoamz.toeic.ui.screen.home.ItemBottomNav
 import com.hoamz.toeic.ui.screen.home.showanswer.ShowAnswerViewModel
@@ -68,6 +73,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ToeicTheme {
+
                 val navController = rememberNavController()
                 Column (
                     modifier = Modifier
@@ -78,75 +84,6 @@ class MainActivity : ComponentActivity() {
                         mainViewModel = mainViewModel,
                         testViewModel = testViewModel,
                         showAnswerViewModel = showAnswerViewModel
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun FlashCard(
-    modifier: Modifier = Modifier,
-    front : String,
-    back : String
-) {
-    var flipped by rememberSaveable{
-        mutableStateOf(false)
-    }
-
-    val rotation by animateFloatAsState(
-        targetValue = if(flipped) 180f else 0f,
-        animationSpec = tween(
-            durationMillis = 500,
-            easing = LinearOutSlowInEasing
-        )
-    )
-
-    Box(
-        modifier = Modifier.size(300.dp)
-            .clickable{
-                flipped = !flipped
-            },
-        contentAlignment = Alignment.Center
-    ){
-        //card
-        Card(
-            modifier = Modifier.fillMaxSize()
-                .graphicsLayer{
-                    rotationX = rotation
-                    cameraDistance = 12f * density
-                },
-            colors = CardDefaults.cardColors(
-                containerColor = Color.Magenta
-            ),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            if(rotation <= 90f){
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                        .background(color = Color.White),
-                    contentAlignment = Alignment.Center
-                ){
-                    Text(
-                        text = front,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
-            else{
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                        .background(color = Color.Magenta),
-                    contentAlignment = Alignment.Center
-                ){
-                    Text(
-                        modifier = Modifier
-                            .graphicsLayer(
-                                rotationX = 180f
-                            ),
-                        text = back,
-                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
