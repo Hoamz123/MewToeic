@@ -78,7 +78,7 @@ class MainActivity : ComponentActivity() {
                 Column (
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(color = Color.LightGray.copy(0.1f)),
+                        .background(color = Color.White.copy(0.5f)),
                 ){
                     HomeScreen(
                         mainViewModel = mainViewModel,

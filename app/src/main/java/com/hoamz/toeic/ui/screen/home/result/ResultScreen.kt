@@ -284,12 +284,12 @@ fun ResultScreen(
                         )
                     )
                     Button(
-                        modifier = Modifier.width(200.dp)
-                            .padding(vertical = 5.dp),
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(horizontal = 16.dp,vertical = 5.dp),
                         onClick = {
                             navController.navigate(HomeNavScreen.ShowAnswers.route)
                         },
-                        shape = RoundedCornerShape(20.dp),
+                        shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = if(animatedProgress <= 5) Color.Red else if(animatedProgress <= 15) Color.Yellow else Color.Green
                         )
@@ -302,12 +302,12 @@ fun ResultScreen(
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Button(
-                        modifier = Modifier.width(200.dp)
-                            .padding(vertical = 5.dp),
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(horizontal = 16.dp,vertical = 5.dp),
                         onClick = {
 
                         },
-                        shape = RoundedCornerShape(20.dp),
+                        shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Magenta.copy(0.4f)
                         )

@@ -294,11 +294,12 @@ fun CardTest(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.Magenta.copy(0.4f)),
+                .background(color = Color.White),
             contentAlignment = Alignment.Center
         ){
             Text(
-                text = "Test $testNumber"
+                text = "Test $testNumber",
+                color = Color.Black,
             )
         }
 

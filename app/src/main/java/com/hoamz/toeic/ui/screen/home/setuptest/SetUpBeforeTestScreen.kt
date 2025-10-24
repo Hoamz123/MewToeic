@@ -1,5 +1,12 @@
 package com.hoamz.toeic.ui.screen.home.setuptest
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -63,10 +70,12 @@ import com.hoamz.toeic.R
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.Question
 import com.hoamz.toeic.ui.screen.home.HomeNavScreen
+import com.hoamz.toeic.utils.Contains
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("UnusedContentLambdaTargetStateParameter")
 @Composable
 fun SetUpBeforeTestScreen(
     modifier: Modifier = Modifier,
@@ -80,7 +89,7 @@ fun SetUpBeforeTestScreen(
 
         //thoi gian cai dat test mode
         var timeTest by rememberSaveable {
-            mutableIntStateOf(3)
+            mutableIntStateOf(0)//mac dinh la 2 phut // lay tu
         }
 
         StickHeaderInSetUpScreen(
@@ -168,8 +177,8 @@ fun SetUpBeforeTestScreen(
                                 checked = it
                             },
                             colors = SwitchDefaults.colors(
-                                checkedThumbColor = Color.Black.copy(0.6f),
-                                checkedTrackColor = Color.LightGray
+                                checkedThumbColor = Color.Black.copy(0.5f),
+                                checkedTrackColor = Color.DarkGray.copy(0.2f)
                             )
                         )
                     }
@@ -184,58 +193,62 @@ fun SetUpBeforeTestScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
-                                painter = painterResource(R.drawable.ic_minus),
+                                painter = painterResource(R.drawable.ic_circle_down),
+                                tint = Color.Black,
                                 contentDescription = null,
                                 modifier = Modifier.
                                 clip(CircleShape)
                                     .clickable{
-                                    if(timeTest > 3){
+                                    if(timeTest > 0){
                                         timeTest--
                                     }
                                 }
                             )
-                            Spacer(modifier = Modifier.width(10.dp))
+                            Spacer(modifier = Modifier.width(20.dp))
 
-                            Icon(
-                                Icons.Outlined.Timer,
-                                contentDescription = null,
-                                tint = Color.Red.copy(0.8f)
-                            )
-                            Spacer(modifier = Modifier.width(3.dp))
+                            AnimatedContent(
+                                targetState = timeTest,
+                                transitionSpec = {
+                                    ContentTransform(
+                                        slideInVertically{it} + fadeIn(), slideOutVertically{-it} + fadeOut()
+                                    )
+                                }
+                            ) {indexNumber ->
+                                Text(
+                                    text = Contains.LIST_TIME[indexNumber].toString() + "m",
+                                    fontWeight = FontWeight.Normal
+                                )
+                            }
 
-                            Text(
-                                text = "$timeTest:00", fontWeight = FontWeight.Normal
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
+                            Spacer(modifier = Modifier.width(20.dp))
                             Icon(
-                                painter = painterResource(R.drawable.id_add),
+                                painter = painterResource(R.drawable.ic_circle_up),
+                                tint = Color.Black,
                                 contentDescription = null,
                                 modifier = Modifier.
                                     clip(CircleShape)
                                     .clickable{
-                                    if(timeTest < 20){
+                                    if(timeTest < 18){
                                         timeTest++
                                     }
                                 }
                             )
                         }
-                    Spacer(modifier = Modifier.width(10.dp))
                 }
-                else{
-                    Spacer(modifier = Modifier.height(30.dp))
-                }
-
                 Row (
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Button(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 20.dp),
                         onClick = {
                             if(checked){
                                 //neu truoc do da bat test mode -> click button -> da bat trang that test mode
                                 mainViewModel.turnOnTestMode()
                                 mainViewModel.setTimeDoTest(time = timeTest)
                             }
+
                             scope.launch {
                                 delay(1000)
                                 navController.navigate(HomeNavScreen.TestScreen.route){
@@ -245,12 +258,14 @@ fun SetUpBeforeTestScreen(
                                     launchSingleTop = true
                                 }
                             }
-                        }, shape = RoundedCornerShape(20.dp), colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(R.color.purple_200)
+                        }, shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(R.color.black)
                         )
                     ) {
                         Text(
                             text = "Start now",
+                            color = Color.White,
+                            fontWeight = FontWeight.SemiBold
                         )
                     }
                 }
