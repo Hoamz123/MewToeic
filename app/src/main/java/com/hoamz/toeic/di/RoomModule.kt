@@ -11,13 +11,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object RoomModule{
-
     @Provides
-    @Singleton//dambao instance duoc hilt tai su dung trnog toan bo app
+    @Singleton//dam bao instance duoc hilt tai su dung trnog toan bo app
     //hilt chi tao duy nhat 1 instance cho app
     fun provideActivityRecentDatabase(@ApplicationContext context: Context) : ActivityRecentDatabase{
         return Room.databaseBuilder(
@@ -27,11 +25,9 @@ object RoomModule{
         ).build()
     }
 
-
     @Provides
     @Singleton
     fun provideActRecentDao(activityRecentDatabase: ActivityRecentDatabase) : ActivityRecentDao{
         return activityRecentDatabase.actRecentDao()
     }
-
 }

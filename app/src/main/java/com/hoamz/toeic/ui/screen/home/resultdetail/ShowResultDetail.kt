@@ -47,10 +47,12 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.Question
+import com.hoamz.toeic.ui.screen.home.ExplainAnswerView
 import com.hoamz.toeic.ui.screen.home.showanswer.ShowAnswerViewModel
 import com.hoamz.toeic.ui.screen.home.test.Answer
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
 import com.hoamz.toeic.ui.screen.home.test.ViewQuestion
+import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
 import kotlinx.coroutines.delay
 
 
@@ -74,6 +76,14 @@ fun ShowResultDetail(
     //state cua horizontal page
     val pagerState = rememberPagerState(initialPage = 0) {
        listAnswerOfUser.size
+    }
+
+    var onShowSheet by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var explainContent by rememberSaveable {
+        mutableStateOf("")
     }
 
     LaunchedEffect(Unit) {
@@ -124,7 +134,8 @@ fun ShowResultDetail(
                 }
             ) {
                 //hien thi bottomSheet
-
+                explainContent = listQuestion[pagerState.currentPage].explain
+                onShowSheet = true
             }
 
             Box(
@@ -140,6 +151,16 @@ fun ShowResultDetail(
                     )
                 }
             }
+
+            if(onShowSheet){
+                ExplainAnswerView(
+                    onShowSheet = true,
+                    content = explainContent
+                ) {value->
+                    onShowSheet = value
+                }
+            }
+
         }
     }
 }
@@ -281,7 +302,7 @@ fun TopBarTestScreen(
             Text(
                 text ="Explain",
                 modifier = Modifier
-                    .clickable{
+                    .noRippleClickable{
                         onClickShowHint() },
                 fontWeight = FontWeight.SemiBold
             )

@@ -64,6 +64,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.compose.ui)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.fragment)
     kapt(libs.androidx.hilt.compiler)
@@ -101,10 +102,11 @@ dependencies {
     implementation(libs.coil.compose)
 
 
-    implementation("com.squareup.moshi:moshi:1.15.2")
-    implementation("com.squareup.moshi:moshi-kotlin:1.15.2")
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
 
 
+    implementation(libs.play.services.ads)
 
     // Test
     testImplementation(libs.junit)

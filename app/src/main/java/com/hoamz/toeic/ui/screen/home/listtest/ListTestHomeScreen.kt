@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.hoamz.toeic.base.BannerAdView
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.ActivityRecent
 import com.hoamz.toeic.ui.screen.home.HomeNavScreen
@@ -50,6 +51,7 @@ import com.hoamz.toeic.ui.screen.home.LottieHorizontal
 import com.hoamz.toeic.ui.screen.home.TestCurrent
 import com.hoamz.toeic.ui.screen.home.TopBarHome
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
+import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
 
 
 @Composable
@@ -72,7 +74,7 @@ fun ListTestHomeScreen(
     ) {
         item {
             TopBarHome(
-                username = "hoamz", coin = 100
+                username = "hoamz"
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -84,6 +86,7 @@ fun ListTestHomeScreen(
         item{
             ListTest(onClickCategories = {
                 //mo dialog hien thi list de
+                //no den may nua lam
             }
             ) {index ->
                 mainViewModel.setTestNumber(index + 1)
@@ -101,7 +104,7 @@ fun ListTestHomeScreen(
                 }
                 Text(
                     text = "Recent Activity",
-                    modifier = Modifier.clickable{
+                    modifier = Modifier.noRippleClickable{
                         isShowRecent = !isShowRecent
                         listTestViewModel.controllerStateListCurrent(isShowRecent)
                     },
@@ -138,6 +141,9 @@ fun ListTestHomeScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     repeat(activitiesRecent.size){index->
+                        if(index == 2){
+                            BannerAdView()
+                        }
                         val numberCorrect = activitiesRecent[index].numberAnswerCorrect
                         TestCurrent(nameTest = activitiesRecent[index].nameTest,numberCorrect = numberCorrect,numberQuestion = 30){
                             mainViewModel.passQuestionRecent(activitiesRecent[index].listQuestion)

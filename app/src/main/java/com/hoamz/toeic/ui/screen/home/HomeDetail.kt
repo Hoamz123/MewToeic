@@ -3,6 +3,8 @@ package com.hoamz.toeic.ui.screen.home
 import android.util.Log
 import android.widget.ProgressBar
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -54,6 +56,8 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -64,6 +68,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
@@ -81,7 +86,9 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hoamz.toeic.R
+import com.hoamz.toeic.base.BaseSharePref
 import com.hoamz.toeic.data.local.Question
+import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -90,7 +97,6 @@ import kotlinx.coroutines.launch
 fun TopBarHome(
     modifier: Modifier = Modifier,
     username : String,
-    coin : Int,
 ) {
     Row (
         modifier = Modifier
@@ -125,25 +131,93 @@ fun TopBarHome(
 
         Row (
             modifier = Modifier
-                .size(width = 60.dp, height = 30.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(color = Color.White),
+                .size(width = 35.dp, height = 35.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
-            Icon(
-                Icons.Filled.LocalFireDepartment,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(24.dp)
-                    .padding(start = 5.dp),
-                tint = Color.Red.copy(0.6f)
-            )
-            Text(
-                text = coin.toString(),
-                modifier = Modifier.padding(end = 5.dp)
+            val progressInitialize = BaseSharePref.getProgressSteak()
+            CalculatorProgressSteak(
+                modifier = Modifier.fillMaxSize(),
+                progressInitialize = progressInitialize
             )
         }
+    }
+}
+
+//calculatorProgress
+@Composable
+fun CalculatorProgressSteak(
+    modifier: Modifier = Modifier,
+    progressInitialize : Int,//gia tri mac dinh ban dau khoi tao
+) {
+    var progress by remember {
+        mutableIntStateOf(progressInitialize)
+    }
+
+    //ban dau van dang trong qua trinh tang
+    var onProgressing by remember {
+        mutableStateOf(true)
+    }
+
+    //moi s thi tang them 1
+    LaunchedEffect(Unit) {
+        while(progress < 100 && onProgressing){
+            delay(1000)//on 100s thi + 1 steak
+            progress++
+            BaseSharePref.saveProgressSteak(progress)
+        }
+        //neu nhu da du dieu kien
+        if(progress >= 100){
+            //dung qua trinh tang
+            onProgressing = false
+            //tang them 1 steak
+            BaseSharePref.saveNumberSteak()
+            //de ngay hom nay no khong chay nua(qua hom sau se dc reset lai)
+        }
+    }
+
+    //khoi tao anim
+    val progressCircle by animateFloatAsState(
+        targetValue = progress.toFloat() / 100.toFloat(),
+        animationSpec = tween(
+            easing = LinearOutSlowInEasing
+        )
+    )
+
+    //tao circle progress
+    //loi dung tinh chat de nen nhau cua box de xu ly case nay
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(
+            progress = {1f},//lam nen,
+            modifier = Modifier.fillMaxSize(),
+            color = Color.LightGray,
+            strokeWidth = 4.dp,
+            trackColor = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
+            strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap
+        )
+
+        CircularProgressIndicator(
+            progress = {progressCircle},
+            modifier = Modifier.fillMaxSize()
+                .graphicsLayer{
+                    rotationZ = 180f
+                },
+            color = colorResource(R.color.progressColor),
+            strokeWidth = 4.dp,
+            trackColor = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
+            strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap
+        )
+
+        Icon(
+            Icons.Filled.LocalFireDepartment,
+            contentDescription = null,
+            modifier = modifier
+                .padding(5.dp),
+            tint = Color.Red.copy(0.6f)
+        )
     }
 }
 
@@ -243,9 +317,11 @@ fun ListTest(
             Icon(
                 Icons.Default.ArrowRight,
                 contentDescription = null,
-                modifier = Modifier.clickable{
-                    onClickCategories()
-                },
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable {
+                        onClickCategories()
+                    },
                 tint = Color.LightGray
             )
         }
@@ -281,12 +357,12 @@ fun CardTest(
         Spacer(modifier = Modifier.width(5.dp))
     }
     Card(
+        shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .size(60.dp)
-            .clickable {
+            .noRippleClickable {
                 onClick()
             },
-        shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 3.dp
         )
@@ -294,7 +370,7 @@ fun CardTest(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.White),
+                .background(Color.White),
             contentAlignment = Alignment.Center
         ){
             Text(
@@ -319,7 +395,7 @@ fun TestCurrent(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable {
+            .noRippleClickable {
                 onClick()
             },
         shape = RoundedCornerShape(10.dp),
@@ -327,7 +403,7 @@ fun TestCurrent(
             containerColor = Color.White
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = 3.dp
         ),
     ){
         Row (
@@ -345,7 +421,7 @@ fun TestCurrent(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold
                 )
-                Spacer(modifier = Modifier.width(5.dp))
+                Spacer(modifier = Modifier.height(5.dp))
                 Text(
                     text = "$numberQuestion Question",
                     fontSize = 14.sp,
@@ -372,7 +448,7 @@ fun CircularProgressIndicatorWithText(
 ) {
     val progress = score.toFloat() / total.toFloat()
 
-    val color : Color = if(score <= 5) Color.Red else if(score <= 15) Color.Yellow else Color.Green
+    val color : Color = if(score <= 5) Color.Red else if(score <= 15) colorResource(R.color.progressColor) else Color.Green
 
     Box(
         contentAlignment = Alignment.Center,
@@ -396,7 +472,7 @@ fun CircularProgressIndicatorWithText(
             },
             modifier = Modifier.fillMaxSize(),
             color = color,
-            strokeWidth = strokeWidth,
+            strokeWidth = strokeWidth - 1.dp,
             trackColor = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
             strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap,
         )
@@ -447,24 +523,28 @@ fun ExplainAnswerView(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
-                    modifier = Modifier.size(width = 100.dp, height = 20.dp)
+                    modifier = Modifier
+                        .size(width = 100.dp, height = 20.dp)
                         .clip(RoundedCornerShape(topEnd = 8.dp, topStart = 8.dp))
                         .background(color = Color.DarkGray.copy(0.3f)),
                     contentAlignment = Alignment.Center
                 ){
                     Column(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
                             .padding(start = 5.dp, end = 5.dp),
                         verticalArrangement = Arrangement.Center
                     ) {
                         Box(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .height(2.dp)
                                 .background(color = Color.White.copy(0.5f))
                         )
                         Spacer(modifier = Modifier.height(3.dp))
                         Box(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .height(2.dp)
                                 .background(Color.White.copy(0.5f))
                         )
@@ -472,11 +552,13 @@ fun ExplainAnswerView(
                 }
 
                 Column(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                         .clip(shape = RoundedCornerShape(topEnd = 20.dp, topStart = 20.dp)),
                 ) {
                     Box(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .height(60.dp)
                             .background(color = Color.Magenta.copy(0.6f)),
                         contentAlignment = Alignment.CenterStart
@@ -494,7 +576,8 @@ fun ExplainAnswerView(
                                     onHideSheet(false)
                                 }
                             },
-                            modifier = Modifier.align(Alignment.CenterEnd)
+                            modifier = Modifier
+                                .align(Alignment.CenterEnd)
                                 .padding(end = 10.dp)
                         ) {
                             Icon(
@@ -506,7 +589,8 @@ fun ExplainAnswerView(
 
                     }
                     Column(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
                             .verticalScroll(rememberScrollState())
                             .background(color = Color.White)
                             .padding(start = 10.dp, end = 10.dp, top = 10.dp)

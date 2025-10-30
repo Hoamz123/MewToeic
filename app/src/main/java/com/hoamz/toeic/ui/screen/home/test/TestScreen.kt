@@ -66,6 +66,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -81,6 +82,7 @@ import com.hoamz.toeic.ui.screen.home.ExplainAnswerView
 import com.hoamz.toeic.ui.screen.home.HomeNavScreen
 import com.hoamz.toeic.ui.screen.home.setuptest.StickHeaderInSetUpScreen
 import com.hoamz.toeic.utils.Contains
+import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -404,7 +406,7 @@ fun AnswerChoice(
         modifier = Modifier
             .size(40.dp)
             .clip(CircleShape)
-            .clickable {
+            .noRippleClickable {
                 onClick()
             },
         shape = CircleShape,
@@ -573,7 +575,7 @@ fun TopBarTestScreen(
                 Text(
                     text ="Submit",
                     modifier = Modifier
-                        .clickable{
+                        .noRippleClickable{
                             onClickSubmit(1)//(1) la nop chu dong
                         },
                     fontWeight = FontWeight.SemiBold
@@ -583,7 +585,7 @@ fun TopBarTestScreen(
                 Text(
                     text ="Explain",
                     modifier = Modifier
-                        .clickable{
+                        .noRippleClickable{
                             onClickShowHint()
                         },
                     fontWeight = FontWeight.SemiBold
@@ -614,10 +616,12 @@ fun DialogAskUserQuitOrSubmit(
             onDismissRequest = {
                 isShow = false
                 onClickDismiss()
-            }
+            },
+            properties = DialogProperties(usePlatformDefaultWidth = false)//mo rong het chieu ngang cua dien thoai
         ) {
             Card(
                 modifier = modifier.fillMaxWidth()
+                    .padding(horizontal = 26.dp)
                     .wrapContentHeight(),
                 shape = RoundedCornerShape(12.dp),
                 elevation = CardDefaults.elevatedCardElevation(

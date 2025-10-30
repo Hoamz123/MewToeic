@@ -7,12 +7,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.rounded.ErrorOutline
+import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -167,8 +170,8 @@ fun MainHome(
     val listItemMenu by remember {
         mutableStateOf(listOf(
             ItemBottomNav("Home", HomeNavScreen.ListTestScreen.route,Icons.Outlined.Home),
-            ItemBottomNav("Wrong", HomeNavScreen.WrongScreen.route,Icons.Rounded.ErrorOutline),
-            ItemBottomNav("Vocabulary", HomeNavScreen.Vocabulary.route,Icons.Outlined.Bookmarks)
+            ItemBottomNav("Star", HomeNavScreen.WrongScreen.route,Icons.Rounded.StarOutline),
+            ItemBottomNav("Vocabulary", HomeNavScreen.Vocabulary.route,Icons.Outlined.Analytics)
         ))
     }
 
@@ -207,6 +210,7 @@ fun MainHome(
                     .shadow(elevation = 50.dp)
                     .align(alignment = Alignment.BottomCenter)
                     .background(color = Color.White)
+                    .navigationBarsPadding()
                     .statusBarsPadding(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
