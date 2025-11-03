@@ -33,18 +33,6 @@ class MainActivity : ComponentActivity() {
 
         AddMod.initialize(this)
 
-        //lay ra ngay hom nay
-        val today = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
-
-        //lay ra ngay da luu trong sharePref
-        val daySaved = BaseSharePref.getDay()
-
-        //kiem tra neu khac nhau thi chung to qua ngay moi roi -> reset lai progress
-        if(daySaved != today){
-            BaseSharePref.saveDay(today)
-            BaseSharePref.saveProgressSteak(0)
-        }
-
         setContent {
             ToeicTheme {
                 val navController = rememberNavController()

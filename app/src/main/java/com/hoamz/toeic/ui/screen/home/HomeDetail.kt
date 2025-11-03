@@ -2,6 +2,7 @@ package com.hoamz.toeic.ui.screen.home
 
 import android.util.Log
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -70,6 +71,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -88,6 +90,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hoamz.toeic.R
 import com.hoamz.toeic.base.BaseSharePref
 import com.hoamz.toeic.data.local.Question
+import com.hoamz.toeic.utils.Contains
 import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -124,7 +127,7 @@ fun TopBarHome(
 
             Text(
                 text = username,
-                fontWeight = FontWeight.Light,
+                fontWeight = FontWeight.Normal,
                 fontFamily = FontFamily.Default
             )
         }
@@ -159,6 +162,9 @@ fun CalculatorProgressSteak(
         mutableStateOf(true)
     }
 
+    //kiem tra xem trc do da hoan thanh progress hay chua
+    val finished = BaseSharePref.onFinishedProgress()
+
     //moi s thi tang them 1
     LaunchedEffect(Unit) {
         while(progress < 100 && onProgressing){
@@ -167,11 +173,13 @@ fun CalculatorProgressSteak(
             BaseSharePref.saveProgressSteak(progress)
         }
         //neu nhu da du dieu kien
-        if(progress >= 100){
+        if(progress == 100 && !finished){
             //dung qua trinh tang
             onProgressing = false
             //tang them 1 steak
+            BaseSharePref.finishedProgress()//hoan thanh
             BaseSharePref.saveNumberSteak()
+            progress++
             //de ngay hom nay no khong chay nua(qua hom sau se dc reset lai)
         }
     }
@@ -193,7 +201,7 @@ fun CalculatorProgressSteak(
         CircularProgressIndicator(
             progress = {1f},//lam nen,
             modifier = Modifier.fillMaxSize(),
-            color = Color.LightGray,
+            color = Color.LightGray.copy(0.5f),
             strokeWidth = 4.dp,
             trackColor = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
             strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap
@@ -211,13 +219,22 @@ fun CalculatorProgressSteak(
             strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap
         )
 
-        Icon(
-            Icons.Filled.LocalFireDepartment,
-            contentDescription = null,
+        val context = LocalContext.current
+
+        IconButton(
             modifier = modifier
                 .padding(5.dp),
-            tint = Color.Red.copy(0.6f)
-        )
+            onClick = {
+                val cnt = BaseSharePref.getNumberSteak()
+                Toast.makeText(context,"$cnt", Toast.LENGTH_LONG).show()
+            }
+        ) {
+            Icon(
+                Icons.Filled.LocalFireDepartment,
+                contentDescription = null,
+                tint = Color.Red.copy(0.6f)
+            )
+        }
     }
 }
 
@@ -310,7 +327,7 @@ fun ListTest(
             verticalAlignment = Alignment.CenterVertically
         ){
             Text(
-                text = "Categories",
+                text = Contains.CATEGORIES,
                 fontWeight = FontWeight.Normal
             )
             Spacer(modifier = Modifier.width(8.dp))

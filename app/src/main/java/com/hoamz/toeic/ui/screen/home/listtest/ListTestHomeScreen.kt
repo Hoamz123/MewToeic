@@ -51,6 +51,7 @@ import com.hoamz.toeic.ui.screen.home.LottieHorizontal
 import com.hoamz.toeic.ui.screen.home.TestCurrent
 import com.hoamz.toeic.ui.screen.home.TopBarHome
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
+import com.hoamz.toeic.utils.Contains
 import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
 
 
@@ -74,7 +75,7 @@ fun ListTestHomeScreen(
     ) {
         item {
             TopBarHome(
-                username = "hoamz"
+                username = "username"
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -103,7 +104,7 @@ fun ListTestHomeScreen(
                     mutableStateOf(false)
                 }
                 Text(
-                    text = "Recent Activity",
+                    text = Contains.RECENT,
                     modifier = Modifier.noRippleClickable{
                         isShowRecent = !isShowRecent
                         listTestViewModel.controllerStateListCurrent(isShowRecent)

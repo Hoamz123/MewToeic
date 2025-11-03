@@ -7,19 +7,18 @@ import com.hoamz.toeic.ui.screen.home.test.Answer
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class LoadQuestionRepository @Inject constructor(
-    private val application: Application
+    private val context: Context
 ) {
     private suspend fun loadJsonFronAssets(
         nameFile : String
     ) : String {
         return withContext(Dispatchers.IO) {
-            application.assets.open(nameFile).bufferedReader().use { it.readText() }
+            context.assets.open(nameFile).bufferedReader().use { it.readText() }
         }
     }
 
@@ -27,15 +26,20 @@ class LoadQuestionRepository @Inject constructor(
         nameFile : String
         ) : List<Question>{
         return withContext(Dispatchers.IO){
-            val json = loadJsonFronAssets(nameFile)
-            val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-            val type = Types.newParameterizedType(
-                Map::class.java,
-                String::class.java,
-                Question::class.java)
-            val adapter = moshi.adapter<Map<String, Question>>(type)
-            val mapQuestion : Map<String, Question>? = adapter.fromJson(json)
-            mapQuestion?.values?.toList() ?: emptyList()
+            try{
+                val json = loadJsonFronAssets(nameFile)
+                val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+                val type = Types.newParameterizedType(
+                    Map::class.java,
+                    String::class.java,
+                    Question::class.java)
+                val adapter = moshi.adapter<Map<String, Question>>(type)
+                val mapQuestion : Map<String, Question>? = adapter.fromJson(json)
+                mapQuestion?.values?.toList() ?: emptyList()
+            }
+            catch (_ : Exception){
+                emptyList()
+            }
         }
     }
 

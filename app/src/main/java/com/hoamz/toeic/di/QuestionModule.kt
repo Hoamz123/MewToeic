@@ -1,6 +1,7 @@
 package com.hoamz.toeic.di
 
 import android.app.Application
+import android.content.Context
 import com.hoamz.toeic.data.repository.LoadQuestionRepository
 import dagger.Module
 import dagger.Provides
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 object QuestionModule {
     @Provides
     @Singleton
-    fun provideLoadQuestion(application: Application) : LoadQuestionRepository{
-        return LoadQuestionRepository(application)
+    fun provideLoadQuestion(@ApplicationContext context: Context) : LoadQuestionRepository{
+        return LoadQuestionRepository(context)
     }
 }

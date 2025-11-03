@@ -11,23 +11,28 @@ import java.util.Date
 
 
 object BaseSharePref {
+    //bien khoi tao sau
     private lateinit var sharePref : SharedPreferences
 
+    //khoi tao
     fun initialize(context: Context){
-        sharePref = context.getSharedPreferences("db_local", Context.MODE_PRIVATE)//che do private
+        sharePref = context.getSharedPreferences(Contains.NAME_DB, Context.MODE_PRIVATE)//che do private
     }
 
+    //luu lai progress
     fun saveProgressSteak(progress : Int){
         sharePref.edit {
             putInt(Contains.STEAK_KEY, progress)
         }
     }
 
+    //lay ra progress hien tai
     fun getProgressSteak() : Int {
         return sharePref.getInt(Contains.STEAK_KEY,0)
     }
 
 
+    //lay ra so steak
     fun getNumberSteak() : Int {
        return sharePref.getInt(Contains.NUMBER_STEAK,0)
     }
@@ -41,6 +46,30 @@ object BaseSharePref {
         }
     }
 
+    fun resetNumberSteak(){
+        sharePref.edit {
+            putInt(Contains.NUMBER_STEAK, 0)
+        }
+    }
+
+    //khi luot du x(s) -> dung lai (hoan thanh 1 progress)
+    fun onFinishedProgress() : Boolean{
+        return sharePref.getBoolean(Contains.FINISHED,false)
+    }
+
+    //khi hoan thanh
+    fun finishedProgress(){
+        sharePref.edit{
+            putBoolean(Contains.FINISHED,true)
+        }
+    }
+
+    fun setUpProgress(){
+        sharePref.edit{
+            putBoolean(Contains.FINISHED,false)
+        }
+    }
+
     fun getDay() : Int{
         return sharePref.getInt("Day", Calendar.getInstance().get(Calendar.DAY_OF_YEAR))//mac dinh la ngay hom nay
     }
@@ -49,4 +78,81 @@ object BaseSharePref {
     fun saveDay(day : Int){
         sharePref.edit { putInt("Day", day) }
     }
+
+    //luu lai tab previous de get du lieu khi tu man hinh khac quay lai
+    fun saveTabPrevious(indexTab : Int){
+        val tabName = when(indexTab){
+            0 -> {
+                Contains.ALL
+            }
+            1 -> {
+                Contains.CORRECT
+            }
+            else -> {
+                Contains.WRONG
+            }
+        }
+        sharePref.edit{
+            putString(Contains.TAB,tabName)
+        }
+    }
+
+
+    //lay ra tabName previous
+    fun getTabPrevious() : String {
+        var tab =  sharePref.getString(Contains.TAB,Contains.ALL)
+        if(tab.isNullOrBlank()) tab = Contains.ALL
+        return tab
+    }
+
+    //save trang thai remind
+    fun saveRemind(){
+        sharePref.edit {
+            putBoolean(Contains.STATE_REMIND,true)
+        }
+    }
+
+    //huy trang thai remind
+    fun cancelRemind(){
+        sharePref.edit {
+            putBoolean(Contains.STATE_REMIND,false)
+        }
+    }
+
+    //check nhac nho hay ko
+    fun checkRemind() : Boolean {
+        return sharePref.getBoolean(Contains.STATE_REMIND,false)
+    }
+
+    //luu lai khi bat repeat nhac nho
+    fun saveRepeatRemind(){
+        sharePref.edit{
+            putBoolean(Contains.REPEAT_REMIND,true)
+        }
+    }
+
+    //huy repeat remind
+    fun cancelRepeatRemind(){
+        sharePref.edit{
+            putBoolean(Contains.REPEAT_REMIND,false)
+        }
+    }
+
+    //check co nhac lai nhac nho hay ko
+    fun checkRepeatRemind() : Boolean{
+        return sharePref.getBoolean(Contains.REPEAT_REMIND,false)
+    }
+
+    //luu thoi gian nhac lap lai nhac nho
+    fun savePeriod(time : Long){
+        sharePref.edit{
+            putLong(Contains.TIME_PERIOD,time)
+        }
+    }
+
+    //lay ra thoi gian da dat trc do
+    fun getPeriod() : Long{
+        return sharePref.getLong(Contains.TIME_PERIOD,2 * 1000 * 60)
+    }
+
 }

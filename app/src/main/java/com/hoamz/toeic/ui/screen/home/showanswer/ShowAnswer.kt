@@ -45,6 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.hoamz.toeic.R
 import com.hoamz.toeic.base.BannerAdView
+import com.hoamz.toeic.base.BaseSharePref
+import com.hoamz.toeic.ui.component.TopBar
 import com.hoamz.toeic.ui.screen.home.HomeNavScreen
 import com.hoamz.toeic.ui.screen.home.test.Answer
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
@@ -59,21 +61,21 @@ fun ShowAnswer(
     showAnswerViewModel: ShowAnswerViewModel
 ) {
 
+    val tabName = BaseSharePref.getTabPrevious()
+
     //danh sach chon cua user
     val listAnswerOfUser : List<Answer> by testViewModel.listAnswer.collectAsState()
     //neu nhu list nay trong -> do case tu room lay ra -> nhu binh thuong
 
-    LaunchedEffect(listAnswerOfUser) {
+    LaunchedEffect(Unit) {
         testViewModel.getAllAnswerByCondition()
     }
 
     val listCorrectAnswerOfUser : List<Answer> by testViewModel.listCorrectAnswer.collectAsState()
     val listWrongAnswerOfUser : List<Answer> by testViewModel.listWrongAnswer.collectAsState()
 
-    var listShow by remember {
-        mutableStateOf(listAnswerOfUser)
-    }
 
+    //list tab
     val listTab by rememberSaveable {
         mutableStateOf(listOf(
             "All",
@@ -81,26 +83,27 @@ fun ShowAnswer(
             "Wrong"
         ))
     }
+
+    var listShow by remember {
+        mutableStateOf(
+            value = when(tabName){
+                "All" -> listAnswerOfUser
+                "Correct" -> listCorrectAnswerOfUser
+                "Wrong" -> listWrongAnswerOfUser
+                else -> listAnswerOfUser
+            }
+        )
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 10.dp)
-                .padding(start = 16.dp, end = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+
+        TopBar(
+            nameTab = "Show Answers"
         ) {
-            IconButton(
-                onClick = {
-                    navController.popBackStack()
-                }, modifier = Modifier.clip(CircleShape)
-            ) {
-                Icon(Icons.Default.ArrowBackIos, contentDescription = null)
-            }
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(text = "Show Answers", fontWeight = FontWeight.Normal)
+            navController.popBackStack()
+            BaseSharePref.saveTabPrevious(0)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -125,10 +128,12 @@ fun ShowAnswer(
                     nameTab = listTab[index]
                 ) {
                     indexClicked = index
+                    BaseSharePref.saveTabPrevious(index)
                     listShow = when (index) {
                         0 -> {
                             //ALL
                             listAnswerOfUser
+
                         }
                         1 -> {
                             //correct
@@ -265,10 +270,10 @@ fun Tab(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
+                .background(if (isClicked) Color.White else Color.Transparent)
                 .clickable {
                     onClicked()
-                }
-                .background(if (isClicked) Color.White else Color.Transparent),
+                },
             contentAlignment = Alignment.Center
         ){
             Text(

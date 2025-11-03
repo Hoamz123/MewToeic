@@ -12,11 +12,40 @@ object Contains {
     val LIST_TIME = listOf(
         2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
     )
-
     const val BASE_URL_DictionaryAPI = "https://api.dictionaryapi.dev/api/v2/entries/"
 
     const val STEAK_KEY = "steak_key"
 
     const val NUMBER_STEAK = "number_steak"
 
+    const val ALL = "All"
+    const val CORRECT = "Correct"
+    const val WRONG = "Wrong"
+
+    const val FINISHED = "Finished"
+
+    const val NAME_DB = "db_local"
+
+    const val TAB = "TAB_NAME"
+
+    const val RECENT = "Recent"
+
+    const val CATEGORIES = "Categories"
+
+    const val ON_COMPLETED_TEST = "You have completed the test"
+
+    const val TYPE_TEST = "Fill the Sentence"
+
+    const val GOOD_LUCK = "Wish you luck next time"
+
+    const val STATE_REMIND = "state_remind"
+    const val REPEAT_REMIND = "repeat_remind"
+    const val TIME_PERIOD = "time_Period"
+    val listDropPeriod = listOf(
+        1,2,5,10,15,20,20,20,20,20,20,20,20,20,20,20
+    )
+
+    val listDropNumberWords = listOf(
+        1,5,10,15,20
+    )
 }

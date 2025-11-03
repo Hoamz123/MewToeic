@@ -59,9 +59,11 @@ import com.hoamz.toeic.base.BannerAdView
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.ActivityRecent
 import com.hoamz.toeic.data.local.Question
+import com.hoamz.toeic.ui.component.TopBar
 import com.hoamz.toeic.ui.screen.home.HomeNavScreen
 import com.hoamz.toeic.ui.screen.home.test.Answer
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
+import com.hoamz.toeic.utils.Contains
 
 @Composable
 fun ResultScreen(
@@ -90,25 +92,13 @@ fun ResultScreen(
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 10.dp)
-                .padding(start = 16.dp, end = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+
+        TopBar(
+            nameTab = "Result"
         ) {
-            IconButton(
-                onClick = {
-                    if(checkAds()) AddMod.showAdd()
-                    testViewModel.clearDataAnswer()
-                    navController.popBackStack()
-                }, modifier = Modifier.clip(CircleShape)
-            ) {
-                Icon(Icons.Default.ArrowBackIos, contentDescription = null)
-            }
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(text = "Result", fontWeight = FontWeight.Normal,)
+            if(checkAds()) AddMod.showAdd()
+            testViewModel.clearDataAnswer()
+            navController.popBackStack()
         }
 
         LazyColumn(
@@ -188,7 +178,7 @@ fun ResultScreen(
                                 horizontalArrangement = Arrangement.Center
                             ){
                                 Text(
-                                    text = "You have completed the test",
+                                    text = Contains.ON_COMPLETED_TEST,
                                     fontWeight = FontWeight.SemiBold,
                                     color = Color.Black,
                                     fontSize = 18.sp
@@ -202,7 +192,7 @@ fun ResultScreen(
                                 horizontalArrangement = Arrangement.Center
                             ){
                                 Text(
-                                      text = "Fill the Sentence",
+                                      text = Contains.TYPE_TEST,
                                     fontWeight = FontWeight.SemiBold,
                                     color = Color.Green.copy(0.8f),
                                     fontSize = 16.sp
@@ -216,7 +206,7 @@ fun ResultScreen(
                                 horizontalArrangement = Arrangement.Center
                             ){
                                 Text(
-                                    text = "Wish you luck next time",
+                                    text = Contains.GOOD_LUCK,
                                     color = Color.Black,
                                     fontWeight = FontWeight.Medium,
                                     fontSize = 14.sp
