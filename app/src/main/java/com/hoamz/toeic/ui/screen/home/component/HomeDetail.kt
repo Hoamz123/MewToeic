@@ -1,17 +1,13 @@
-package com.hoamz.toeic.ui.screen.home
+package com.hoamz.toeic.ui.screen.home.component
 
-import android.util.Log
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,12 +17,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -35,14 +29,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.LocalFireDepartment
-import androidx.compose.material.icons.sharp.Favorite
-import androidx.compose.material3.BottomAppBarState
-import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.BottomSheetScaffoldState
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -52,12 +40,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,33 +52,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.airbnb.lottie.compose.LottieAnimatable
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hoamz.toeic.R
 import com.hoamz.toeic.base.BaseSharePref
-import com.hoamz.toeic.data.local.Question
 import com.hoamz.toeic.utils.Contains
 import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -167,13 +145,13 @@ fun CalculatorProgressSteak(
 
     //moi s thi tang them 1
     LaunchedEffect(Unit) {
-        while(progress < 100 && onProgressing){
+        while(progress < 1000 && onProgressing){
             delay(1000)//on 100s thi + 1 steak
             progress++
             BaseSharePref.saveProgressSteak(progress)
         }
         //neu nhu da du dieu kien
-        if(progress == 100 && !finished){
+        if(progress == 1000 && !finished){
             //dung qua trinh tang
             onProgressing = false
             //tang them 1 steak
@@ -186,7 +164,7 @@ fun CalculatorProgressSteak(
 
     //khoi tao anim
     val progressCircle by animateFloatAsState(
-        targetValue = progress.toFloat() / 100.toFloat(),
+        targetValue = progress.toFloat() / 1000.toFloat(),
         animationSpec = tween(
             easing = LinearOutSlowInEasing
         )
@@ -269,8 +247,8 @@ fun LottieHorizontal(
     Card (
         modifier = Modifier
             .fillMaxWidth()
-            .height(130.dp)
-            .padding(10.dp),
+            .height(120.dp)
+            .padding(vertical = 4.dp, horizontal = 10.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -541,7 +519,7 @@ fun ExplainAnswerView(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(width = 100.dp, height = 20.dp)
+                        .size(width = 100.dp, height = 15.dp)
                         .clip(RoundedCornerShape(topEnd = 8.dp, topStart = 8.dp))
                         .background(color = Color.DarkGray.copy(0.3f)),
                     contentAlignment = Alignment.Center

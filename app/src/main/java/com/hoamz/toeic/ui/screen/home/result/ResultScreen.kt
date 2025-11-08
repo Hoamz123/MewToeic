@@ -64,6 +64,8 @@ import com.hoamz.toeic.ui.screen.home.HomeNavScreen
 import com.hoamz.toeic.ui.screen.home.test.Answer
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
 import com.hoamz.toeic.utils.Contains
+import com.hoamz.toeic.utils.ModifierUtils
+import kotlinx.coroutines.delay
 
 @Composable
 fun ResultScreen(
@@ -72,11 +74,34 @@ fun ResultScreen(
     testViewModel: TestViewModel,
     mainViewModel: MainViewModel
 ) {
+
+    //tu selectWords qua day
+    val goToVocabScreen by mainViewModel.navigateToVocab.collectAsState()
+    LaunchedEffect(Unit) {
+        delay(2000)
+        if(goToVocabScreen) navController.popBackStack()
+    }
+
     val listAnswerOfUser : List<Answer> by testViewModel.listAnswer.collectAsState()//da co list cau tra loi cua user
     val numberCorrect = testViewModel.countNumberCorrectAnswer(listAnswerOfUser)//so cau user lam dung
     val listQuestionCurrent : List<Question> by mainViewModel.listQuestion.collectAsState()
     val testNumber by mainViewModel.testNumber.collectAsState()
     val percentCorrect = numberCorrect.toFloat() / 30.toFloat()
+
+
+    var progress by rememberSaveable {
+        mutableIntStateOf(0)
+    }
+
+    LaunchedEffect(Unit) {
+        progress = numberCorrect
+    }
+
+    val animatedProgress by animateIntAsState(
+        targetValue = progress, animationSpec = tween(
+            durationMillis = 2000, easing = LinearOutSlowInEasing
+        )
+    )
 
     //luu lai vao room
     LaunchedEffect(Unit) {
@@ -103,14 +128,13 @@ fun ResultScreen(
 
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(vertical = 5.dp)
         ) {
             //card notification finish
             item {
                 Card (
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp),
+                        .padding(horizontal = 10.dp, vertical = 3.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White
@@ -122,7 +146,7 @@ fun ResultScreen(
                     Row (
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 10.dp),
+                            .padding(vertical = 5.dp),
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ){
@@ -159,16 +183,16 @@ fun ResultScreen(
                             painter = painterResource(emotion),
                             contentDescription = null,
                             modifier = Modifier
-                                .padding(start = 10.dp)
+                                .padding(start = 16.dp)
                                 .clip(CircleShape)
-                                .size(100.dp),
+                                .size(80.dp),
                             contentScale = ContentScale.Crop
                         )
 
                         Column(
                             modifier = Modifier
                                 .padding(8.dp)
-                                .padding(vertical = 10.dp)
+                                .padding(vertical = 5.dp)
                         ) {
 
                             Row (
@@ -181,7 +205,7 @@ fun ResultScreen(
                                     text = Contains.ON_COMPLETED_TEST,
                                     fontWeight = FontWeight.SemiBold,
                                     color = Color.Black,
-                                    fontSize = 18.sp
+                                    fontSize = 16.sp
                                 )
                             }
 
@@ -192,10 +216,10 @@ fun ResultScreen(
                                 horizontalArrangement = Arrangement.Center
                             ){
                                 Text(
-                                      text = Contains.TYPE_TEST,
+                                    text = Contains.TYPE_TEST,
                                     fontWeight = FontWeight.SemiBold,
                                     color = Color.Green.copy(0.8f),
-                                    fontSize = 16.sp
+                                    fontSize = 15.sp
                                 )
                             }
 
@@ -208,7 +232,7 @@ fun ResultScreen(
                                 Text(
                                     text = Contains.GOOD_LUCK,
                                     color = Color.Black,
-                                    fontWeight = FontWeight.Medium,
+                                    fontWeight = FontWeight.Normal,
                                     fontSize = 14.sp
                                 )
                             }
@@ -219,6 +243,9 @@ fun ResultScreen(
 
             //card result
             item{
+
+               ModifierUtils.SpaceHeigh(10.dp)
+
                Card(
                    modifier = Modifier
                        .fillMaxWidth()
@@ -243,81 +270,58 @@ fun ResultScreen(
                     }
                }
            }
-
-
-            //show all answer and vocabulary
-            item {
-                Spacer(modifier = Modifier.height(20.dp))
-                //show all answer
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-
-                    var progress by rememberSaveable {
-                        mutableIntStateOf(0)
-                    }
-
-                    LaunchedEffect(Unit) {
-                        progress = numberCorrect
-                    }
-
-                    val animatedProgress by animateIntAsState(
-                        targetValue = progress, animationSpec = tween(
-                            durationMillis = 2000, easing = LinearOutSlowInEasing
-                        )
-                    )
-                    Button(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        onClick = {
-                            navController.navigate(HomeNavScreen.ShowAnswers.route)
-                        }, shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(
-                            containerColor = if (animatedProgress <= 5) Color.Red else if (animatedProgress <= 15) colorResource(R.color.progressColor) else Color.Green
-                        ), elevation = ButtonDefaults.elevatedButtonElevation(2.dp)
-                    ) {
-                        Text(
-                            text = "See all answer",
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.White
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Button(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp).shadow(
-                                spotColor = colorResource(R.color.bg_btn),
-                                elevation = 2.dp,
-                                shape = RoundedCornerShape(12.dp),
-                                ambientColor = Color.Unspecified
-                            ),
-                        onClick = {
-
-                        },
-                        shape = RoundedCornerShape(12.dp),
-                        elevation = ButtonDefaults.elevatedButtonElevation(0.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(R.color.bg_btn),
-                        )
-                    ) {
-                        Text(
-                            text = "Vocabulary",
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.White
-                        )
-                    }
-                }
-            }
         }
     }
+
     Box (
         modifier = Modifier.fillMaxSize()
             .navigationBarsPadding(),
         contentAlignment = Alignment.BottomCenter
     ){
-        //quang cao o day
-        BannerAdView()
+        Column(
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            Button(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 8.dp),
+                onClick = {
+                    navController.navigate(HomeNavScreen.ShowAnswers.route)
+                }, shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(
+                    containerColor = if (animatedProgress <= 5) Color.Red else if (animatedProgress <= 15) colorResource(R.color.progressColor) else Color.Green
+                ), elevation = ButtonDefaults.elevatedButtonElevation(2.dp)
+            ) {
+                Text(
+                    text = "See all answer",
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White
+                )
+            }
+            Button(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 8.dp),
+                onClick = {
+                    navController.navigate(HomeNavScreen.SelectVocabulary.route)
+                },
+                shape = RoundedCornerShape(12.dp),
+                elevation = ButtonDefaults.elevatedButtonElevation(1.5.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                )
+            ) {
+                Text(
+                    text = "Vocabulary",
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White
+                )
+            }
+            ModifierUtils.SpaceHeigh(5.dp)
+            //quang cao o day
+            BannerAdView()
+        }
     }
 }
 
@@ -359,7 +363,7 @@ fun AnimatedProgressIndicator(
     )
 
     Box(
-        modifier = Modifier.size(150.dp),
+        modifier = Modifier.size(130.dp),
         contentAlignment = Alignment.Center
     ){
         CircularProgressIndicator(

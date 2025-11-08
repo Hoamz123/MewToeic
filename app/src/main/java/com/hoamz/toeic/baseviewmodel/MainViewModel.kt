@@ -3,6 +3,7 @@ package com.hoamz.toeic.baseviewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.hoamz.toeic.data.local.ActivityRecent
 import com.hoamz.toeic.data.local.Question
 import com.hoamz.toeic.data.repository.ActivityRecentRepository
@@ -89,10 +90,23 @@ class MainViewModel @Inject constructor(
             activityRecentRepository.insertNewActRecent(activityRecent)
         }
     }
-
     //get
     val activitiesRecent : StateFlow<List<ActivityRecent>> =
         activityRecentRepository.getAllActivitiesRecent()
         .stateIn(viewModelScope, SharingStarted.Lazily,emptyList())
+
+
+    //xu ly tu 2 man hinh khac navController nhung van muon qua lai lan nhau
+
+    private val _navigateToVocab = MutableStateFlow(false)
+    val navigateToVocab : StateFlow<Boolean> = _navigateToVocab
+
+    fun goVocabScreen() {
+        _navigateToVocab.value = true
+    }
+
+    fun doneNavigating() {
+        _navigateToVocab.value = false
+    }
 
 }

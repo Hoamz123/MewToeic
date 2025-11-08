@@ -1,4 +1,4 @@
-package com.hoamz.toeic.ui.screen.wrongscreen
+package com.hoamz.toeic.ui.screen.starScreen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

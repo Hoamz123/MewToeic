@@ -2,7 +2,6 @@ package com.hoamz.toeic.ui.screen.home.resultdetail
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,10 +27,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -47,7 +44,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.Question
-import com.hoamz.toeic.ui.screen.home.ExplainAnswerView
+import com.hoamz.toeic.ui.screen.home.component.ExplainAnswerView
 import com.hoamz.toeic.ui.screen.home.showanswer.ShowAnswerViewModel
 import com.hoamz.toeic.ui.screen.home.test.Answer
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
@@ -70,7 +67,7 @@ fun ShowResultDetail(
 
     val indexAnswer by showAnswerViewModel.numberClicked.collectAsState()
 
-    //lay ra list cau hoi user vua moi lam
+    //lay ra list cau tra user vua moi lam
     val listAnswerOfUser : List<Answer> by testViewModel.listAnswer.collectAsState()
 
     //state cua horizontal page

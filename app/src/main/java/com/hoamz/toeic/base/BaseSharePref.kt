@@ -1,13 +1,10 @@
 package com.hoamz.toeic.base
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.compose.ui.unit.Constraints
 import com.hoamz.toeic.utils.Contains
 import androidx.core.content.edit
 import java.util.Calendar
-import java.util.Date
 
 
 object BaseSharePref {
@@ -97,7 +94,6 @@ object BaseSharePref {
         }
     }
 
-
     //lay ra tabName previous
     fun getTabPrevious() : String {
         var tab =  sharePref.getString(Contains.TAB,Contains.ALL)
@@ -117,6 +113,12 @@ object BaseSharePref {
         sharePref.edit {
             putBoolean(Contains.STATE_REMIND,false)
         }
+        sharePref.edit{
+            putInt(Contains.WORDS,0)
+        }
+        sharePref.edit{
+            putInt(Contains.TIME_PERIOD,0)
+        }
     }
 
     //check nhac nho hay ko
@@ -124,35 +126,27 @@ object BaseSharePref {
         return sharePref.getBoolean(Contains.STATE_REMIND,false)
     }
 
-    //luu lai khi bat repeat nhac nho
-    fun saveRepeatRemind(){
+    //luu lai khi so luong tu muon nhac nho
+    fun saveNumberWordNeedRemind(cnt : Int){
         sharePref.edit{
-            putBoolean(Contains.REPEAT_REMIND,true)
+            putInt(Contains.WORDS,cnt)
         }
     }
 
-    //huy repeat remind
-    fun cancelRepeatRemind(){
-        sharePref.edit{
-            putBoolean(Contains.REPEAT_REMIND,false)
-        }
-    }
-
-    //check co nhac lai nhac nho hay ko
-    fun checkRepeatRemind() : Boolean{
-        return sharePref.getBoolean(Contains.REPEAT_REMIND,false)
+    //lay ra so luong tu muon nhac nho
+    fun getNumberWordNeedRemind() : Int{
+        return sharePref.getInt(Contains.WORDS,0)
     }
 
     //luu thoi gian nhac lap lai nhac nho
-    fun savePeriod(time : Long){
+    fun savePeriod(time : Int){
         sharePref.edit{
-            putLong(Contains.TIME_PERIOD,time)
+            putInt(Contains.TIME_PERIOD,time)
         }
     }
 
     //lay ra thoi gian da dat trc do
-    fun getPeriod() : Long{
-        return sharePref.getLong(Contains.TIME_PERIOD,2 * 1000 * 60)
+    fun getPeriod() : Int{
+        return sharePref.getInt(Contains.TIME_PERIOD,0)
     }
-
 }

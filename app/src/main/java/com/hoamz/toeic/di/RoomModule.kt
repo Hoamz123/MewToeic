@@ -3,7 +3,9 @@ package com.hoamz.toeic.di
 import android.content.Context
 import androidx.room.Room
 import com.hoamz.toeic.data.ActivityRecentDatabase
+import com.hoamz.toeic.data.WordsDatabase
 import com.hoamz.toeic.data.dao.ActivityRecentDao
+import com.hoamz.toeic.data.dao.WordDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,7 +29,23 @@ object RoomModule{
 
     @Provides
     @Singleton
+    fun provieStoreWords(@ApplicationContext context: Context) : WordsDatabase{
+        return Room.databaseBuilder(
+            context =  context,
+            klass = WordsDatabase::class.java,
+            name = "words_database"
+        ).build()
+    }
+
+    @Provides
+    @Singleton
     fun provideActRecentDao(activityRecentDatabase: ActivityRecentDatabase) : ActivityRecentDao{
         return activityRecentDatabase.actRecentDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAcWordsDao(wordsDatabase: WordsDatabase) : WordDao{
+        return wordsDatabase.acSelectWord()
     }
 }

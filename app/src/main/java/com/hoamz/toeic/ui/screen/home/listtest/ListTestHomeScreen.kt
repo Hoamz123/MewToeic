@@ -5,8 +5,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +14,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
@@ -39,17 +36,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.hoamz.toeic.base.BannerAdView
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.ActivityRecent
 import com.hoamz.toeic.ui.screen.home.HomeNavScreen
-import com.hoamz.toeic.ui.screen.home.ListTest
-import com.hoamz.toeic.ui.screen.home.LottieHorizontal
-import com.hoamz.toeic.ui.screen.home.TestCurrent
-import com.hoamz.toeic.ui.screen.home.TopBarHome
+import com.hoamz.toeic.ui.screen.home.component.ListTest
+import com.hoamz.toeic.ui.screen.home.component.LottieHorizontal
+import com.hoamz.toeic.ui.screen.home.component.TestCurrent
+import com.hoamz.toeic.ui.screen.home.component.TopBarHome
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
 import com.hoamz.toeic.utils.Contains
 import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
@@ -77,7 +73,7 @@ fun ListTestHomeScreen(
             TopBarHome(
                 username = "username"
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(5.dp))
         }
 
         item {
@@ -97,8 +93,9 @@ fun ListTestHomeScreen(
         }
         item {
             Row (
-                modifier = Modifier.fillMaxWidth()
-                    .padding(18.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
             ){
                 var isShowRecent by rememberSaveable {
                     mutableStateOf(false)
@@ -116,10 +113,10 @@ fun ListTestHomeScreen(
                     imageVector = if(isShowRecent) Icons.Default.ArrowDropDown else Icons.Default.ArrowDropUp,
                     modifier = Modifier
                         .clip(CircleShape)
-                        .clickable{
-                        isShowRecent = !isShowRecent
-                        listTestViewModel.controllerStateListCurrent(isShowRecent)
-                    },
+                        .clickable {
+                            isShowRecent = !isShowRecent
+                            listTestViewModel.controllerStateListCurrent(isShowRecent)
+                        },
                     contentDescription = null,
                     tint = Color.LightGray
                 )
@@ -138,7 +135,8 @@ fun ListTestHomeScreen(
                 ) + fadeOut()
             ) {
                 Column (
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(2.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     repeat(activitiesRecent.size){index->
@@ -158,7 +156,8 @@ fun ListTestHomeScreen(
 
         item {
             Box(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .height(100.dp)
                     .padding(bottom = 20.dp),
                 contentAlignment = Alignment.BottomCenter

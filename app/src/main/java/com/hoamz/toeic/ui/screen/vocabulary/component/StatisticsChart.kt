@@ -1,4 +1,4 @@
-package com.hoamz.toeic.ui.screen.vocabulary
+package com.hoamz.toeic.ui.screen.vocabulary.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,30 +19,31 @@ import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.core.common.shader.ShaderProvider
 
 object StatisticsChart {
-    private val RangeProvider = CartesianLayerRangeProvider.fixed(maxY = 100.0)
+    private val RangeProvider = CartesianLayerRangeProvider.Companion.fixed(maxY = 100.0)
     @Composable
-    private fun JetpackComposeElectricCarSales(
+    fun _chartProgressLearnVocab(
         modelProducer: CartesianChartModelProducer,
         modifier: Modifier = Modifier,
     ) {
-        val lineColor = Color.Green
+        val lineColor = Color.Companion.Green
         CartesianChartHost(
             rememberCartesianChart(
                 rememberLineCartesianLayer(
-                    lineProvider =
-                        LineCartesianLayer.LineProvider.series(
-                            LineCartesianLayer.rememberLine(
-                                fill = LineCartesianLayer.LineFill.single(fill(lineColor)),
-                                areaFill =
-                                    LineCartesianLayer.AreaFill.single(
-                                        fill(
-                                            ShaderProvider.verticalGradient(
-                                                arrayOf(lineColor.copy(alpha = 0.6f), Color.Transparent)
-                                            )
+                    lineProvider = LineCartesianLayer.LineProvider.series(
+                        LineCartesianLayer.Companion.rememberLine(
+                            fill = LineCartesianLayer.LineFill.single(fill(lineColor)),
+                            areaFill = LineCartesianLayer.AreaFill.single(
+                                fill(
+                                    ShaderProvider.Companion.verticalGradient(
+                                        arrayOf(
+                                            lineColor.copy(alpha = 0.6f),
+                                            Color.Companion.Transparent
                                         )
-                                    ),
-                            )
-                        ),
+                                    )
+                                )
+                            ),
+                        )
+                    ),
                     rangeProvider = RangeProvider,
                 ),
             ),
@@ -52,17 +53,18 @@ object StatisticsChart {
         )
     }
 
-    private val x = (1..20).toList()
-    private val y = listOf<Number>(0.28, 1.4, 3.1, 5.8,39, 49, 56, 75, 86, 86, 15, 22, 29, 93)
-
     @Composable
-    fun JetpackComposeElectricCarSales(modifier: Modifier = Modifier) {
+    fun ChartProgressLearnVocab(
+        modifier: Modifier = Modifier,
+        x : List<Int>,
+        y : List<Number>
+    ) {
         val modelProducer = remember { CartesianChartModelProducer() }
         LaunchedEffect(Unit) {
             modelProducer.runTransaction {
                 lineSeries { series(x, y) }
             }
         }
-        JetpackComposeElectricCarSales(modelProducer, modifier)
+        _chartProgressLearnVocab(modelProducer, modifier)
     }
 }

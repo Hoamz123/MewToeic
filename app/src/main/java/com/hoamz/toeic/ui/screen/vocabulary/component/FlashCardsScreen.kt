@@ -1,4 +1,4 @@
-package com.hoamz.toeic.ui.screen.vocabulary.flashcards
+package com.hoamz.toeic.ui.screen.vocabulary.component
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ContentTransform
@@ -42,9 +42,9 @@ import androidx.navigation.NavController
 import com.hoamz.toeic.R
 import com.hoamz.toeic.base.BannerAdView
 import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
-import com.hoamz.toeic.ui.screen.vocabulary.FlashCard
-import com.hoamz.toeic.ui.screen.vocabulary.Vocab
-import com.hoamz.toeic.ui.screen.vocabulary.getPhonetic
+import com.hoamz.toeic.ui.screen.vocabulary.screen.FlashCard
+import com.hoamz.toeic.ui.screen.vocabulary.screen.Vocab
+import com.hoamz.toeic.ui.screen.vocabulary.screen.getPhonetic
 import com.hoamz.toeic.utils.ModifierUtils
 
 @Composable

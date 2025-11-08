@@ -1,5 +1,6 @@
 package com.hoamz.toeic.ui.screen.home.showanswer
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,6 +52,7 @@ import com.hoamz.toeic.ui.component.TopBar
 import com.hoamz.toeic.ui.screen.home.HomeNavScreen
 import com.hoamz.toeic.ui.screen.home.test.Answer
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
+import com.hoamz.toeic.utils.DeviceController
 import kotlin.collections.listOf
 
 
@@ -96,7 +99,8 @@ fun ShowAnswer(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
+            .navigationBarsPadding(),
     ) {
 
         TopBar(
@@ -162,6 +166,14 @@ fun ShowAnswer(
                 .padding(10.dp),
         ) {
             items(listShow.size){index ->
+                if(index == 5){
+                    Row (
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        BannerAdView()
+                    }
+                }
                 val checkCorrect by remember{
                     derivedStateOf {
                         listShow[index].indexUserClicked == listShow[index].indexCorrectAnswer
@@ -211,7 +223,7 @@ fun ShowAnswer(
                         repeat(4){i->
                             Card(
                                 modifier = Modifier
-                                    .size(40.dp)
+                                    .size(35.dp)
                                     .clip(CircleShape),
                                 colors = CardDefaults.cardColors(
                                     containerColor = when {
@@ -226,7 +238,7 @@ fun ShowAnswer(
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .size(40.dp)
+                                        .size(35.dp)
                                         .clip(CircleShape),
                                     contentAlignment = Alignment.Center
                                 ){
@@ -243,14 +255,6 @@ fun ShowAnswer(
                     }
                 }
             }
-        }
-        Box (
-            modifier = Modifier.fillMaxSize()
-                .navigationBarsPadding(),
-            contentAlignment = Alignment.BottomCenter
-        ){
-            //quang cao o day
-            BannerAdView()
         }
     }
 }

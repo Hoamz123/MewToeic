@@ -33,6 +33,7 @@ credentialsPlayServicesAuth = "1.5.0"
 googleid = "1.1.1"
 runtimeLivedata = "1.9.4"
 ui = "1.9.4"
+foundation = "1.9.4"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
@@ -100,6 +101,7 @@ okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor",
 # Navigation
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

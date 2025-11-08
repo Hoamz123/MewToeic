@@ -39,13 +39,15 @@ object Contains {
     const val GOOD_LUCK = "Wish you luck next time"
 
     const val STATE_REMIND = "state_remind"
-    const val REPEAT_REMIND = "repeat_remind"
+    const val WORDS = "words"
     const val TIME_PERIOD = "time_Period"
-    val listDropPeriod = listOf(
-        1,2,5,10,15,20,20,20,20,20,20,20,20,20,20,20
+    val listDropPeriod = listOf<Int>(
+        1,2,5,10,15,20
     )
-
-    val listDropNumberWords = listOf(
+    val listDropNumberWords = listOf<Int>(
         1,5,10,15,20
     )
+
+    const val MISS_INFO_REMIND = "Please fill in both fields"
+
 }
