@@ -18,6 +18,8 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -27,7 +29,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -35,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -42,8 +47,10 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.hoamz.toeic.R
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.Question
+import com.hoamz.toeic.data.local.QuestionStar
 import com.hoamz.toeic.ui.screen.home.component.ExplainAnswerView
 import com.hoamz.toeic.ui.screen.home.showanswer.ShowAnswerViewModel
 import com.hoamz.toeic.ui.screen.home.test.Answer
@@ -69,6 +76,20 @@ fun ShowResultDetail(
 
     //lay ra list cau tra user vua moi lam
     val listAnswerOfUser : List<Answer> by testViewModel.listAnswer.collectAsState()
+
+    //lay ra ds cau hoi gan star
+    val listStarQuestion : List<QuestionStar> by mainViewModel.questionStars.collectAsState()
+
+    //chuyen doi list star question ve set<String> de so sanh(do question la PK nen khac biet -> neu cau hoi nao giong -> nos dc danh dau sao
+    val setStarQuestion = remember {
+        mutableStateSetOf<String>()
+    }
+
+    LaunchedEffect(listStarQuestion) {
+        listStarQuestion.forEach { starQs ->
+            setStarQuestion.add(starQs.question)
+        }
+    }
 
     //state cua horizontal page
     val pagerState = rememberPagerState(initialPage = 0) {
@@ -120,20 +141,56 @@ fun ShowResultDetail(
         }
     }
     else {
+
+        //map de luu mp[number] = true/false co danh star hay ko
+        val mapStar = remember {
+            mutableStateMapOf<Int, Boolean>()
+        }
+
+        //setup
+        LaunchedEffect(Unit) {
+            listQuestion.forEachIndexed { index, question ->
+                //neu trong ds star -> danh true
+                if(setStarQuestion.contains(question.question)){
+                    mapStar[index + 1] = true
+                }
+                else mapStar[index + 1] = false
+            }
+        }
+
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
             TopBarTestScreen(
                 numberQuestion = pagerState.currentPage + 1,
+                stateStar = mapStar,
                 onClickBack = {
                     //back ve ShowAnswer
                     navController.popBackStack()
+                },
+                onClickShowHint = {
+                    //hien thi bottomSheet
+                    explainContent = listQuestion[pagerState.currentPage].explain
+                    onShowSheet = true
+                },
+                onSaveStarQuestion = {idxQuestion,save ->
+                    val starQuestion : QuestionStar = QuestionStar(
+                        question =  listQuestion[idxQuestion].question,
+                        A = listQuestion[idxQuestion].A,
+                        B = listQuestion[idxQuestion].B,
+                        C = listQuestion[idxQuestion].C,
+                        D = listQuestion[idxQuestion].D,
+                        answer = listQuestion[idxQuestion].answer,
+                        explain = listQuestion[idxQuestion].explain,
+                    )
+                    if(save){
+                        mainViewModel.insertQuestionStar(questionStar = starQuestion)
+                    }
+                    else{
+                        mainViewModel.deleteQuestionStar(questionStar = starQuestion)
+                    }
                 }
-            ) {
-                //hien thi bottomSheet
-                explainContent = listQuestion[pagerState.currentPage].explain
-                onShowSheet = true
-            }
+            )
 
             Box(
                 modifier = Modifier.fillMaxSize()
@@ -261,9 +318,13 @@ fun ViewDisplayQuestionAndAnswer(
 fun TopBarTestScreen(
     modifier: Modifier = Modifier,
     numberQuestion : Int,
+    stateStar: MutableMap<Int, Boolean>,
     onClickBack :() -> Unit,
     onClickShowHint :() -> Unit,
+    onSaveStarQuestion :(Int, Boolean) -> Unit
 ) {
+    val isStar = stateStar[numberQuestion] ?: false
+
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -290,6 +351,21 @@ fun TopBarTestScreen(
                 text = "Question $numberQuestion",
                 fontWeight = FontWeight.Normal,
             )
+
+            Icon(
+                imageVector = if (!isStar) Icons.Outlined.StarOutline
+                else Icons.Filled.Star,
+                contentDescription = null,
+                tint = if (!isStar) Color.Black.copy(0.5f)
+                else colorResource(R.color.progressColor),
+                modifier = Modifier
+                    .padding(13.dp)
+                    .noRippleClickable {
+                        stateStar[numberQuestion] = !isStar
+                        onSaveStarQuestion(numberQuestion - 1, stateStar[numberQuestion] == true)
+                        //stateStar[numberQuestion] (la mutable thay doi) -> recompose lai UI -> chay lai ham nay -> isStar thay doi
+                    },
+            )
         }
 
         Row (
@@ -301,7 +377,8 @@ fun TopBarTestScreen(
                 modifier = Modifier
                     .noRippleClickable{
                         onClickShowHint() },
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                color = colorResource(R.color.progressColor)
             )
         }
     }

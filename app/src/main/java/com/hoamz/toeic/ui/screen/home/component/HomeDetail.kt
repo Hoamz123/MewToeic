@@ -146,7 +146,7 @@ fun CalculatorProgressSteak(
     //moi s thi tang them 1
     LaunchedEffect(Unit) {
         while(progress < 1000 && onProgressing){
-            delay(1000)//on 100s thi + 1 steak
+            delay(1000)//on 1000s thi + 1 steak
             progress++
             BaseSharePref.saveProgressSteak(progress)
         }

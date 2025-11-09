@@ -282,7 +282,8 @@ fun Tab(
         ){
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
-                text = nameTab
+                text = nameTab,
+                fontWeight = FontWeight.Normal
             )
         }
     }

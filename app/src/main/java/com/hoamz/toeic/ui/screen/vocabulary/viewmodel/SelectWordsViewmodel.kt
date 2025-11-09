@@ -8,6 +8,7 @@ import com.hoamz.toeic.data.local.DataChart
 import com.hoamz.toeic.data.local.Word
 import com.hoamz.toeic.data.repository.WordRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -18,6 +19,11 @@ import javax.inject.Inject
 class SelectWordsViewmodel @Inject constructor(
     private val wordRepository: WordRepository
 ) : ViewModel(){
+
+    //tranh case delay
+    init {
+        freshDataChart()
+    }
 
     //insert new word
     fun insertNewWords(words: List<Word>) {
@@ -39,6 +45,7 @@ class SelectWordsViewmodel @Inject constructor(
             }
         }
     }
+
     //delete words
     fun deleteWords(words: List<Word>){
         if(words.isEmpty()) return
@@ -56,6 +63,18 @@ class SelectWordsViewmodel @Inject constructor(
     val dataChart : StateFlow<List<DataChart>> = wordRepository.getDataChart()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),emptyList())
 
+
+    private val _dataChart = MutableStateFlow<List<DataChart>>(emptyList())
+    val dataForChart : StateFlow<List<DataChart>> = _dataChart
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun freshDataChart() {
+        viewModelScope.launch {
+            wordRepository.getDataChart().collect { list ->
+                _dataChart.value = list
+            }
+        }
+    }
 
     //lay ra ds tu mastered
     val masteredWords : StateFlow<List<Word>> = wordRepository.getMasteredWords()

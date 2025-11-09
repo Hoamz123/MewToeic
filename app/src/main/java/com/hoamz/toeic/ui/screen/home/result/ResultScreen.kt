@@ -75,12 +75,6 @@ fun ResultScreen(
     mainViewModel: MainViewModel
 ) {
 
-    //tu selectWords qua day
-    val goToVocabScreen by mainViewModel.navigateToVocab.collectAsState()
-    LaunchedEffect(Unit) {
-        delay(2000)
-        if(goToVocabScreen) navController.popBackStack()
-    }
 
     val listAnswerOfUser : List<Answer> by testViewModel.listAnswer.collectAsState()//da co list cau tra loi cua user
     val numberCorrect = testViewModel.countNumberCorrectAnswer(listAnswerOfUser)//so cau user lam dung
@@ -285,13 +279,18 @@ fun ResultScreen(
             verticalArrangement = Arrangement.Center
         ) {
 
+            //quang cao o day
+            BannerAdView()
+            ModifierUtils.SpaceHeigh(10.dp)
+
             Button(
                 modifier = Modifier.fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 8.dp),
                 onClick = {
                     navController.navigate(HomeNavScreen.ShowAnswers.route)
-                }, shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(
-                    containerColor = if (animatedProgress <= 5) Color.Red else if (animatedProgress <= 15) colorResource(R.color.progressColor) else Color.Green
+                }, shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = /*if (animatedProgress <= 5) Color.Green else if (animatedProgress <= 15)*/ colorResource(R.color.progressColor) /*else Color.Green*/
                 ), elevation = ButtonDefaults.elevatedButtonElevation(2.dp)
             ) {
                 Text(
@@ -307,10 +306,10 @@ fun ResultScreen(
                     navController.navigate(HomeNavScreen.SelectVocabulary.route)
                 },
                 shape = RoundedCornerShape(12.dp),
-                elevation = ButtonDefaults.elevatedButtonElevation(1.5.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Green,
-                )
+                ),
+                elevation = ButtonDefaults.elevatedButtonElevation(2.dp)
             ) {
                 Text(
                     text = "Vocabulary",
@@ -318,9 +317,6 @@ fun ResultScreen(
                     color = Color.White
                 )
             }
-            ModifierUtils.SpaceHeigh(5.dp)
-            //quang cao o day
-            BannerAdView()
         }
     }
 }

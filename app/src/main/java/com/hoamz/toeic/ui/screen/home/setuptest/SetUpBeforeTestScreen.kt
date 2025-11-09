@@ -250,6 +250,8 @@ fun SetUpBeforeTestScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            BannerAdView()
+            ModifierUtils.SpaceHeigh(10.dp)
 
             Button(
                 modifier = Modifier
@@ -281,10 +283,6 @@ fun SetUpBeforeTestScreen(
                     fontWeight = FontWeight.SemiBold
                 )
             }
-
-            ModifierUtils.SpaceHeigh(10.dp)
-            BannerAdView()
-
         }
     }
 }

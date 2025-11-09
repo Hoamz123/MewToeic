@@ -46,11 +46,11 @@ class TestViewModel @Inject constructor() : ViewModel(){
         _listAnswer.value.forEach { answer ->
             if(answer.indexUserClicked == answer.indexCorrectAnswer){
                 //neu dung
-                _listCorrectAnswer.value = _listCorrectAnswer.value + answer
+                _listCorrectAnswer.value += answer
             }
             else if(answer.indexUserClicked != -1){
                 //sai
-                _listWrongAnswer.value = _listWrongAnswer.value + answer
+                _listWrongAnswer.value += answer
             }
         }
     }
@@ -73,4 +73,5 @@ class TestViewModel @Inject constructor() : ViewModel(){
             }
         }
     }
+    //mp[number] = true/false : cau number da chon hay chua
 }

@@ -90,8 +90,7 @@ fun HomeScreen(
             //cac man hinh chi tiet
             composable(route = HomeNavScreen.SetupScreen.route) {
                 SetUpBeforeTestScreen(
-                    navController = navController,
-                    mainViewModel = mainViewModel
+                    navController = navController, mainViewModel = mainViewModel
                 )
             }
 
@@ -128,7 +127,7 @@ fun HomeScreen(
                 )
             }
             //vocabulary o day
-            composable(route = HomeNavScreen.SelectVocabulary.route){
+            composable(route = HomeNavScreen.SelectVocabulary.route) {
                 SelectVocabScreen(
                     navController = navController,
                     mainViewModel = mainViewModel,
@@ -148,12 +147,13 @@ fun NavGraphBuilder.mainHome(
     mainViewModel: MainViewModel,
     testViewModel: TestViewModel,
     selectWordsViewmodel: SelectWordsViewmodel,
-){
-    navigation(startDestination = HomeNavScreen.ListTestScreen.route,
-        route = "main_home"){
+) {
+    navigation(
+        startDestination = HomeNavScreen.ListTestScreen.route, route = "main_home"
+    ) {
         composable(
             "home"
-        ){
+        ) {
             MainHome(
                 rootNavController = navController,
                 mainViewModel = mainViewModel,
@@ -174,11 +174,17 @@ fun MainHome(
     selectWordsViewmodel: SelectWordsViewmodel,
 ) {
     val listItemMenu by remember {
-        mutableStateOf(listOf(
-            ItemBottomNav("Home", HomeNavScreen.ListTestScreen.route, Icons.Outlined.Home),
-            ItemBottomNav("Star", HomeNavScreen.WrongScreen.route, Icons.Rounded.StarOutline),
-            ItemBottomNav("Vocabulary", HomeNavScreen.Vocabulary.route, Icons.Outlined.Analytics)
-        ))
+        mutableStateOf(
+            listOf(
+                ItemBottomNav("Home", HomeNavScreen.ListTestScreen.route, Icons.Outlined.Home),
+                ItemBottomNav("Star", HomeNavScreen.WrongScreen.route, Icons.Rounded.StarOutline),
+                ItemBottomNav(
+                    "Vocabulary",
+                    HomeNavScreen.Vocabulary.route,
+                    Icons.Outlined.Analytics
+                )
+            )
+        )
     }
 
     val navController = rememberNavController()
@@ -187,21 +193,22 @@ fun MainHome(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-    ){
-        NavHost(navController = navController,
-            startDestination = HomeNavScreen.ListTestScreen.route){
-            composable(route = HomeNavScreen.ListTestScreen.route){
+    ) {
+        NavHost(
+            navController = navController, startDestination = HomeNavScreen.ListTestScreen.route
+        ) {
+            composable(route = HomeNavScreen.ListTestScreen.route) {
                 ListTestHomeScreen(
                     navController = rootNavController,
                     mainViewModel = mainViewModel,
                     testViewModel = testViewModel,
                 )
             }
-            composable(route = HomeNavScreen.WrongScreen.route){
+            composable(route = HomeNavScreen.WrongScreen.route) {
                 WrongScreen()
             }
 
-            composable(route = HomeNavScreen.Vocabulary.route){
+            composable(route = HomeNavScreen.Vocabulary.route) {
                 Vocabulary(
                     selectWordsViewmodel = selectWordsViewmodel
                 )
@@ -210,33 +217,33 @@ fun MainHome(
 
         val navBackStackEntry = navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry.value?.destination?.route
-        Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .shadow(elevation = 50.dp)
-                    .align(alignment = Alignment.BottomCenter)
-                    .background(color = Color.White)
-                    .navigationBarsPadding()
-                    .statusBarsPadding(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                listItemMenu.forEachIndexed { index, nav ->
-                    BottomMenuItem(
-                        modifier = Modifier.weight(1f),
-                        selected = (currentDestination == nav.route),
-                        icon = nav.icon,
-                        text = nav.title,
-                    ) {
-                        navController.navigate(nav.route) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(elevation = 50.dp)
+                .align(alignment = Alignment.BottomCenter)
+                .background(color = Color.White)
+                .navigationBarsPadding()
+                .statusBarsPadding(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            listItemMenu.forEachIndexed { index, nav ->
+                BottomMenuItem(
+                    modifier = Modifier.weight(1f),
+                    selected = (currentDestination == nav.route),
+                    icon = nav.icon,
+                    text = nav.title,
+                ) {
+                    navController.navigate(nav.route) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
                         }
+                        launchSingleTop = true
+                        restoreState = true
                     }
                 }
             }
+        }
     }
 }
 

@@ -44,24 +44,33 @@ class WordRepository @Inject constructor(
 
     //lay ra du lieu de do nen chart
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getDataChart() : Flow<List<DataChart>> =
-         wordDao.getDataForChart()
+    fun getDataChart(): Flow<List<DataChart>> = wordDao.getDataForChart()
             .map { dataCharts ->
                 val today = LocalDate.now()
-                val startDate = today.minusMonths(3)
+                val threeMonthsAgo = today.minusMonths(3)
 
-                val allDates = generateSequence(startDate){date ->
+                // lay ra ngay dau tien ma db nay co du lieu
+                val earliestDate = dataCharts.minOfOrNull {
+                    LocalDate.parse(it.date, DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+                } ?: today
+
+                // startDate = lay ra gia tri bat dau gan nhat so voi thoi diem bayh
+                val startDate = if (earliestDate.isAfter(threeMonthsAgo)) earliestDate else threeMonthsAgo
+
+                // tao list ngay lien tuc
+                val allDates = generateSequence(startDate) { date ->
                     val next = date.plusDays(1)
-                    if(next <= today) next else null
+                    if (next <= today) next else null
                 }.toList()
-                //chuyen list thanh map
-                val mapDb = dataCharts.associateBy { it.date }//it.date lam key trong map
+
+                val mapDb = dataCharts.associateBy { it.date }//[date,{date,cnt}]
 
                 allDates.map { date ->
                     val dateStr = date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
-                    mapDb[dateStr] ?: DataChart(0,dateStr)
+                    mapDb[dateStr] ?: DataChart(0, dateStr)
                 }
             }
+
 
     //lay da ds cac tu da gap roi
     fun getReviewedWords() : Flow<List<Word>>{

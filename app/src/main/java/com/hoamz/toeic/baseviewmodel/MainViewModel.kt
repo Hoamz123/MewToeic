@@ -6,8 +6,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.hoamz.toeic.data.local.ActivityRecent
 import com.hoamz.toeic.data.local.Question
+import com.hoamz.toeic.data.local.QuestionStar
 import com.hoamz.toeic.data.repository.ActivityRecentRepository
 import com.hoamz.toeic.data.repository.LoadQuestionRepository
+import com.hoamz.toeic.data.repository.QuestionStarRepository
 import com.hoamz.toeic.ui.screen.home.test.Answer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val loadQuestionRepository: LoadQuestionRepository,
-    private val activityRecentRepository: ActivityRecentRepository
+    private val activityRecentRepository: ActivityRecentRepository,
+    private val questionStarRepository: QuestionStarRepository
 ) : ViewModel() {
     private val _testNumber = MutableStateFlow(0)
     val testNumber : StateFlow<Int> = _testNumber
@@ -96,17 +99,24 @@ class MainViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Lazily,emptyList())
 
 
-    //xu ly tu 2 man hinh khac navController nhung van muon qua lai lan nhau
-
-    private val _navigateToVocab = MutableStateFlow(false)
-    val navigateToVocab : StateFlow<Boolean> = _navigateToVocab
-
-    fun goVocabScreen() {
-        _navigateToVocab.value = true
+    //method star question
+    //insert
+    fun insertQuestionStar(questionStar: QuestionStar){
+        viewModelScope.launch {
+            questionStarRepository.insertQuestionStar(questionStar)
+        }
     }
 
-    fun doneNavigating() {
-        _navigateToVocab.value = false
+    //del
+    fun deleteQuestionStar(questionStar: QuestionStar){
+        viewModelScope.launch {
+            questionStarRepository.deleteQuestionStar(questionStar)
+        }
     }
+
+    //get
+    val questionStars : StateFlow<List<QuestionStar>> =
+        questionStarRepository.getAllQuestionStar()
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),emptyList())
 
 }

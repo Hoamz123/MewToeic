@@ -3,8 +3,10 @@ package com.hoamz.toeic.di
 import android.content.Context
 import androidx.room.Room
 import com.hoamz.toeic.data.ActivityRecentDatabase
+import com.hoamz.toeic.data.QuestionStarDb
 import com.hoamz.toeic.data.WordsDatabase
 import com.hoamz.toeic.data.dao.ActivityRecentDao
+import com.hoamz.toeic.data.dao.QuestionDao
 import com.hoamz.toeic.data.dao.WordDao
 import dagger.Module
 import dagger.Provides
@@ -47,5 +49,21 @@ object RoomModule{
     @Singleton
     fun provideAcWordsDao(wordsDatabase: WordsDatabase) : WordDao{
         return wordsDatabase.acSelectWord()
+    }
+
+    @Provides
+    @Singleton
+    fun provideQuestionStarDb(@ApplicationContext context: Context) : QuestionStarDb{
+        return Room.databaseBuilder(
+            context = context,
+            klass = QuestionStarDb::class.java,
+            name = "question_star_db"
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideQuestionDao(questionStarDb: QuestionStarDb) : QuestionDao{
+        return questionStarDb.QuestionDao()
     }
 }

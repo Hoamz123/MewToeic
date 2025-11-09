@@ -1,6 +1,7 @@
 package com.hoamz.toeic.ui.screen.vocabulary.screen
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -43,10 +44,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -77,31 +80,25 @@ fun Vocabulary(
     modifier: Modifier = Modifier,
     selectWordsViewmodel: SelectWordsViewmodel
 ) {
-
     //lay ra danh sach thong ke so tu da luu trong 3 thang gan nhat
-    val dataChartIn3Month by selectWordsViewmodel.dataChart.collectAsState()
+    val dataChartIn3Month by selectWordsViewmodel.dataForChart.collectAsState()
 
-    var xChart = mutableListOf<Int>()
-    val yChart = mutableListOf<Number>()
+    //current context
+    val context = LocalContext.current
 
-    //mac dinh
-    LaunchedEffect(Unit) {
-        yChart.add(0)
-        xChart.add(0)
-    }
+    val xChart = remember { mutableStateListOf(0) }
+    val yChart = remember { mutableStateListOf<Number>(1) }
 
     LaunchedEffect(dataChartIn3Month) {
-        dataChartIn3Month.forEach { it ->
+        dataChartIn3Month.forEachIndexed { index, it ->
             yChart.add(it.cnt)
-        }
-        if(yChart.size >= 2){
-            xChart = (1 .. yChart.size).toList() as MutableList<Int>
+            xChart.add(index + 1)
         }
     }
+
 
     //lay ra danh sach tu da luu
     val storedWords by selectWordsViewmodel.wordsStored.collectAsState() //-> so luong tu (ok)
-
 
     //shuffle() -> take(10) phan tu
 
@@ -110,10 +107,6 @@ fun Vocabulary(
 
     //lay ra ds tu trc day user da nhin thay trong My Words roi
     val reviewedWords by selectWordsViewmodel.reviewedWords.collectAsState()
-
-
-    //current context
-    val context = LocalContext.current
 
     //state reminder
     var stateReminder by remember {

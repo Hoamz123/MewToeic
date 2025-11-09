@@ -207,7 +207,7 @@ fun SelectVocabScreen(
                 )
             }
 
-            //MyWords
+            //Practice
             Button(
                 modifier = Modifier.fillMaxWidth()
                     .padding(horizontal = 16.dp)
@@ -217,8 +217,7 @@ fun SelectVocabScreen(
                         end.linkTo(parent.end)
                     },
                 onClick = {
-                    mainViewModel.goVocabScreen()
-                    navController.popBackStack()
+                    //di den man hinh practice
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Green
@@ -227,7 +226,7 @@ fun SelectVocabScreen(
                 elevation = ButtonDefaults.elevatedButtonElevation(3.dp)
             ) {
                 Text(
-                    text = "My Words",
+                    text = "Practice",
                     fontSize = 13.sp,
                     color = Color.White,
                     fontWeight = FontWeight.SemiBold
