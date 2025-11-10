@@ -39,4 +39,12 @@ interface WordDao {
     //lay ra cac tu da gap roi
     @Query("select * from Word where isReviewed = :isReviewed")
     fun getWordsReviewed(isReviewed : Boolean = true) : Flow<List<Word>>
+
+    //set word -> isMastered
+    @Query("update Word set isMastered =:isMastered where id =:id")
+    suspend fun masteredWord(isMastered : Boolean = true,id : Long)
+
+    //set word -> isReviewed
+    @Query("update Word set isReviewed =:isReviewed where id = :id")
+    suspend fun reviewedWord(isReviewed: Boolean = true,id : Long)
 }

@@ -71,7 +71,6 @@ class WordRepository @Inject constructor(
                 }
             }
 
-
     //lay da ds cac tu da gap roi
     fun getReviewedWords() : Flow<List<Word>>{
         return wordDao.getWordsReviewed()
@@ -80,5 +79,15 @@ class WordRepository @Inject constructor(
     //lay ra ds cac tu da master roi
     fun getMasteredWords() : Flow<List<Word>>{
         return wordDao.getWordsMastered()
+    }
+
+    //set word -> isMastered
+    suspend fun masteredWord(id : Long){
+        wordDao.masteredWord(id = id)
+    }
+
+    //set word -> isReviewed
+    suspend fun reviewedWord(id : Long){
+        wordDao.reviewedWord(id = id)
     }
 }

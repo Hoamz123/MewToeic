@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import com.hoamz.toeic.data.local.ActivityRecent
 import com.hoamz.toeic.data.local.Question
 import com.hoamz.toeic.data.local.QuestionStar
+import com.hoamz.toeic.data.local.Word
 import com.hoamz.toeic.data.repository.ActivityRecentRepository
 import com.hoamz.toeic.data.repository.LoadQuestionRepository
 import com.hoamz.toeic.data.repository.QuestionStarRepository
@@ -118,5 +119,4 @@ class MainViewModel @Inject constructor(
     val questionStars : StateFlow<List<QuestionStar>> =
         questionStarRepository.getAllQuestionStar()
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),emptyList())
-
 }

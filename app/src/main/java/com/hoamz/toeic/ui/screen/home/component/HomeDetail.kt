@@ -145,15 +145,15 @@ fun CalculatorProgressSteak(
 
     //moi s thi tang them 1
     LaunchedEffect(Unit) {
-        while(progress < 1000 && onProgressing){
+        while(progress < 600 && onProgressing){
             delay(1000)//on 1000s thi + 1 steak
             progress++
             BaseSharePref.saveProgressSteak(progress)
         }
         //neu nhu da du dieu kien
-        if(progress == 1000 && !finished){
-            //dung qua trinh tang
-            onProgressing = false
+        if(progress == 600 && !finished){
+//            //dung qua trinh tang
+//            onProgressing = false
             //tang them 1 steak
             BaseSharePref.finishedProgress()//hoan thanh
             BaseSharePref.saveNumberSteak()

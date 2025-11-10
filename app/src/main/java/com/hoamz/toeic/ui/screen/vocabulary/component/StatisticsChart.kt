@@ -19,25 +19,25 @@ import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.core.common.shader.ShaderProvider
 
 object StatisticsChart {
-    private val RangeProvider = CartesianLayerRangeProvider.Companion.fixed(maxY = 100.0)
+    private val RangeProvider = CartesianLayerRangeProvider.fixed(maxY = 100.0)
     @Composable
     fun _chartProgressLearnVocab(
         modelProducer: CartesianChartModelProducer,
         modifier: Modifier = Modifier,
     ) {
-        val lineColor = Color.Companion.Green
+        val lineColor = Color.Green
         CartesianChartHost(
             rememberCartesianChart(
                 rememberLineCartesianLayer(
                     lineProvider = LineCartesianLayer.LineProvider.series(
-                        LineCartesianLayer.Companion.rememberLine(
+                        LineCartesianLayer.rememberLine(
                             fill = LineCartesianLayer.LineFill.single(fill(lineColor)),
                             areaFill = LineCartesianLayer.AreaFill.single(
                                 fill(
-                                    ShaderProvider.Companion.verticalGradient(
+                                    ShaderProvider.verticalGradient(
                                         arrayOf(
                                             lineColor.copy(alpha = 0.6f),
-                                            Color.Companion.Transparent
+                                            Color.Transparent
                                         )
                                     )
                                 )

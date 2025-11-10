@@ -9,14 +9,15 @@ data class Vocabulary(
 
 data class Phonetic(
     val text: String?,
-    val audio : String
+    val audio : String?
 )
 
 data class Meaning(
-    val partOfSpeech : String,
-    val definitions : List<Definition>
+    val partOfSpeech : String?,
+    val definitions : List<Definition>?
 )
 
 data class Definition(
-    val definition : String
+    val definition : String?,
+    val example : String?
 )

@@ -54,15 +54,10 @@ class SelectWordsViewmodel @Inject constructor(
         }
     }
 
+    //list cac tu da luu
     val wordsStored : StateFlow<List<Word>> = wordRepository.getAllNewWords()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),emptyList())
     //khi khong con collect nua thi sau 5s -> ngung collect
-
-    //du lieu do nen do thi
-    @RequiresApi(Build.VERSION_CODES.O)
-    val dataChart : StateFlow<List<DataChart>> = wordRepository.getDataChart()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),emptyList())
-
 
     private val _dataChart = MutableStateFlow<List<DataChart>>(emptyList())
     val dataForChart : StateFlow<List<DataChart>> = _dataChart
@@ -83,4 +78,33 @@ class SelectWordsViewmodel @Inject constructor(
     //lay ra ds tu da tung nhin thay trong my words roi
     val reviewedWords : StateFlow<List<Word>> = wordRepository.getReviewedWords()
     .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),emptyList())
+
+    //set word-> mastered
+    fun masteredWord(word: Word){
+        viewModelScope.launch {
+            word.id?.let {
+                wordRepository.masteredWord(word.id)
+            }
+        }
+    }
+    //set word -> reviewed
+    fun reviewedWord(word: Word){
+        viewModelScope.launch {
+            word.id?.let {
+                wordRepository.reviewedWord(word.id)
+            }
+        }
+    }
+
+    //truyen word giua cac man hinh
+    private val _words = MutableStateFlow<List<Word>>(emptyList())
+    val words : StateFlow<List<Word>> = _words//(collect cai nay tai noi nhan)
+
+    //luu lai list word tu A de gui den man hinh B
+    //(goi ham nay o noi can truyen)
+    fun setUpWordsToSend(words : List<Word>){
+        if(words.isNotEmpty()){
+            _words.value = words
+        }
+    }
 }

@@ -48,6 +48,7 @@ import com.hoamz.toeic.ui.screen.home.showanswer.ShowAnswerViewModel
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
 import com.hoamz.toeic.ui.screen.splash.SplashScreen
 import com.hoamz.toeic.ui.screen.home.selectVocab.SelectVocabScreen
+import com.hoamz.toeic.ui.screen.vocabulary.screen.ShowNewWords
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -136,7 +137,14 @@ fun HomeScreen(
             }
 
             //tao ra 1 man hinh practice o day
-
+            //show new words
+            composable(route = HomeNavScreen.ShowNewWords.route){
+                ShowNewWords(
+                    mainViewModel = mainViewModel,
+                    navController = navController,
+                    selectWordsViewmodel = selectWordsViewmodel
+                )
+            }
         }
     }
 }
