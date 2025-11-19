@@ -50,4 +50,10 @@ object Contains {
 
     const val MISS_INFO_REMIND = "Please fill in both fields"
 
+
+    fun cleanWord(word : String) : String{
+        return word.dropLastWhile {
+            !it.isLetter()  // xoa ki tu cuoi cung cho den khi gap chu cai
+        }
+    }
 }

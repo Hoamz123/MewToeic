@@ -8,9 +8,11 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -58,15 +60,20 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavController
 import com.hoamz.toeic.R
 import com.hoamz.toeic.base.BaseSharePref
 import com.hoamz.toeic.data.remote.Vocabulary
+import com.hoamz.toeic.ui.screen.home.HomeNavScreen
+import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.component.StatisticsChart
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
 import com.hoamz.toeic.utils.AppToast
@@ -78,7 +85,9 @@ import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
 @Composable
 fun Vocabulary(
     modifier: Modifier = Modifier,
-    selectWordsViewmodel: SelectWordsViewmodel
+    selectWordsViewmodel: SelectWordsViewmodel,
+    appDictionaryViewModel: AppDictionaryViewModel,
+    navController: NavController
 ) {
     //lay ra danh sach thong ke so tu da luu trong 3 thang gan nhat
     val dataChartIn3Month by selectWordsViewmodel.dataForChart.collectAsState()
@@ -96,17 +105,20 @@ fun Vocabulary(
         }
     }
 
-
     //lay ra danh sach tu da luu
     val storedWords by selectWordsViewmodel.wordsStored.collectAsState() //-> so luong tu (ok)
+
+    LaunchedEffect(storedWords) {
+        selectWordsViewmodel.setUpWordsToSend(storedWords)
+    }
 
     //shuffle() -> take(10) phan tu
 
     //lay ra danh sach tu da hoc master roi
     val masteredWords by selectWordsViewmodel.masteredWords.collectAsState()
 
-    //lay ra ds tu trc day user da nhin thay trong My Words roi
-    val reviewedWords by selectWordsViewmodel.reviewedWords.collectAsState()
+//    //lay ra ds tu trc day user da nhin thay trong My Words roi
+//    val reviewedWords by selectWordsViewmodel.reviewedWords.collectAsState()
 
     //state reminder
     var stateReminder by remember {
@@ -193,15 +205,7 @@ fun Vocabulary(
             Row (
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(1.dp)
-            ){
-                Text(
-                    modifier = Modifier.padding(horizontal = 10.dp),
-                    text = "By day",
-                    fontWeight = FontWeight.Normal,
-                    color = Color.Black,
-                    fontSize = 14.sp
-                )
-            }
+            ){}
 
             Text(
                 modifier = Modifier.padding(horizontal = 10.dp),
@@ -230,7 +234,8 @@ fun Vocabulary(
                     .weight(1f)
                     .padding(vertical = 5.dp),
                 onClick = {
-
+                    selectWordsViewmodel.setUpWordsToSend(storedWords)
+                    navController.navigate(HomeNavScreen.ShowNewWords.route)
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White
@@ -261,7 +266,8 @@ fun Vocabulary(
                     .weight(1f)
                     .padding(vertical = 5.dp),
                 onClick = {
-
+                    selectWordsViewmodel.setUpWordsToSend(masteredWords)
+                    navController.navigate(HomeNavScreen.ShowNewWords.route)
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White
@@ -534,6 +540,11 @@ fun Vocabulary(
             }
         }
 
+        //state shuffle
+        var isShuffle by remember {
+            mutableStateOf(false)
+        }
+
         /*
         filter words to learn
          */
@@ -554,7 +565,7 @@ fun Vocabulary(
                     .weight(1f)
                     .padding(vertical = 5.dp),
                 onClick = {
-
+                    isShuffle = !isShuffle
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(R.color.progressColor)
@@ -585,7 +596,7 @@ fun Vocabulary(
                     .weight(1f)
                     .padding(vertical = 5.dp),
                 onClick = {
-
+                    //next to...
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Green
@@ -593,7 +604,6 @@ fun Vocabulary(
                 elevation = ButtonDefaults.elevatedButtonElevation(3.dp),
                 shape = RoundedCornerShape(12.dp)
             ) {
-
                 Icon(
                     painter = painterResource(R.drawable.ic_brain),
                     contentDescription = null,
@@ -604,10 +614,81 @@ fun Vocabulary(
 
                 Text(
                     modifier = Modifier.padding(horizontal = 10.dp),
-                    text = "Reviewed",
+                    text = "Preview",
                     color = Color.White,
                     fontWeight = FontWeight.Normal
                 )
+            }
+        }
+
+        val vPractice = createRef()
+        AnimatedVisibility(
+            visible = isShuffle,
+            enter = expandVertically( // bung xuống từ trên
+                expandFrom = Alignment.Top
+            ) + fadeIn(),
+            exit = shrinkVertically( // thu lên trên
+                shrinkTowards = Alignment.Top
+            ) + fadeOut(),
+            modifier = Modifier.constrainAs(vPractice){
+                top.linkTo(rowBtnFilterWords.bottom, margin = 10.dp)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                Button(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(vertical = 5.dp),
+                    onClick = {
+
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(R.color.masteredWord)
+                    ),
+                    elevation = ButtonDefaults.elevatedButtonElevation(3.dp),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    ModifierUtils.SpaceWidth(5.dp)
+
+                    Text(
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        text = "FlashCard",
+                        color = Color.Black,
+                        fontWeight = FontWeight.Normal
+                    )
+                }
+
+                ModifierUtils.SpaceWidth(10.dp)
+
+                Button(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(vertical = 5.dp),
+                    onClick = {
+                        //next to...
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(R.color.masteredWord)
+                    ),
+                    elevation = ButtonDefaults.elevatedButtonElevation(3.dp),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    ModifierUtils.SpaceWidth(5.dp)
+                    Text(
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        text = "Quiz",
+                        color = Color.Black,
+                        fontWeight = FontWeight.Normal
+                    )
+                }
             }
         }
     }

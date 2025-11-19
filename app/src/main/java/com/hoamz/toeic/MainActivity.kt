@@ -21,6 +21,7 @@ import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.ui.screen.home.HomeScreen
 import com.hoamz.toeic.ui.screen.home.showanswer.ShowAnswerViewModel
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
+import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
 import com.hoamz.toeic.ui.theme.ToeicTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +33,7 @@ class MainActivity : ComponentActivity() {
     private val testViewModel : TestViewModel by viewModels()
     private val showAnswerViewModel : ShowAnswerViewModel by viewModels()
     private val selectWordsViewmodel : SelectWordsViewmodel by viewModels()
+    private val appDictionaryViewModel : AppDictionaryViewModel by viewModels()
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +52,8 @@ class MainActivity : ComponentActivity() {
                         mainViewModel = mainViewModel,
                         testViewModel = testViewModel,
                         showAnswerViewModel = showAnswerViewModel,
-                        selectWordsViewmodel = selectWordsViewmodel
+                        selectWordsViewmodel = selectWordsViewmodel,
+                        appDictionaryViewModel = appDictionaryViewModel
                     )
                 }
             }

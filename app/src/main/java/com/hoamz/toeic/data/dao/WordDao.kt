@@ -16,7 +16,7 @@ interface WordDao {
     @Delete
     suspend fun deleteWord(word: Word)
     //lay tat ca tu
-    @Query("select distinct * from Word")
+    @Query("select distinct * from Word order by date desc")
     fun getAllNewWords() : Flow<List<Word>>
     @Delete
     suspend fun deleteAllWords(words : List<Word>)
@@ -43,6 +43,10 @@ interface WordDao {
     //set word -> isMastered
     @Query("update Word set isMastered =:isMastered where id =:id")
     suspend fun masteredWord(isMastered : Boolean = true,id : Long)
+
+    //set word -> isMastered
+    @Query("update Word set isMastered =:isMastered where id =:id")
+    suspend fun unMasteredWord(isMastered : Boolean = false,id : Long)
 
     //set word -> isReviewed
     @Query("update Word set isReviewed =:isReviewed where id = :id")

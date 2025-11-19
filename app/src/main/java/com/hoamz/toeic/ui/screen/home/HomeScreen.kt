@@ -15,8 +15,6 @@ import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +32,6 @@ import com.hoamz.toeic.ui.screen.home.result.ResultScreen
 import com.hoamz.toeic.ui.screen.home.setuptest.SetUpBeforeTestScreen
 import com.hoamz.toeic.ui.screen.home.test.TestScreen
 import com.hoamz.toeic.ui.screen.vocabulary.screen.Vocabulary
-import com.hoamz.toeic.ui.screen.starScreen.WrongScreen
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -48,6 +45,9 @@ import com.hoamz.toeic.ui.screen.home.showanswer.ShowAnswerViewModel
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
 import com.hoamz.toeic.ui.screen.splash.SplashScreen
 import com.hoamz.toeic.ui.screen.home.selectVocab.SelectVocabScreen
+import com.hoamz.toeic.ui.screen.questionStar.ExplainStarQuestion
+import com.hoamz.toeic.ui.screen.questionStar.QuestionStarScreen
+import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.screen.ShowNewWords
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
 
@@ -58,7 +58,8 @@ fun HomeScreen(
     mainViewModel: MainViewModel,
     testViewModel: TestViewModel,
     showAnswerViewModel: ShowAnswerViewModel,
-    selectWordsViewmodel: SelectWordsViewmodel
+    selectWordsViewmodel: SelectWordsViewmodel,
+    appDictionaryViewModel : AppDictionaryViewModel
 ) {
     val navController = rememberNavController()
     Box(
@@ -85,7 +86,8 @@ fun HomeScreen(
                 navController = navController,
                 mainViewModel = mainViewModel,
                 testViewModel = testViewModel,
-                selectWordsViewmodel = selectWordsViewmodel
+                selectWordsViewmodel = selectWordsViewmodel,
+                appDictionaryViewModel = appDictionaryViewModel
             )
 
             //cac man hinh chi tiet
@@ -132,7 +134,8 @@ fun HomeScreen(
                 SelectVocabScreen(
                     navController = navController,
                     mainViewModel = mainViewModel,
-                    selectWordsViewmodel = selectWordsViewmodel
+                    selectWordsViewmodel = selectWordsViewmodel,
+                    appDictionaryViewModel = appDictionaryViewModel
                 )
             }
 
@@ -142,7 +145,15 @@ fun HomeScreen(
                 ShowNewWords(
                     mainViewModel = mainViewModel,
                     navController = navController,
-                    selectWordsViewmodel = selectWordsViewmodel
+                    selectWordsViewmodel = selectWordsViewmodel,
+                    appDictionaryViewModel = appDictionaryViewModel
+                )
+            }
+
+            composable(route = "explain"){
+                ExplainStarQuestion(
+                    mainViewModel = mainViewModel,
+                    navController = navController
                 )
             }
         }
@@ -155,6 +166,7 @@ fun NavGraphBuilder.mainHome(
     mainViewModel: MainViewModel,
     testViewModel: TestViewModel,
     selectWordsViewmodel: SelectWordsViewmodel,
+    appDictionaryViewModel: AppDictionaryViewModel
 ) {
     navigation(
         startDestination = HomeNavScreen.ListTestScreen.route, route = "main_home"
@@ -166,7 +178,8 @@ fun NavGraphBuilder.mainHome(
                 rootNavController = navController,
                 mainViewModel = mainViewModel,
                 testViewModel = testViewModel,
-                selectWordsViewmodel = selectWordsViewmodel
+                selectWordsViewmodel = selectWordsViewmodel,
+                appDictionaryViewModel = appDictionaryViewModel
             )
         }
     }
@@ -180,12 +193,13 @@ fun MainHome(
     mainViewModel: MainViewModel,
     testViewModel: TestViewModel,
     selectWordsViewmodel: SelectWordsViewmodel,
+    appDictionaryViewModel: AppDictionaryViewModel
 ) {
     val listItemMenu by remember {
         mutableStateOf(
             listOf(
                 ItemBottomNav("Home", HomeNavScreen.ListTestScreen.route, Icons.Outlined.Home),
-                ItemBottomNav("Star", HomeNavScreen.WrongScreen.route, Icons.Rounded.StarOutline),
+                ItemBottomNav("Star", HomeNavScreen.QuestionStarScreen.route, Icons.Rounded.StarOutline),
                 ItemBottomNav(
                     "Vocabulary",
                     HomeNavScreen.Vocabulary.route,
@@ -212,13 +226,18 @@ fun MainHome(
                     testViewModel = testViewModel,
                 )
             }
-            composable(route = HomeNavScreen.WrongScreen.route) {
-                WrongScreen()
+            composable(route = HomeNavScreen.QuestionStarScreen.route) {
+                QuestionStarScreen(
+                    mainViewModel = mainViewModel,
+                    navController = rootNavController
+                )
             }
 
             composable(route = HomeNavScreen.Vocabulary.route) {
                 Vocabulary(
-                    selectWordsViewmodel = selectWordsViewmodel
+                    selectWordsViewmodel = selectWordsViewmodel,
+                    appDictionaryViewModel = appDictionaryViewModel,
+                    navController = rootNavController
                 )
             }
         }

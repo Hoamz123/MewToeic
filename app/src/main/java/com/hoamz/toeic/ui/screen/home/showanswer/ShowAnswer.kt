@@ -77,6 +77,10 @@ fun ShowAnswer(
     val listCorrectAnswerOfUser : List<Answer> by testViewModel.listCorrectAnswer.collectAsState()
     val listWrongAnswerOfUser : List<Answer> by testViewModel.listWrongAnswer.collectAsState()
 
+    val all = remember(listAnswerOfUser) { listAnswerOfUser }
+    val correct = remember(listCorrectAnswerOfUser) { listCorrectAnswerOfUser }
+    val wrong = remember(listWrongAnswerOfUser) { listWrongAnswerOfUser }
+
 
     //list tab
     val listTab by rememberSaveable {
@@ -90,10 +94,10 @@ fun ShowAnswer(
     var listShow by remember {
         mutableStateOf(
             value = when(tabName){
-                "All" -> listAnswerOfUser
-                "Correct" -> listCorrectAnswerOfUser
-                "Wrong" -> listWrongAnswerOfUser
-                else -> listAnswerOfUser
+                "All" -> all
+                "Correct" -> correct
+                "Wrong" -> wrong
+                else -> all
             }
         )
     }
@@ -136,16 +140,16 @@ fun ShowAnswer(
                     listShow = when (index) {
                         0 -> {
                             //ALL
-                            listAnswerOfUser
+                            all
 
                         }
                         1 -> {
                             //correct
-                            listCorrectAnswerOfUser
+                            correct
                         }
                         else -> {
                             //wrong
-                            listWrongAnswerOfUser
+                            wrong
                         }
                     }
                 }

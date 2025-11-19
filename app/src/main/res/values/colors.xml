@@ -12,5 +12,8 @@
     <color name="bg_btn">#D557E8FA</color>
     <color name="bg_btn1">#FBC02D</color>
     <color name="progressColor">#FF8F00</color>
+    <color name="masteredWord">#FDD835</color>
+
+    <color name="colorBgWord">#B2EBF2</color>
 
 </resources>

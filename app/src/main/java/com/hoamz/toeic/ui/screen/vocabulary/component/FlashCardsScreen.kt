@@ -81,7 +81,7 @@ fun FlashCardsScreen(
             mutableIntStateOf(0)
         }
 
-        val respond = dictionaryViewModel.getDescriptionOfWord(vocabList[index].en).collectAsState()
+//        val respond = dictionaryViewModel.getDescriptionOfWord(vocabList[index].en).collectAsState()
 
 
         ConstraintLayout (
@@ -132,11 +132,7 @@ fun FlashCardsScreen(
                         }
                     }
                 ) { id ->
-                    FlashCard(
-                        modifier = Modifier.fillMaxSize(),
-                        front = vocabList[id].en,
-                        back = getPhonetic(respond.value)
-                    )
+
                 }
             }
 

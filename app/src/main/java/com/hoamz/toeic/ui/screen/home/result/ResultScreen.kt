@@ -243,7 +243,7 @@ fun ResultScreen(
                Card(
                    modifier = Modifier
                        .fillMaxWidth()
-                       .padding(10.dp),
+                       .padding(horizontal = 10.dp, vertical = 3.dp),
                    shape = RoundedCornerShape(10.dp),
                    elevation = CardDefaults.cardElevation(
                        defaultElevation = 3.dp

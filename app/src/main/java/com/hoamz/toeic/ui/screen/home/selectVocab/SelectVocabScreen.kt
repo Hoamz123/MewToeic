@@ -42,8 +42,11 @@ import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.Question
 import com.hoamz.toeic.data.local.Word
 import com.hoamz.toeic.ui.component.TopBar
+import com.hoamz.toeic.ui.screen.home.HomeNavScreen
+import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
 import com.hoamz.toeic.utils.AppToast
+import com.hoamz.toeic.utils.Contains
 import com.hoamz.toeic.utils.ModifierUtils
 import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
 import java.time.LocalDate
@@ -56,6 +59,7 @@ fun SelectVocabScreen(
     navController: NavController,
     mainViewModel: MainViewModel,
     selectWordsViewmodel: SelectWordsViewmodel,
+    appDictionaryViewModel: AppDictionaryViewModel
 ) {
 
     val context = LocalContext.current
@@ -74,6 +78,8 @@ fun SelectVocabScreen(
     var countWords by remember {
         mutableIntStateOf(0)
     }
+
+    val words : MutableList<Word> = mutableListOf()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -177,11 +183,10 @@ fun SelectVocabScreen(
                 onClick = {
                     //gia lap save
                     if(listNewWords.size <= 100 && listNewWords.isNotEmpty()){
-                        val words : MutableList<Word> = mutableListOf()
                         listNewWords.forEach { word ->
                             words.add(
                                 Word(
-                                    word = word,
+                                    word = word.lowercase(),
                                     isMastered = false,
                                     isReviewed = false,
                                     date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
@@ -218,6 +223,9 @@ fun SelectVocabScreen(
                     },
                 onClick = {
                     //di den man hinh practice
+                    selectWordsViewmodel.setUpWordsToSend(words)
+//                    appDictionaryViewModel.setUpDescriptionOfWords(words)
+                    navController.navigate(HomeNavScreen.ShowNewWords.route)
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Green
@@ -243,7 +251,7 @@ fun SelectVocab(
     selectedWords : List<String>,
     onSelectedVocab :(String) -> Unit
 ) {
-    val words = content.split(" ")
+    var words = content.split(" ")
     FlowRow(
         modifier = Modifier.fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp)
@@ -251,8 +259,12 @@ fun SelectVocab(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        words.forEachIndexed {index,word ->
 
+        //loc sach du lieu words
+        words = words.map { Contains.cleanWord(it) }//tao ra ds moi chua ket qua sau khi bien doi
+
+        words.forEachIndexed {index,word ->
+            if(word.isEmpty()) return@forEachIndexed
             val selected = selectedWords.contains(word)
 
             Text(
@@ -292,7 +304,6 @@ fun SelectVocab(
         }
     }
 }
-
 
 fun setUpSentence(question: Question) : String{
     return question.question + " " + question.A + " " + question.B +

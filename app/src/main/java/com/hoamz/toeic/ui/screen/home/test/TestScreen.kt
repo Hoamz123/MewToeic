@@ -570,7 +570,7 @@ fun TopBarTestScreen(
                 else Icons.Filled.Star,
                 contentDescription = null,
                 tint = if (!isStar) Color.Black.copy(0.5f)
-                else colorResource(R.color.progressColor),
+                else colorResource(R.color.masteredWord),
                 modifier = Modifier
                     .padding(13.dp)
                     .noRippleClickable {
@@ -624,7 +624,7 @@ fun TopBarTestScreen(
                             onClickShowHint()
                         },
                     fontWeight = FontWeight.SemiBold,
-                    color = colorResource(R.color.progressColor)
+                    color = colorResource(R.color.masteredWord)
                 )
             }
         }

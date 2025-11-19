@@ -108,6 +108,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private val _starQuestion = MutableStateFlow<QuestionStar?>(null)
+    val starQuestion : StateFlow<QuestionStar?> = _starQuestion
+
+    fun sendQuestionStar(questionStar: QuestionStar){
+        _starQuestion.value = questionStar
+    }
+
+
     //del
     fun deleteQuestionStar(questionStar: QuestionStar){
         viewModelScope.launch {

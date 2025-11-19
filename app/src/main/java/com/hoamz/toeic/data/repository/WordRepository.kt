@@ -86,6 +86,10 @@ class WordRepository @Inject constructor(
         wordDao.masteredWord(id = id)
     }
 
+    suspend fun unMasteredWord(id : Long){
+        wordDao.unMasteredWord(id = id)
+    }
+
     //set word -> isReviewed
     suspend fun reviewedWord(id : Long){
         wordDao.reviewedWord(id = id)

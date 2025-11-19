@@ -2,6 +2,7 @@ package com.hoamz.toeic.ui.screen.vocabulary.viewmodel
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hoamz.toeic.data.local.DataChart
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class SelectWordsViewmodel @Inject constructor(
     private val wordRepository: WordRepository
@@ -84,6 +86,14 @@ class SelectWordsViewmodel @Inject constructor(
         viewModelScope.launch {
             word.id?.let {
                 wordRepository.masteredWord(word.id)
+            }
+        }
+    }
+
+    fun unMasteredWord(word: Word){
+        viewModelScope.launch {
+            word.id?.let {
+                wordRepository.unMasteredWord(word.id)
             }
         }
     }

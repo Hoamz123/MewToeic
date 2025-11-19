@@ -290,9 +290,9 @@ fun ViewDisplayQuestionAndAnswer(
                         shape = CircleShape,
                         border = BorderStroke(width = 1.dp, color = if(index == answer.indexUserClicked || index == answer.indexCorrectAnswer) Color.Transparent else Color.Black),
                         colors = CardDefaults.cardColors(
-                            containerColor = when {
-                                index == answer.indexUserClicked && answer.indexUserClicked != answer.indexCorrectAnswer -> Color.Red.copy(0.8f)
-                                index == answer.indexCorrectAnswer -> Color.Green
+                            containerColor = when (index) {
+                                answer.indexUserClicked if answer.indexUserClicked != answer.indexCorrectAnswer -> Color.Red.copy(0.8f)
+                                answer.indexCorrectAnswer -> Color.Green
                                 else -> Color.White
                             }
                         )
