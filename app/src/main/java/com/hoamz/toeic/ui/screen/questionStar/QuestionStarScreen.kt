@@ -1,5 +1,6 @@
 package com.hoamz.toeic.ui.screen.questionStar
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hoamz.toeic.R
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.QuestionStar
@@ -52,7 +57,8 @@ fun QuestionStarScreen(
 
     val listQuestionStar : List<QuestionStar> by mainViewModel.questionStars.collectAsState()
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
+            .background(color = Color.White.copy(0.8f)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -67,29 +73,49 @@ fun QuestionStarScreen(
             )
         }
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-                .padding(5.dp),
-            contentPadding = PaddingValues(5.dp)
-        ) {
-            items(listQuestionStar.size) {index->
-                ViewQuestionStar(
-                    questionStar = listQuestionStar[index],
-                    mainViewModel = mainViewModel,
-                    onClick = {
-                        // qua man hinh lam bai
-                        mainViewModel.sendQuestionStar(questionStar = listQuestionStar[index])
-                        navController.navigate("explain")
-                    }
+        if(listQuestionStar.isEmpty()){
+            //empty
+            val composition by rememberLottieComposition(
+                spec = LottieCompositionSpec.Asset("empty.json")
+            )
+
+            Box(
+                modifier = Modifier.fillMaxSize()
+                    .padding(10.dp)
+                    .background(color = Color.White.copy(0.8f)),
+                contentAlignment = Alignment.Center
+            ) {
+                LottieAnimation(
+                    composition = composition,
+                    iterations = LottieConstants.IterateForever//lap vo han
                 )
             }
+        }
+        else{
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+                    .padding(5.dp),
+                contentPadding = PaddingValues(5.dp)
+            ) {
+                items(listQuestionStar.size) {index->
+                    ViewQuestionStar(
+                        questionStar = listQuestionStar[index],
+                        mainViewModel = mainViewModel,
+                        onClick = {
+                            // qua man hinh lam bai
+                            mainViewModel.sendQuestionStar(questionStar = listQuestionStar[index])
+                            navController.navigate("explain")
+                        }
+                    )
+                }
 
-            item{
-                Box(
-                    modifier = Modifier.size(10.dp,100.dp)
-                ) { }
+                item{
+                    Box(
+                        modifier = Modifier.size(10.dp,100.dp)
+                    ) { }
+                }
+
             }
-
         }
     }
 }

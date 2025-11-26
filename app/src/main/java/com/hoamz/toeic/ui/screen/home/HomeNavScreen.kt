@@ -12,7 +12,7 @@ private const val SHOW_ALL_ANSWER = "showAnswers"
 private const val SHOW_RESULT_DETAIL = "resultDetail"
 private const val SELECT_VOCAB = "selectVocabulary"
 private const val SHOW_WORDS = "show_words"
-
+private const val WORD_DETAIL = "word_detail"
 
 
 sealed class HomeNavScreen(val route : String){
@@ -26,4 +26,5 @@ sealed class HomeNavScreen(val route : String){
     object ResultDetail : HomeNavScreen(route = SHOW_RESULT_DETAIL)
     object SelectVocabulary : HomeNavScreen(route = SELECT_VOCAB)
     object ShowNewWords : HomeNavScreen(route = SHOW_WORDS)
+    object WordDetail : HomeNavScreen(route = WORD_DETAIL)
 }

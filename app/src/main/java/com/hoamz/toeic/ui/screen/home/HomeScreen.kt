@@ -49,6 +49,7 @@ import com.hoamz.toeic.ui.screen.questionStar.ExplainStarQuestion
 import com.hoamz.toeic.ui.screen.questionStar.QuestionStarScreen
 import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.screen.ShowNewWords
+import com.hoamz.toeic.ui.screen.vocabulary.screen.WordDetail
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -144,6 +145,15 @@ fun HomeScreen(
             composable(route = HomeNavScreen.ShowNewWords.route){
                 ShowNewWords(
                     mainViewModel = mainViewModel,
+                    navController = navController,
+                    selectWordsViewmodel = selectWordsViewmodel,
+                    appDictionaryViewModel = appDictionaryViewModel
+                )
+            }
+
+            //show detail of word
+            composable(route = HomeNavScreen.WordDetail.route) {
+                WordDetail(
                     navController = navController,
                     selectWordsViewmodel = selectWordsViewmodel,
                     appDictionaryViewModel = appDictionaryViewModel

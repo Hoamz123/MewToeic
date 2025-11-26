@@ -1,5 +1,8 @@
 package com.hoamz.toeic.utils
 
+import com.hoamz.toeic.data.remote.Phonetic
+import com.hoamz.toeic.data.remote.VocabularyEntity
+
 object Contains {
     const val ASK_SUBMIT = "Do you want to submit?"
     const val DESCRIPTION_ASK = "You can view the results and answers,\nafter you have submitted the test."
@@ -56,4 +59,19 @@ object Contains {
             !it.isLetter()  // xoa ki tu cuoi cung cho den khi gap chu cai
         }
     }
+
+    val sampleVocabulary = VocabularyEntity(
+        word = "hello",
+        phonetics = listOf(
+            Phonetic(
+                text = "/həˈloʊ/",
+                audio = "https://api.dictionaryapi.dev/media/pronunciations/en/hello-au.mp3"
+            ), Phonetic(
+                text = "/hɛˈloʊ/",
+                audio = "https://api.dictionaryapi.dev/media/pronunciations/en/hello-uk.mp3"
+            )
+        ),
+        partOfSpeech = "interjection",
+        definition = "Used as a greeting or to begin a conversation."
+    )
 }

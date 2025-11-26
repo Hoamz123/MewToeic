@@ -104,6 +104,7 @@ fun ShowAnswer(
 
     Column(
         modifier = Modifier.fillMaxSize()
+            .background(color = Color.White.copy(0.8f))
             .navigationBarsPadding(),
     ) {
 

@@ -105,6 +105,7 @@ fun SetUpBeforeTestScreen(
 
         ConstraintLayout(
             modifier = Modifier.fillMaxWidth()
+                .background(color = Color.White.copy(0.8f))
         ) {
 
             val (cardDes, animLottie, cbTestMode, acSetTime) = createRefs()

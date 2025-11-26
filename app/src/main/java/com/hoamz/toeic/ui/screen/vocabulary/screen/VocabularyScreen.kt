@@ -1,5 +1,6 @@
 package com.hoamz.toeic.ui.screen.vocabulary.screen
 
+import android.content.res.Resources
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -148,6 +149,7 @@ fun Vocabulary(
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
+            .background(color = Color.White.copy(0.8f))
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
@@ -523,7 +525,7 @@ fun Vocabulary(
                 },
                 shape = RoundedCornerShape(10.dp)
             ) {
-                Contains.listDropNumberWords.forEach { it ->
+                Contains.listDropNumberWords.forEach {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()

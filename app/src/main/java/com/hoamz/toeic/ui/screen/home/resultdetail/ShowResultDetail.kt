@@ -120,7 +120,8 @@ fun ShowResultDetail(
 
     if(isShowLoading){
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
+                .background(color = Color.White.copy(0.8f)),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -160,6 +161,7 @@ fun ShowResultDetail(
 
         Column(
             modifier = Modifier.fillMaxSize()
+                .background(color = Color.White.copy(0.8f))
         ) {
             TopBarTestScreen(
                 numberQuestion = pagerState.currentPage + 1,

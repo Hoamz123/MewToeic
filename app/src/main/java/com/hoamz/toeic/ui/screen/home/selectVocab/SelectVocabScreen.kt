@@ -67,6 +67,9 @@ fun SelectVocabScreen(
     //lay ra test cau hoi ma user clicked tu ShowAnswer
     val listQuestion: List<Question> by mainViewModel.listQuestion.collectAsState()
 
+    //ds cac tu user da luu trong room
+    val storedWords by selectWordsViewmodel.wordsStored.collectAsState()
+
     val listNewWords = remember {
         mutableStateListOf<String>()
     }
@@ -83,6 +86,7 @@ fun SelectVocabScreen(
 
     Column(
         modifier = Modifier.fillMaxSize()
+            .background(color = Color.White.copy(0.8f))
             .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -223,8 +227,7 @@ fun SelectVocabScreen(
                     },
                 onClick = {
                     //di den man hinh practice
-                    selectWordsViewmodel.setUpWordsToSend(words)
-//                    appDictionaryViewModel.setUpDescriptionOfWords(words)
+                    selectWordsViewmodel.setUpWordsToSend(storedWords)
                     navController.navigate(HomeNavScreen.ShowNewWords.route)
                 },
                 colors = ButtonDefaults.buttonColors(

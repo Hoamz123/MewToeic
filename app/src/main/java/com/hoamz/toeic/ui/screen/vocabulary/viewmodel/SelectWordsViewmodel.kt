@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -108,7 +109,7 @@ class SelectWordsViewmodel @Inject constructor(
 
     //truyen word giua cac man hinh
     private val _words = MutableStateFlow<List<Word>>(emptyList())
-    val words : StateFlow<List<Word>> = _words//(collect cai nay tai noi nhan)
+    val words = _words.asStateFlow()//(collect cai nay tai noi nhan)
 
     //luu lai list word tu A de gui den man hinh B
     //(goi ham nay o noi can truyen)

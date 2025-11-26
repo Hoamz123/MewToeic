@@ -16,7 +16,8 @@ interface WordDao {
     @Delete
     suspend fun deleteWord(word: Word)
     //lay tat ca tu
-    @Query("select distinct * from Word order by date desc")
+    @Query("select distinct * from Word order by date desc,id DESC")//dung them id de sort
+    //minh muon sort tu moi nhat se o tren dua,ma date dang yyyy/MM/dd nen neu tu cung ngay thi se ko sort theo y muon dc
     fun getAllNewWords() : Flow<List<Word>>
     @Delete
     suspend fun deleteAllWords(words : List<Word>)
