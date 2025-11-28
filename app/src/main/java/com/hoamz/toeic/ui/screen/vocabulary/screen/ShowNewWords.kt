@@ -56,6 +56,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -70,13 +71,19 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hoamz.toeic.R
 import com.hoamz.toeic.base.BannerAdView
 import com.hoamz.toeic.baseviewmodel.MainViewModel
+import com.hoamz.toeic.data.local.VocabularyEntity
 import com.hoamz.toeic.data.local.Word
+import com.hoamz.toeic.ui.component.TopBar
 import com.hoamz.toeic.ui.screen.home.HomeNavScreen
 import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
+import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.VocabularyViewModel
 import com.hoamz.toeic.utils.Contains
 import com.hoamz.toeic.utils.CustomIcon
+import com.hoamz.toeic.utils.ModifierUtils
 import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
+import com.hoamz.toeic.utils.PlayAudio
+import kotlinx.coroutines.time.delay
 
 @Composable
 fun ShowNewWords(
@@ -84,11 +91,15 @@ fun ShowNewWords(
     mainViewModel: MainViewModel,
     navController: NavController,
     selectWordsViewmodel: SelectWordsViewmodel,
-    appDictionaryViewModel: AppDictionaryViewModel
+    appDictionaryViewModel: AppDictionaryViewModel,
+    vocabularyViewModel: VocabularyViewModel
 ) {
     //words truyen qua man hinh nay se dc nhan tai day
-    val words: List<Word> by selectWordsViewmodel.words.collectAsState()
+//    val words: List<Word> by selectWordsViewmodel.words.collectAsState()
     //keyboard controller
+
+    val vocabs : List<VocabularyEntity> by vocabularyViewModel.vocabs.collectAsState()
+
     val localKeyboard = LocalSoftwareKeyboardController.current
 
     var content by remember {
@@ -96,33 +107,50 @@ fun ShowNewWords(
     }
 
     var filteredListWord by rememberSaveable {
-        mutableStateOf(words)
+        mutableStateOf(vocabs)
     }
 
     LaunchedEffect(content) {
-        val tmp: MutableList<Word> = mutableListOf()
-        words.forEach { word ->
-            if (word.word.contains(content)) {
-                tmp += word
+        val tmp: MutableList<VocabularyEntity> = mutableListOf()
+        vocabs.forEach { vocab ->
+            if (vocab.word.contains(content)) {
+                tmp += vocab
             }
         }
         filteredListWord = tmp
     }
 
-    if (words.isEmpty()) {
+    if (vocabs.isEmpty()) {
         //no data
-        val composition by rememberLottieComposition(
-            spec = LottieCompositionSpec.Asset("empty.json")
-        )
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.White.copy(0.8f)),
-            contentAlignment = Alignment.Center
+                .background(color = Color.White.copy(0.8f))
+                .navigationBarsPadding(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LottieAnimation(
-                composition = composition, iterations = LottieConstants.IterateForever
+            TopBar(
+                nameTab = "Vocabulary"
+            ) {
+                navController.popBackStack()
+            }
+
+            ModifierUtils.SpaceHeigh(10.dp)
+
+            val composition by rememberLottieComposition(
+                spec = LottieCompositionSpec.Asset("empty.json")
             )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color.White.copy(0.8f)),
+                contentAlignment = Alignment.Center
+            ) {
+                LottieAnimation(
+                    composition = composition, iterations = LottieConstants.IterateForever
+                )
+            }
         }
     } else {
         Column(
@@ -255,14 +283,15 @@ fun ShowNewWords(
                     contentPadding = PaddingValues(vertical = 5.dp)
                 ) {
                     items(filteredListWord.size) { index ->
-                        AWord(_word = filteredListWord[index],
+                        AWord(vocabularyEntity = filteredListWord[index],
                             onClickMastered = { isMastered ->
                             if (isMastered) {
-                                //selectWordsViewmodel.masteredWord(filteredListWord[index])
+                                vocabularyViewModel.masteredVocab(filteredListWord[index])
                             } else {
-                                //selectWordsViewmodel.unMasteredWord(filteredListWord[index])
+                                vocabularyViewModel.unMasteredVocab(filteredListWord[index])
                             }
                         }, onClickedWord = {
+                            //qua man hinh detail
                             //appDictionaryViewModel.setUpDescriptionOfWords(filteredListWord[index])
                             //navController.navigate(HomeNavScreen.WordDetail.route)
                         })
@@ -276,12 +305,13 @@ fun ShowNewWords(
 @Composable
 fun AWord(
     modifier: Modifier = Modifier,
-    _word: Word,
+    vocabularyEntity: VocabularyEntity,
     onClickMastered: (isMastered: Boolean) -> Unit,
     onClickedWord: () -> Unit
 ) {
+    val context = LocalContext.current
     var mastered by rememberSaveable {
-        mutableStateOf(_word.isMastered)
+        mutableStateOf(vocabularyEntity.isMastered)
     }
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -302,7 +332,7 @@ fun AWord(
         ) {
             val (word, star,audio1,audio2,text1,text2,partOfSpeech,definition) = createRefs()
             Text(
-                text = Contains.sampleVocabulary.word,
+                text = vocabularyEntity.word,
                 modifier = Modifier.constrainAs(word) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start, margin = 10.dp)
@@ -329,8 +359,9 @@ fun AWord(
 
             //cai nay neu co data thi moi hien
             Card(
-                modifier = Modifier.wrapContentSize()
-                    .constrainAs(partOfSpeech){
+                modifier = Modifier
+                    .wrapContentSize()
+                    .constrainAs(partOfSpeech) {
                         top.linkTo(parent.top)
                         end.linkTo(parent.end, margin = 10.dp)
                     },
@@ -342,7 +373,7 @@ fun AWord(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp),
-                    text = Contains.sampleVocabulary.partOfSpeech,
+                    text = vocabularyEntity.partOfSpeech,
                     fontWeight = FontWeight.Normal,
                     color = Color.White
                 )
@@ -359,7 +390,9 @@ fun AWord(
                 imageVector = Icons.Default.VolumeUp,
                 imageVectorClicked = Icons.Default.VolumeUp
             ) {
-
+                if(vocabularyEntity.phonetics.isNotEmpty()){
+                    PlayAudio.playAudio(vocabularyEntity.phonetics[0].audio.toString(),context)
+                }
             }
 
             Text(
@@ -368,7 +401,9 @@ fun AWord(
                     top.linkTo(audio1.top)
                     bottom.linkTo(audio1.bottom)
                 },
-                text = Contains.sampleVocabulary.phonetics[0].text.toString(),
+                text = if(vocabularyEntity.phonetics.isNotEmpty()){
+                    vocabularyEntity.phonetics[0].text ?: "  "
+                }else "  ",
                 fontWeight = FontWeight.Normal,
                 color = Color.Black
             )
@@ -385,6 +420,9 @@ fun AWord(
                 imageVectorClicked = Icons.Default.VolumeUp
             ) {
                 //audio 2
+                if(vocabularyEntity.phonetics.size > 1){
+                    PlayAudio.playAudio(vocabularyEntity.phonetics[1].audio.toString(),context)
+                }
             }
 
             Text(
@@ -393,19 +431,23 @@ fun AWord(
                     top.linkTo(audio2.top)
                     bottom.linkTo(audio2.bottom)
                 },
-                text = Contains.sampleVocabulary.phonetics[0].text.toString(),
+                text = if(vocabularyEntity.phonetics.size > 1){
+                    vocabularyEntity.phonetics[1].text ?: "  "
+                }else "  ",
                 fontWeight = FontWeight.Normal,
                 color = Color.Black
             )
 
             //definition
             Text(
-                modifier = Modifier.constrainAs(definition){
-                    top.linkTo(audio1.bottom, margin = 6.dp)
-                    start.linkTo(parent.start, margin = 10.dp)
-                    bottom.linkTo(parent.bottom)
-                }.padding(5.dp),
-                text = Contains.sampleVocabulary.definition,
+                modifier = Modifier
+                    .constrainAs(definition) {
+                        top.linkTo(audio1.bottom, margin = 6.dp)
+                        start.linkTo(parent.start, margin = 10.dp)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .padding(5.dp),
+                text = vocabularyEntity.definition,
                 fontWeight = FontWeight.Normal,
                 color = Color.Black
             )

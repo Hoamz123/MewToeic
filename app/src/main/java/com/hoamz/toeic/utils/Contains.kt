@@ -1,7 +1,7 @@
 package com.hoamz.toeic.utils
 
+import com.hoamz.toeic.data.local.VocabularyEntity
 import com.hoamz.toeic.data.remote.Phonetic
-import com.hoamz.toeic.data.remote.VocabularyEntity
 
 object Contains {
     const val ASK_SUBMIT = "Do you want to submit?"
@@ -44,6 +44,7 @@ object Contains {
     const val STATE_REMIND = "state_remind"
     const val WORDS = "words"
     const val TIME_PERIOD = "time_Period"
+    const val INDEX_QUESTION_SELECTING = "index_question_selecting"
     val listDropPeriod = listOf<Int>(
         1,2,5,10,15,20
     )
@@ -52,6 +53,9 @@ object Contains {
     )
 
     const val MISS_INFO_REMIND = "Please fill in both fields"
+
+    const val TITLE_DEL_Q_STAR = "Are you sure you want to unstar this question?"
+    const val MSG_DEL_Q_STAR = "Remove it from your starred list?"
 
 
     fun cleanWord(word : String) : String{

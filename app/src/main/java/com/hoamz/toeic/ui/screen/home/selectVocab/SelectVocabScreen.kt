@@ -1,7 +1,5 @@
 package com.hoamz.toeic.ui.screen.home.selectVocab
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -38,28 +36,29 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import com.hoamz.toeic.base.BaseSharePref
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.Question
+import com.hoamz.toeic.data.local.VocabularyEntity
 import com.hoamz.toeic.data.local.Word
 import com.hoamz.toeic.ui.component.TopBar
 import com.hoamz.toeic.ui.screen.home.HomeNavScreen
 import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
+import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.VocabularyViewModel
 import com.hoamz.toeic.utils.AppToast
 import com.hoamz.toeic.utils.Contains
 import com.hoamz.toeic.utils.ModifierUtils
 import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun SelectVocabScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     mainViewModel: MainViewModel,
-    selectWordsViewmodel: SelectWordsViewmodel,
-    appDictionaryViewModel: AppDictionaryViewModel
+    appDictionaryViewModel: AppDictionaryViewModel,
+    vocabularyViewModel: VocabularyViewModel
 ) {
 
     val context = LocalContext.current
@@ -68,21 +67,19 @@ fun SelectVocabScreen(
     val listQuestion: List<Question> by mainViewModel.listQuestion.collectAsState()
 
     //ds cac tu user da luu trong room
-    val storedWords by selectWordsViewmodel.wordsStored.collectAsState()
+    val storedWords by vocabularyViewModel.vocabsStored.collectAsState()
 
     val listNewWords = remember {
         mutableStateListOf<String>()
     }
 
     var indexQ by remember {
-        mutableIntStateOf(0)
+        mutableIntStateOf(BaseSharePref.getIndexQuestionSelecting())
     }
 
     var countWords by remember {
         mutableIntStateOf(0)
     }
-
-    val words : MutableList<Word> = mutableListOf()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -93,6 +90,7 @@ fun SelectVocabScreen(
         TopBar(
             nameTab = "Save New Words"
         ) {
+            BaseSharePref.saveIndexQuestionSelecting(0)//reset
             navController.popBackStack()
         }
 
@@ -116,7 +114,8 @@ fun SelectVocabScreen(
                     width = Dimension.fillToConstraints
                 },
                 content = setUpSentence(listQuestion[indexQ]),
-                selectedWords = listNewWords
+                selectedWords = listNewWords,
+                vocabStored = storedWords,
             ) {word ->
                 listNewWords.add(word)
             }
@@ -136,6 +135,7 @@ fun SelectVocabScreen(
                     modifier = Modifier.weight(1f),
                     onClick = {
                         if(indexQ > 0) indexQ--
+                        BaseSharePref.saveIndexQuestionSelecting(indexQ)
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.White
@@ -158,7 +158,12 @@ fun SelectVocabScreen(
                             AppToast.showToast(context,"Please save")
                         }
                         if(countWords == listNewWords.size){
-                            if(indexQ < listQuestion.size - 1) indexQ++
+                            //neu da luu roi -> reset listNewWords
+                            listNewWords.clear()
+                            if(indexQ < listQuestion.size - 1) {
+                                indexQ++
+                                BaseSharePref.saveIndexQuestionSelecting(indexQ)
+                            }
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -187,17 +192,7 @@ fun SelectVocabScreen(
                 onClick = {
                     //gia lap save
                     if(listNewWords.size <= 100 && listNewWords.isNotEmpty()){
-                        listNewWords.forEach { word ->
-                            words.add(
-                                Word(
-                                    word = word.lowercase(),
-                                    isMastered = false,
-                                    isReviewed = false,
-                                    date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
-                                )
-                            )
-                        }
-                        selectWordsViewmodel.insertNewWords(words)
+                        appDictionaryViewModel.insertNewVocabs(listNewWords)
                         AppToast.showToast(context,"Vocabulary saved!")
                     }
                     countWords = listNewWords.size
@@ -227,7 +222,7 @@ fun SelectVocabScreen(
                     },
                 onClick = {
                     //di den man hinh practice
-                    selectWordsViewmodel.setUpWordsToSend(storedWords)
+                    vocabularyViewModel.setUpVocabsToSend(vocabs = storedWords)
                     navController.navigate(HomeNavScreen.ShowNewWords.route)
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -252,7 +247,8 @@ fun SelectVocab(
     modifier: Modifier = Modifier,
     content : String,
     selectedWords : List<String>,
-    onSelectedVocab :(String) -> Unit
+    vocabStored : List<VocabularyEntity>,
+    onSelectedVocab :(String) -> Unit,
 ) {
     var words = content.split(" ")
     FlowRow(
@@ -262,14 +258,12 @@ fun SelectVocab(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-
         //loc sach du lieu words
         words = words.map { Contains.cleanWord(it) }//tao ra ds moi chua ket qua sau khi bien doi
 
         words.forEachIndexed {index,word ->
             if(word.isEmpty()) return@forEachIndexed
-            val selected = selectedWords.contains(word)
-
+            val selected = selectedWords.contains(word) || (vocabStored.any { it.word == word })
             Text(
                 text = word,
                 fontSize = 14.sp,

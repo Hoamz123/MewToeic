@@ -30,11 +30,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -43,7 +41,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hoamz.toeic.R
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.QuestionStar
-import com.hoamz.toeic.ui.screen.questionStar.component.AskDialog
+import com.hoamz.toeic.ui.screen.questionStar.component.CustomDialog
+import com.hoamz.toeic.utils.Contains
 import com.hoamz.toeic.utils.CustomIcon
 import com.hoamz.toeic.utils.ModifierUtils
 import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
@@ -92,9 +91,9 @@ fun QuestionStarScreen(
             }
         }
         else{
+
             LazyColumn(
-                modifier = Modifier.fillMaxSize()
-                    .padding(5.dp),
+                modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(5.dp)
             ) {
                 items(listQuestionStar.size) {index->
@@ -108,7 +107,6 @@ fun QuestionStarScreen(
                         }
                     )
                 }
-
                 item{
                     Box(
                         modifier = Modifier.size(10.dp,100.dp)
@@ -125,8 +123,9 @@ fun ViewQuestionStar(
     modifier: Modifier = Modifier,
     questionStar: QuestionStar,
     mainViewModel: MainViewModel,
-    onClick :() -> Unit,
+    onClick :() -> Unit
 ) {
+
     var isShowDialog by remember {
         mutableStateOf(false)
     }
@@ -190,13 +189,25 @@ fun ViewQuestionStar(
             }
         }
 
-        if(isShowDialog){
-            AskDialog(questionStar = questionStar,
-                mainViewModel = mainViewModel) {
+        //user da click vao star trong man hinh chi chua nhung cau hoi da dc danh dau -> huy star
+        CustomDialog(
+            isShow = isShowDialog,
+            title = Contains.TITLE_DEL_Q_STAR,
+            message = Contains.MSG_DEL_Q_STAR,
+            no = "Cancel",
+            yes = "Delete",
+            onDismiss = {
+                isShowDialog = false
+            },
+            onClickedYes = {
+                mainViewModel.deleteQuestionStar(questionStar)
                 isShowDialog = false
             }
+        ){
+            //click no
+            isShowDialog = false
+            //an dialog
         }
-
     }
 }
 

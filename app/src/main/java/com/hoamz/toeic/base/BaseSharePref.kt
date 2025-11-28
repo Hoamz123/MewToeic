@@ -149,4 +149,14 @@ object BaseSharePref {
     fun getPeriod() : Int{
         return sharePref.getInt(Contains.TIME_PERIOD,0)
     }
+
+    //luu lai index cau hoi ma user dang chon tu
+    fun saveIndexQuestionSelecting(index : Int){
+        sharePref.edit {
+            putInt(Contains.INDEX_QUESTION_SELECTING,index)
+        }
+    }
+    //lay ra index cau hoi ma user dang chon tu
+    fun getIndexQuestionSelecting() = sharePref.getInt(Contains.INDEX_QUESTION_SELECTING,0)
+
 }

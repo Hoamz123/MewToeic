@@ -7,7 +7,7 @@ import android.media.MediaPlayer
 object PlayAudio {
     fun playAudio(url : String,context: Context){
         if(url.isEmpty()) return
-        val mediaPlayer = MediaPlayer()
+        val mediaPlayer = MediaPlayer()//khoi tao mediaPlayer
         try{
             mediaPlayer.setAudioAttributes(
                 AudioAttributes.Builder()
@@ -19,7 +19,7 @@ object PlayAudio {
             mediaPlayer.setOnPreparedListener { it.start() }
             mediaPlayer.setOnCompletionListener { it.release() }
             mediaPlayer.prepareAsync()
-        }catch (e : Exception){
+        }catch (_ : Exception){
             AppToast.showToast(context,"Something wrong")
             mediaPlayer.release()//giai phong
         }

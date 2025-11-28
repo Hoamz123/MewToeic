@@ -70,6 +70,7 @@ import com.hoamz.toeic.data.local.Question
 import com.hoamz.toeic.data.local.QuestionStar
 import com.hoamz.toeic.ui.screen.home.component.ExplainAnswerView
 import com.hoamz.toeic.ui.screen.home.HomeNavScreen
+import com.hoamz.toeic.ui.screen.questionStar.component.CustomDialog
 import com.hoamz.toeic.utils.Contains
 import com.hoamz.toeic.utils.DeviceController
 import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
@@ -275,32 +276,71 @@ fun TestScreen(
                     }
                 }
 
-                if (isShowDialogSubmit) {
-                    DialogAskUserQuitOrSubmit(
-                        modifier = Modifier.align(Alignment.Center),
-                        textTitle = Contains.ASK_SUBMIT,
-                        textDescription = Contains.DESCRIPTION_ASK,
-                        textAction = Contains.SUBMIT,
-                        navController = navController,
-                        onClickDismiss = {
-                            isShowDialogSubmit = false
-                        },
-                        onSubmitted = {
-                            doneTest = true
-                        })
+                //hien thi dialog submit o day
+                CustomDialog(
+                    isShow = isShowDialogSubmit,
+                    title = Contains.ASK_SUBMIT,
+                    message = Contains.DESCRIPTION_ASK,
+                    no = "Cancel",
+                    yes = "Submit",
+                    onDismiss = {
+                        isShowDialogSubmit = false
+                    },
+                    onClickedYes = {
+                        doneTest = true
+                        isShowDialogSubmit = false
+                    }
+                ) {
+                    isShowDialogSubmit = false
                 }
 
-                if (isShowDialog) {
-                    DialogAskUserQuitOrSubmit(
-                        modifier = Modifier.align(Alignment.Center),
-                        textTitle = Contains.ASK_QUIT,
-                        textDescription = Contains.DESCRIPTION_QUIT,
-                        textAction = Contains.QUIT,
-                        navController = navController,
-                        onClickDismiss = {
-                            isShowDialog = false
-                        })
+//                if (isShowDialogSubmit) {
+//                    DialogAskUserQuitOrSubmit(
+//                        modifier = Modifier.align(Alignment.Center),
+//                        textTitle = Contains.ASK_SUBMIT,
+//                        textDescription = Contains.DESCRIPTION_ASK,
+//                        textAction = Contains.SUBMIT,
+//                        navController = navController,
+//                        onClickDismiss = {
+//                            isShowDialogSubmit = false
+//                        },
+//                        onSubmitted = {
+//                            doneTest = true
+//                        })
+//                }
+
+
+                //hien thi dialog quit o day
+                CustomDialog(
+                    isShow = isShowDialog,
+                    title = Contains.ASK_QUIT,
+                    message = Contains.DESCRIPTION_QUIT,
+                    no = "Cancel",
+                    yes = Contains.QUIT,
+                    onDismiss = {
+                        isShowDialog = false
+                    },
+                    onClickedYes = {
+                        navController.popBackStack()
+                        isShowDialog = false
+                        //back ve trang trc(khong luu lai ket qua)
+                    }
+                ) {
+                    isShowDialog = false
                 }
+
+//                if (isShowDialog) {
+//                    DialogAskUserQuitOrSubmit(
+//                        modifier = Modifier.align(Alignment.Center),
+//                        textTitle = Contains.ASK_QUIT,
+//                        textDescription = Contains.DESCRIPTION_QUIT,
+//                        textAction = Contains.QUIT,
+//                        navController = navController,
+//                        onClickDismiss = {
+//                            isShowDialog = false
+//                        }
+//                    )
+//                }
             }
         }
     }

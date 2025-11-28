@@ -11,5 +11,5 @@ import retrofit2.http.Path
 interface DictionaryDao {
     //endpoint en/{word}
     @GET("en/{word}")
-    suspend fun getDescriptionOfWord(@Path("word") word : String) : Response<List<Vocabulary>>//tra ve noi dung cua 1 tu
+    suspend fun getDescriptionOfVocab(@Path("word") word : String) : Response<List<Vocabulary>>//tra ve noi dung cua 1 tu
 }

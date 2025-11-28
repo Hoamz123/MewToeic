@@ -77,6 +77,7 @@ import com.hoamz.toeic.ui.screen.home.HomeNavScreen
 import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.component.StatisticsChart
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
+import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.VocabularyViewModel
 import com.hoamz.toeic.utils.AppToast
 import com.hoamz.toeic.utils.Contains
 import com.hoamz.toeic.utils.ModifierUtils
@@ -88,10 +89,11 @@ fun Vocabulary(
     modifier: Modifier = Modifier,
     selectWordsViewmodel: SelectWordsViewmodel,
     appDictionaryViewModel: AppDictionaryViewModel,
+    vocabularyViewModel: VocabularyViewModel,
     navController: NavController
 ) {
     //lay ra danh sach thong ke so tu da luu trong 3 thang gan nhat
-    val dataChartIn3Month by selectWordsViewmodel.dataForChart.collectAsState()
+    val dataChartIn3Month by vocabularyViewModel.dataForChart.collectAsState()
 
     //current context
     val context = LocalContext.current
@@ -107,20 +109,20 @@ fun Vocabulary(
     }
 
     //lay ra danh sach tu da luu
-    val storedWords by selectWordsViewmodel.wordsStored.collectAsState() //-> so luong tu (ok)
+//    val storedWords by selectWordsViewmodel.wordsStored.collectAsState() //-> so luong tu (ok)
+    val storedWords by vocabularyViewModel.vocabsStored.collectAsState()
 
     LaunchedEffect(storedWords) {
-        selectWordsViewmodel.setUpWordsToSend(storedWords)
+        //selectWordsViewmodel.setUpWordsToSend(storedWords)
+        vocabularyViewModel.setUpVocabsToSend(storedWords)
     }
 
     //shuffle() -> take(10) phan tu
 
     //lay ra danh sach tu da hoc master roi
-    val masteredWords by selectWordsViewmodel.masteredWords.collectAsState()
-
+    val masteredWords by vocabularyViewModel.masteredVocabs.collectAsState()
 //    //lay ra ds tu trc day user da nhin thay trong My Words roi
-//    val reviewedWords by selectWordsViewmodel.reviewedWords.collectAsState()
-
+    val reviewedWords by vocabularyViewModel.reviewedVocabs.collectAsState()
     //state reminder
     var stateReminder by remember {
         mutableStateOf(BaseSharePref.checkRemind())
@@ -164,7 +166,7 @@ fun Vocabulary(
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
-            }, fontWeight = FontWeight.SemiBold
+            }
         )
 
         Card(
@@ -236,7 +238,7 @@ fun Vocabulary(
                     .weight(1f)
                     .padding(vertical = 5.dp),
                 onClick = {
-                    selectWordsViewmodel.setUpWordsToSend(storedWords)
+                    //selectWordsViewmodel.setUpWordsToSend(storedWords)
                     navController.navigate(HomeNavScreen.ShowNewWords.route)
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -268,7 +270,7 @@ fun Vocabulary(
                     .weight(1f)
                     .padding(vertical = 5.dp),
                 onClick = {
-                    selectWordsViewmodel.setUpWordsToSend(masteredWords)
+                    vocabularyViewModel.setUpVocabsToSend(masteredWords)
                     navController.navigate(HomeNavScreen.ShowNewWords.route)
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -599,6 +601,8 @@ fun Vocabulary(
                     .padding(vertical = 5.dp),
                 onClick = {
                     //next to...
+                    //khi user da tung ban=m vao tu de hoc thi danh dau reviewed
+                    //khi do neu user nhan vao thi se hien thi nhung tu do
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Green
@@ -616,7 +620,7 @@ fun Vocabulary(
 
                 Text(
                     modifier = Modifier.padding(horizontal = 10.dp),
-                    text = "Preview",
+                    text = "Learned Words",
                     color = Color.White,
                     fontWeight = FontWeight.Normal
                 )

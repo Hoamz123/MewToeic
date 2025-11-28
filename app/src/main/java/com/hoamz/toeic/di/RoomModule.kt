@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.room.Room
 import com.hoamz.toeic.data.ActivityRecentDatabase
 import com.hoamz.toeic.data.QuestionStarDb
+import com.hoamz.toeic.data.VocabularyDb
 import com.hoamz.toeic.data.WordsDatabase
 import com.hoamz.toeic.data.dao.ActivityRecentDao
 import com.hoamz.toeic.data.dao.QuestionDao
+import com.hoamz.toeic.data.dao.VocabularyDao
 import com.hoamz.toeic.data.dao.WordDao
 import dagger.Module
 import dagger.Provides
@@ -65,5 +67,21 @@ object RoomModule{
     @Singleton
     fun provideQuestionDao(questionStarDb: QuestionStarDb) : QuestionDao{
         return questionStarDb.QuestionDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideVocabularyDb(@ApplicationContext context: Context) : VocabularyDb{
+        return Room.databaseBuilder(
+            context = context,
+            klass = VocabularyDb::class.java,
+            name = "vocabulary_db"
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideVocabularyDao(vocabularyDb: VocabularyDb) : VocabularyDao {
+        return vocabularyDb.vocabularyDao()
     }
 }

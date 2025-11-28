@@ -1,12 +1,15 @@
 package com.hoamz.toeic.utils
 
+import com.hoamz.toeic.data.local.VocabularyEntity
 import com.hoamz.toeic.data.remote.Means
 import com.hoamz.toeic.data.remote.Phonetic
 import com.hoamz.toeic.data.remote.VocabDisplay
 import com.hoamz.toeic.data.remote.Vocabulary
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 object Mapper {
-    fun fromVocabulary(vocabulary: Vocabulary): VocabDisplay {
+    fun toVocabularyDisplay(vocabulary: Vocabulary): VocabDisplay {
         val word = vocabulary.word.toString()//lay ra tu
         //lay ra ds phat am
         val phonetics = mutableListOf<Phonetic>()
@@ -68,6 +71,41 @@ object Mapper {
             meanings = meanings,
             synonyms = synonyms,
             antonyms = antonyms
+        )
+    }
+
+    fun toVocabularyEntity(vocabulary: Vocabulary) : VocabularyEntity{
+        val word = vocabulary.word.toString()
+        var partOfSpeech = "   "
+        var definition = "";
+        if(!vocabulary.meanings.isNullOrEmpty()){
+            if(vocabulary.meanings.isNotEmpty()){
+                //tuc co data
+                partOfSpeech = vocabulary.meanings[0].partOfSpeech.toString()
+                val definitions = vocabulary.meanings[0].definitions
+                if(!definitions.isNullOrEmpty() && definitions.isNotEmpty()){
+                    definition = definitions[0].definition.toString()
+                }
+            }
+        }
+        val date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+        val phonetics = mutableListOf<Phonetic>()
+        if(!vocabulary.phonetics.isNullOrEmpty()){
+            vocabulary.phonetics.forEach { (text, audio) ->
+                if(!audio.isNullOrEmpty()){
+                    if(phonetics.size < 2){
+                        phonetics.add(Phonetic(text,audio))
+                    }
+                    else return@forEach
+                }
+            }
+        }
+        return VocabularyEntity(
+            word = word,
+            partOfSpeech = partOfSpeech,
+            definition = definition,
+            date = date,
+            phonetics = phonetics
         )
     }
 }

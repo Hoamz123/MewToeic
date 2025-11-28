@@ -51,8 +51,8 @@ import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.screen.ShowNewWords
 import com.hoamz.toeic.ui.screen.vocabulary.screen.WordDetail
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
+import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.VocabularyViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -60,7 +60,8 @@ fun HomeScreen(
     testViewModel: TestViewModel,
     showAnswerViewModel: ShowAnswerViewModel,
     selectWordsViewmodel: SelectWordsViewmodel,
-    appDictionaryViewModel : AppDictionaryViewModel
+    appDictionaryViewModel : AppDictionaryViewModel,
+    vocabularyViewModel: VocabularyViewModel
 ) {
     val navController = rememberNavController()
     Box(
@@ -88,7 +89,8 @@ fun HomeScreen(
                 mainViewModel = mainViewModel,
                 testViewModel = testViewModel,
                 selectWordsViewmodel = selectWordsViewmodel,
-                appDictionaryViewModel = appDictionaryViewModel
+                appDictionaryViewModel = appDictionaryViewModel,
+                vocabularyViewModel = vocabularyViewModel
             )
 
             //cac man hinh chi tiet
@@ -135,8 +137,8 @@ fun HomeScreen(
                 SelectVocabScreen(
                     navController = navController,
                     mainViewModel = mainViewModel,
-                    selectWordsViewmodel = selectWordsViewmodel,
-                    appDictionaryViewModel = appDictionaryViewModel
+                    appDictionaryViewModel = appDictionaryViewModel,
+                    vocabularyViewModel = vocabularyViewModel
                 )
             }
 
@@ -147,7 +149,8 @@ fun HomeScreen(
                     mainViewModel = mainViewModel,
                     navController = navController,
                     selectWordsViewmodel = selectWordsViewmodel,
-                    appDictionaryViewModel = appDictionaryViewModel
+                    appDictionaryViewModel = appDictionaryViewModel,
+                    vocabularyViewModel = vocabularyViewModel
                 )
             }
 
@@ -176,26 +179,26 @@ fun NavGraphBuilder.mainHome(
     mainViewModel: MainViewModel,
     testViewModel: TestViewModel,
     selectWordsViewmodel: SelectWordsViewmodel,
-    appDictionaryViewModel: AppDictionaryViewModel
+    appDictionaryViewModel: AppDictionaryViewModel,
+    vocabularyViewModel: VocabularyViewModel
 ) {
     navigation(
-        startDestination = HomeNavScreen.ListTestScreen.route, route = "main_home"
+        startDestination = HomeNavScreen.ListTestScreen.route,
+        route = "main_home"
     ) {
-        composable(
-            "home"
-        ) {
+        composable("home") {
             MainHome(
                 rootNavController = navController,
                 mainViewModel = mainViewModel,
                 testViewModel = testViewModel,
                 selectWordsViewmodel = selectWordsViewmodel,
-                appDictionaryViewModel = appDictionaryViewModel
+                appDictionaryViewModel = appDictionaryViewModel,
+                vocabularyViewModel = vocabularyViewModel
             )
         }
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainHome(
     modifier: Modifier = Modifier,
@@ -203,7 +206,8 @@ fun MainHome(
     mainViewModel: MainViewModel,
     testViewModel: TestViewModel,
     selectWordsViewmodel: SelectWordsViewmodel,
-    appDictionaryViewModel: AppDictionaryViewModel
+    appDictionaryViewModel: AppDictionaryViewModel,
+    vocabularyViewModel: VocabularyViewModel
 ) {
     val listItemMenu by remember {
         mutableStateOf(
@@ -247,7 +251,8 @@ fun MainHome(
                 Vocabulary(
                     selectWordsViewmodel = selectWordsViewmodel,
                     appDictionaryViewModel = appDictionaryViewModel,
-                    navController = rootNavController
+                    navController = rootNavController,
+                    vocabularyViewModel = vocabularyViewModel
                 )
             }
         }

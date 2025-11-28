@@ -1,6 +1,7 @@
 package com.hoamz.toeic.data.repository
 
 import com.hoamz.toeic.data.dao.DictionaryDao
+import com.hoamz.toeic.data.local.VocabularyEntity
 import com.hoamz.toeic.data.remote.Meaning
 import com.hoamz.toeic.data.remote.Phonetic
 import com.hoamz.toeic.data.remote.Vocabulary
@@ -15,7 +16,7 @@ class DictionaryRepository @Inject constructor(
 ) {
     suspend fun getDescriptionOfWordOnce(word: String): Vocabulary? {
         return try {
-            val response = dictionaryDao.getDescriptionOfWord(word)
+            val response = dictionaryDao.getDescriptionOfVocab(word)
             if (response.isSuccessful) {
                 val vocabSource = response.body()?.first()
                 val phonetics = vocabSource?.phonetics?.filter {
