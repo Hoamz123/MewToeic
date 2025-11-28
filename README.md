@@ -1,101 +1,73 @@
 📘 TOEIC Part 5 Practice App
 
-Ứng dụng Android hiện đại hỗ trợ luyện tập TOEIC Part 5, cung cấp chế độ học – thi mô phỏng, kết hợp học từ vựng qua flashcards, mini-games và hệ thống thống kê chi tiết.
-Phát triển bằng Kotlin, Jetpack Compose và kiến trúc MVVM + Clean Architecture.
+Một ứng dụng Android hiện đại hỗ trợ luyện tập TOEIC Part 5 với chế độ học và thi mô phỏng, kết hợp học từ vựng thông qua flashcards, mini-games và hệ thống thống kê tiến độ chi tiết.
 
-📱 Giao diện
-
-👉 Tạo thư mục screenshots/ và thêm ảnh:
-home.png – study.png – exam.png – flashcard.png – game.png – stats.png – reminder.png
-
-<p> 
-<img src="screenshots/Screenshot_20251030_124355.png"  width="250" height="600"  alt=""/>
-<img src="screenshots/Screenshot_20251104_110720.png"  width="250" height="600"  alt=""/> 
-<img src="screenshots/Screenshot_20251128_232403.png"  width="250" height="600"  alt=""/>
-<img src="screenshots/Screenshot_20251128_232434.png"  width="250" height="600"  alt=""/> 
-<img src="screenshots/Screenshot_20251128_232722.png"  width="250" height="600"  alt=""/>
-<img src="screenshots/Screenshot_20251128_232329.png"  width="250" height="600"  alt=""/> 
-<img src="screenshots/Screenshot_20251128_232304.png"  width="250" height="600"  alt=""/> 
-<img src="screenshots/Screenshot_20251030_225840.png"  width="250" height="600"  alt=""/>
-<img src="screenshots/Screenshot_20251128_232348.png"  width="250" height="600"  alt=""/> 
-<img src="screenshots/Screenshot_20251128_232425.png"  width="250" height="600"  alt=""/>
-<img src="screenshots/Screenshot_20251104_111524.png"  width="250" height="600"  alt=""/> 
-<img src="screenshots/Screenshot_20251128_232338.png"  width="250" height="600"  alt=""/>
-</p>
-
-🚀 Tính năng chính
+🚀 Features
 📝 TOEIC Part 5 Practice
 
-Hai chế độ luyện tập:
-✔️ Study Mode – xem từng câu, có gợi ý & giải thích
-✔️ Exam Mode – thi mô phỏng như thật
+Hai chế độ: Study Mode (học từng câu) và Exam Mode (thi mô phỏng).
 
-Chấm điểm chi tiết: đúng/sai, giải thích rõ ràng
+Chấm điểm chi tiết: đáp án đúng/sai, gợi ý, giải thích.
 
 📚 Vocabulary Learning
 
-Flashcards tương tác
+Flashcards tương tác.
 
-Mini-games ghi nhớ từ vựng
+Mini-games giúp ghi nhớ từ vựng hiệu quả.
 
-Lưu – quản lý – xem lại từ vựng bất cứ lúc nào
+Lưu và quản lý từ vựng theo danh sách, xem lại bất cứ lúc nào.
 
 📊 Progress Tracking
 
-Thống kê trực quan bằng Vico Chart
+Thống kê học tập trực quan bằng Vico Chart.
 
-Theo dõi độ chính xác, lịch sử làm bài, tiến độ học từ vựng theo thời gian
+Theo dõi lịch sử làm bài, độ chính xác, tiến độ học từ vựng theo thời gian.
 
 ⏰ Daily Reminders
 
-Nhắc nhở học từ vựng hằng ngày
-
-Kết hợp WorkManager + AlarmManager
+Nhắc nhở học từ vựng mỗi ngày thông qua WorkManager + AlarmManager.
 
 💰 AdMob Integration
 
-Tích hợp quảng cáo để tạo doanh thu
+Tích hợp quảng cáo AdMob để kiếm thêm doanh thu.
 
-🧱 Kiến trúc & Công nghệ
+🛠️ Tech Stack
+Languages & UI
 
-Language: Kotlin
+Kotlin
 
-UI: Jetpack Compose
+Jetpack Compose
 
-Architecture: MVVM + Clean Architecture
+Architecture
 
-Dependency Injection: Hilt
+MVVM + Clean Architecture
 
-Local Database: Room
+Hilt (Dependency Injection)
 
-Networking: Retrofit
+Data & Networking
 
-Background tasks:
-🔔 AlarmManager – nhắc nhở chính xác
-⚙️ WorkManager 
+Room Database
 
-Charts: Vico Chart
+Retrofit
 
-Ads: Google AdMob
+WorkManager, AlarmManager
 
-🛠️ Cài đặt & chạy thử
+Vico Chart
 
-Clone dự án:
+AdMob
+
+✨ Highlights
+
+Kiến trúc MVVM + Clean Architecture giúp app dễ mở rộng và bảo trì.
+
+Tự thiết kế flashcard engine và mini-game module bằng Compose.
+
+Tối ưu hiệu năng: giảm recomposition, tối ưu Room query.
+
+Hệ thống nhắc nhở thông minh kết hợp WorkManager + AlarmManager.
+
+📦 Installation & Run
+
+Clone project
 
 git clone https://github.com/Hoamz123/MewToeic
-
-
-Mở bằng Android Studio
-
-Chạy trên emulator hoặc thiết bị thật (Android 6.0+)
-
-🧑‍💻 Người phát triển
-
-👤 hoamz — https://github.com/Hoamz123
-
-📧 Email: hoamzdev@gmail.com
-
-💡 Góp ý & Đóng góp
-
-Mọi đóng góp đều được hoan nghênh!
-👉 Tạo Issue tại đây: https://github.com/Hoamz123/MewToeic/issues
