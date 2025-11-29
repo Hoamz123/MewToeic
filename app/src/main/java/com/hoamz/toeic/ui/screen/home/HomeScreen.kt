@@ -158,7 +158,7 @@ fun HomeScreen(
             composable(route = HomeNavScreen.WordDetail.route) {
                 WordDetail(
                     navController = navController,
-                    selectWordsViewmodel = selectWordsViewmodel,
+                    vocabularyViewModel = vocabularyViewModel,
                     appDictionaryViewModel = appDictionaryViewModel
                 )
             }
@@ -173,7 +173,6 @@ fun HomeScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.mainHome(
     navController: NavHostController,
     mainViewModel: MainViewModel,

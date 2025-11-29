@@ -1,8 +1,6 @@
 package com.hoamz.toeic.ui.screen.vocabulary.screen
 
-import android.content.res.Resources
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -52,7 +50,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -61,8 +58,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -83,7 +78,6 @@ import com.hoamz.toeic.utils.Contains
 import com.hoamz.toeic.utils.ModifierUtils
 import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Vocabulary(
     modifier: Modifier = Modifier,

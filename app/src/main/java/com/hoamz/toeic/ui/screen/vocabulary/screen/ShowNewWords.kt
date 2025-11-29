@@ -148,7 +148,8 @@ fun ShowNewWords(
                 contentAlignment = Alignment.Center
             ) {
                 LottieAnimation(
-                    composition = composition, iterations = LottieConstants.IterateForever
+                    composition = composition,
+                    iterations = LottieConstants.IterateForever
                 )
             }
         }
@@ -286,14 +287,15 @@ fun ShowNewWords(
                         AWord(vocabularyEntity = filteredListWord[index],
                             onClickMastered = { isMastered ->
                             if (isMastered) {
-                                vocabularyViewModel.masteredVocab(filteredListWord[index])
+                                vocabularyViewModel.masteredVocab(filteredListWord[index].id)
                             } else {
-                                vocabularyViewModel.unMasteredVocab(filteredListWord[index])
+                                vocabularyViewModel.unMasteredVocab(filteredListWord[index].id)
                             }
                         }, onClickedWord = {
                             //qua man hinh detail
-                            //appDictionaryViewModel.setUpDescriptionOfWords(filteredListWord[index])
-                            //navController.navigate(HomeNavScreen.WordDetail.route)
+                            appDictionaryViewModel.setUpDescriptionOfWords(filteredListWord[index].word)
+                            appDictionaryViewModel.setUpIdOfVocabularyToSend(filteredListWord[index].id)
+                            navController.navigate(HomeNavScreen.WordDetail.route)
                         })
                     }
                 }
@@ -313,6 +315,7 @@ fun AWord(
     var mastered by rememberSaveable {
         mutableStateOf(vocabularyEntity.isMastered)
     }
+
     Card(modifier = Modifier
         .fillMaxWidth()
         .noRippleClickable {

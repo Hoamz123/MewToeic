@@ -57,10 +57,14 @@ object Mapper {
             it.definitions?.let { definitions ->
                 definitions.forEach { definition ->
                     if(definition.synonyms != null && definition.synonyms.isNotEmpty()){
-                        synonyms += definition.synonyms
+                        if(!synonyms.contains(definition.synonyms.toString())){
+                            synonyms += definition.synonyms
+                        }
                     }
                     if(definition.antonyms != null && definition.antonyms.isNotEmpty()){
-                        antonyms += definition.antonyms
+                        if(!antonyms.contains(definition.antonyms.toString())){
+                            antonyms += definition.antonyms
+                        }
                     }
                 }
             }

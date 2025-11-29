@@ -21,6 +21,7 @@ home.png – study.png – exam.png – flashcard.png – game.png – stats.png
 <img src="screenshots/Screenshot_20251128_232425.png"  width="250" height="600"  alt=""/>
 <img src="screenshots/Screenshot_20251104_111524.png"  width="250" height="600"  alt=""/> 
 <img src="screenshots/Screenshot_20251128_232338.png"  width="250" height="600"  alt=""/>
+<img src="screenshots/Screenshot_20251129_182109.png"  width="250" height="600"  alt=""/>
 </p>
 
 🚀 Tính năng chính

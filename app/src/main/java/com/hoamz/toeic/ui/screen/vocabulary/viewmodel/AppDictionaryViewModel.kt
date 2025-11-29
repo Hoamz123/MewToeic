@@ -25,13 +25,23 @@ class AppDictionaryViewModel @Inject constructor(
     private var _vocabDisplay: MutableStateFlow<VocabDisplay> = MutableStateFlow(VocabDisplay())
     val vocabDisplay = _vocabDisplay.asStateFlow()//du lieu ben ngoai co the quan sat dc
 
-    fun setUpDescriptionOfWords(word: Word) {
+    fun setUpDescriptionOfWords(word : String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val vocab = dictionaryRepository.getDescriptionOfWordOnce(word.word)
+            val vocab = dictionaryRepository.getDescriptionOfWordOnce(word)
             if(vocab != null) {
                 val vocabDisplay = Mapper.toVocabularyDisplay(vocab)
                 _vocabDisplay.value = vocabDisplay
             }
+        }
+    }
+
+    //truyen id cua tu do trong room qua man hinh detail (de thuc hien mastered)
+    private var _idVocabEntity : MutableStateFlow<Long> = MutableStateFlow(0)
+    val idVocabEntity = _idVocabEntity.asStateFlow()
+
+    fun setUpIdOfVocabularyToSend(id : Long?){
+        id?.let {
+            _idVocabEntity.value = id
         }
     }
 

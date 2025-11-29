@@ -123,5 +123,9 @@ dependencies {
     //graph
     implementation(libs.vico.compose.m3)
 
+    // Paging 3
+    implementation("androidx.paging:paging-runtime:3.2.0")
+    implementation("androidx.paging:paging-common:3.2.0")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha20")
 
 }

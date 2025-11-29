@@ -47,7 +47,6 @@ class VocabularyViewModel @Inject constructor(
     private val _dataChart = MutableStateFlow<List<DataChart>>(emptyList())
     val dataForChart  = _dataChart.asStateFlow()
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun freshDataChart() {
         viewModelScope.launch {
             vocabularyRepository.getDataChart().collect { list ->
@@ -65,26 +64,26 @@ class VocabularyViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),emptyList())
 
     //set word-> mastered
-    fun masteredVocab(vocab: VocabularyEntity){
+    fun masteredVocab(id : Long?){
         viewModelScope.launch {
-            vocab.id?.let {
-                vocabularyRepository.masteredVocab(vocab.id)
+            id?.let {
+                vocabularyRepository.masteredVocab(id)
             }
         }
     }
 
-    fun unMasteredVocab(vocab: VocabularyEntity){
+    fun unMasteredVocab(id : Long?){
         viewModelScope.launch {
-            vocab.id?.let {
-                vocabularyRepository.unMasteredVocab(vocab.id)
+            id?.let {
+                vocabularyRepository.unMasteredVocab(id)
             }
         }
     }
     //set word -> reviewed
-    fun reviewedVocab(vocab: VocabularyEntity){
+    fun reviewedVocab(id : Long?){
         viewModelScope.launch {
-            vocab.id?.let {
-                vocabularyRepository.reviewedVocab(vocab.id)
+            id?.let {
+                vocabularyRepository.reviewedVocab(id)
             }
         }
     }

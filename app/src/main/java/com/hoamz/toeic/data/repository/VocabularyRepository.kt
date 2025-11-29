@@ -2,6 +2,9 @@ package com.hoamz.toeic.data.repository
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.hoamz.toeic.data.dao.VocabularyDao
 import com.hoamz.toeic.data.local.DataChart
 import com.hoamz.toeic.data.local.VocabularyEntity
@@ -43,7 +46,6 @@ class VocabularyRepository @Inject constructor(
     }
 
     //lay ra du lieu de do nen chart
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getDataChart(): Flow<List<DataChart>> = vocabularyDao.getDataForChart()
         .map { dataCharts ->
             val today = LocalDate.now()
