@@ -42,7 +42,7 @@ import androidx.navigation.NavController
 import com.hoamz.toeic.base.BannerAdView
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.ActivityRecent
-import com.hoamz.toeic.ui.screen.home.HomeNavScreen
+import com.hoamz.toeic.ui.screen.navigation.HomeNavScreen
 import com.hoamz.toeic.ui.screen.home.component.ListTest
 import com.hoamz.toeic.ui.screen.home.component.LottieHorizontal
 import com.hoamz.toeic.ui.screen.home.component.TestCurrent
@@ -73,7 +73,8 @@ fun ListTestHomeScreen(
     ) {
         item {
             TopBarHome(
-                username = "username"
+                username = "username",
+                mainViewModel = mainViewModel
             )
             Spacer(modifier = Modifier.height(5.dp))
         }

@@ -1,11 +1,15 @@
 package com.hoamz.toeic.ui.screen.vocabulary
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hoamz.toeic.data.dao.VocabularyDao
 import com.hoamz.toeic.data.local.Word
 import com.hoamz.toeic.data.remote.VocabDisplay
 import com.hoamz.toeic.data.repository.DictionaryRepository
 import com.hoamz.toeic.data.repository.VocabularyRepository
+import com.hoamz.toeic.ui.screen.vocabulary.screen.Vocabulary
 import com.hoamz.toeic.utils.Mapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +30,7 @@ class AppDictionaryViewModel @Inject constructor(
     val vocabDisplay = _vocabDisplay.asStateFlow()//du lieu ben ngoai co the quan sat dc
 
     fun setUpDescriptionOfWords(word : String) {
+        _vocabDisplay.value = VocabDisplay()
         viewModelScope.launch(Dispatchers.IO) {
             val vocab = dictionaryRepository.getDescriptionOfWordOnce(word)
             if(vocab != null) {
@@ -45,6 +50,7 @@ class AppDictionaryViewModel @Inject constructor(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun insertNewVocabs(vocabs: List<String>) {
         if (vocabs.isEmpty()) return//neu ko co gia tri thi bo
 

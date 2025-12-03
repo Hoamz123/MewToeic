@@ -1,7 +1,6 @@
 package com.hoamz.toeic.ui.screen.home.test
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -28,8 +27,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.QuestionMark
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -52,8 +49,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,14 +66,12 @@ import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.Question
 import com.hoamz.toeic.data.local.QuestionStar
 import com.hoamz.toeic.ui.screen.home.component.ExplainAnswerView
-import com.hoamz.toeic.ui.screen.home.HomeNavScreen
-import com.hoamz.toeic.ui.screen.questionStar.component.CustomDialog
+import com.hoamz.toeic.ui.screen.navigation.HomeNavScreen
+import com.hoamz.toeic.ui.screen.home.component.CustomDialog
 import com.hoamz.toeic.utils.Contains
-import com.hoamz.toeic.utils.DeviceController
 import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.collections.getValue
 
 
 @Composable
@@ -133,7 +128,8 @@ fun TestScreen(
                 contentAlignment = Alignment.Center
             ) {
                 LottieAnimation(
-                    composition = composition, iterations = LottieConstants.IterateForever
+                    composition = composition,
+                    iterations = LottieConstants.IterateForever
                 )
             }
         }
@@ -294,22 +290,6 @@ fun TestScreen(
                     isShowDialogSubmit = false
                 }
 
-//                if (isShowDialogSubmit) {
-//                    DialogAskUserQuitOrSubmit(
-//                        modifier = Modifier.align(Alignment.Center),
-//                        textTitle = Contains.ASK_SUBMIT,
-//                        textDescription = Contains.DESCRIPTION_ASK,
-//                        textAction = Contains.SUBMIT,
-//                        navController = navController,
-//                        onClickDismiss = {
-//                            isShowDialogSubmit = false
-//                        },
-//                        onSubmitted = {
-//                            doneTest = true
-//                        })
-//                }
-
-
                 //hien thi dialog quit o day
                 CustomDialog(
                     isShow = isShowDialog,
@@ -328,19 +308,6 @@ fun TestScreen(
                 ) {
                     isShowDialog = false
                 }
-
-//                if (isShowDialog) {
-//                    DialogAskUserQuitOrSubmit(
-//                        modifier = Modifier.align(Alignment.Center),
-//                        textTitle = Contains.ASK_QUIT,
-//                        textDescription = Contains.DESCRIPTION_QUIT,
-//                        textAction = Contains.QUIT,
-//                        navController = navController,
-//                        onClickDismiss = {
-//                            isShowDialog = false
-//                        }
-//                    )
-//                }
             }
         }
     }
@@ -354,8 +321,6 @@ fun ViewDisplayQuestion(
     testViewModel: TestViewModel,
     isTestModel: Boolean,
     onNextQuestion: (Int, Int) -> Unit,
-    //idClick cai user click
-    //indexCorrect cai dap an dung
 ) {
 
     //trang thai click / cua 4 cau hoi
@@ -608,11 +573,11 @@ fun TopBarTestScreen(
             )
 
             Icon(
-                imageVector = if (!isStar) Icons.Outlined.StarOutline
-                else Icons.Filled.Star,
+                painter = if (!isStar) painterResource(R.drawable.ic_unmastered)
+                            else painterResource(R.drawable.ic_mastered),
                 contentDescription = null,
                 tint = if (!isStar) Color.Black.copy(0.5f)
-                else colorResource(R.color.masteredWord),
+                else colorResource(R.color.progressColor),
                 modifier = Modifier
                     .padding(13.dp)
                     .noRippleClickable {

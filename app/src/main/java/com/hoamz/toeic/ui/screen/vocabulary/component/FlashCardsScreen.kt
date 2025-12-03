@@ -42,7 +42,6 @@ import androidx.navigation.NavController
 import com.hoamz.toeic.R
 import com.hoamz.toeic.base.BannerAdView
 import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
-import com.hoamz.toeic.ui.screen.vocabulary.screen.FlashCard
 import com.hoamz.toeic.ui.screen.vocabulary.screen.Vocab
 import com.hoamz.toeic.ui.screen.vocabulary.screen.getPhonetic
 import com.hoamz.toeic.utils.ModifierUtils

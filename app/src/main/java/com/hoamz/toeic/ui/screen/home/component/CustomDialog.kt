@@ -1,4 +1,4 @@
-package com.hoamz.toeic.ui.screen.questionStar.component
+package com.hoamz.toeic.ui.screen.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

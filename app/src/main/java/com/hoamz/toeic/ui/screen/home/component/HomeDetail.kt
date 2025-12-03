@@ -43,6 +43,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -69,6 +70,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.hoamz.toeic.R
 import com.hoamz.toeic.base.BaseSharePref
+import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.utils.Contains
 import com.hoamz.toeic.utils.ModifierUtils.noRippleClickable
 import kotlinx.coroutines.delay
@@ -77,6 +79,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TopBarHome(
     modifier: Modifier = Modifier,
+    mainViewModel: MainViewModel,
     username : String,
 ) {
     Row (
@@ -116,10 +119,9 @@ fun TopBarHome(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
-            val progressInitialize = BaseSharePref.getProgressSteak()
             CalculatorProgressSteak(
                 modifier = Modifier.fillMaxSize(),
-                progressInitialize = progressInitialize
+                mainViewModel = mainViewModel
             )
         }
     }
@@ -129,47 +131,18 @@ fun TopBarHome(
 @Composable
 fun CalculatorProgressSteak(
     modifier: Modifier = Modifier,
-    progressInitialize : Int,//gia tri mac dinh ban dau khoi tao
+    mainViewModel: MainViewModel,
 ) {
-    var progress by remember {
-        mutableIntStateOf(progressInitialize)
-    }
 
-    //ban dau van dang trong qua trinh tang
-    var onProgressing by remember {
-        mutableStateOf(true)
-    }
-
-    //kiem tra xem trc do da hoan thanh progress hay chua
-    val finished = BaseSharePref.onFinishedProgress()
-
-    //moi s thi tang them 1
-    LaunchedEffect(Unit) {
-        while(progress < 120 && onProgressing){
-            delay(1000)//on 1000s thi + 1 steak
-            progress++
-            BaseSharePref.saveProgressSteak(progress)
-        }
-        //neu nhu da du dieu kien
-        if(progress == 120 && !finished){
-//            //dung qua trinh tang
-//            onProgressing = false
-            //tang them 1 steak
-            BaseSharePref.finishedProgress()//hoan thanh
-            BaseSharePref.saveNumberSteak()
-            progress++
-            //de ngay hom nay no khong chay nua(qua hom sau se dc reset lai)
-        }
-    }
+    val progress by mainViewModel.progress.collectAsState()
 
     //khoi tao anim
     val progressCircle by animateFloatAsState(
-        targetValue = progress.toFloat() / 1000.toFloat(),
+        targetValue = progress.toFloat() / 120.toFloat(),
         animationSpec = tween(
             easing = LinearOutSlowInEasing
         )
     )
-
     //tao circle progress
     //loi dung tinh chat de nen nhau cua box de xu ly case nay
     Box(
@@ -197,14 +170,11 @@ fun CalculatorProgressSteak(
             strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap
         )
 
-        val context = LocalContext.current
-
         IconButton(
             modifier = modifier
                 .padding(5.dp),
             onClick = {
-                val cnt = BaseSharePref.getNumberSteak()
-                Toast.makeText(context,"$cnt", Toast.LENGTH_LONG).show()
+                //neu du roi thi qua man hinh grammar
             }
         ) {
             Icon(

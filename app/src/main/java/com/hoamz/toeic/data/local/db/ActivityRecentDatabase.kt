@@ -1,4 +1,4 @@
-package com.hoamz.toeic.data
+package com.hoamz.toeic.data.local.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,5 +1,8 @@
 package com.hoamz.toeic.utils
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.hoamz.toeic.data.local.VocabularyCard
 import com.hoamz.toeic.data.local.VocabularyEntity
 import com.hoamz.toeic.data.remote.Means
 import com.hoamz.toeic.data.remote.Phonetic
@@ -78,6 +81,7 @@ object Mapper {
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun toVocabularyEntity(vocabulary: Vocabulary) : VocabularyEntity{
         val word = vocabulary.word.toString()
         var partOfSpeech = "   "
@@ -112,4 +116,40 @@ object Mapper {
             phonetics = phonetics
         )
     }
+
+    //loc du lieu de dua nen flashCard
+    fun toVocabularyCard(vocabularyEntity: VocabularyEntity) : VocabularyCard{
+
+        val id = vocabularyEntity.id
+        val word = vocabularyEntity.word
+        val audios = mutableListOf<String>()//chi lay 2 audio thui
+        val definition = vocabularyEntity.definition
+        val partOfSpeech = vocabularyEntity.partOfSpeech[0].toString()
+
+
+        val audiosTemp = mutableListOf<String>()
+
+        vocabularyEntity.phonetics.forEach { phonetic ->
+            if(!phonetic.audio.isNullOrEmpty()) {
+                audiosTemp.add(phonetic.audio)
+            }
+        }
+
+        audiosTemp.forEach { audio ->
+            audios.add(audio)
+            //sau khi add-> neu thay size == 2 thi -> du roi
+            if(audios.size == 2) return@forEach
+        }
+
+        //da co du lieu audio (hoac la du 2 audio hoac la chi co 1 audio hoac la ko co audio nao)
+
+        return VocabularyCard(
+            id = id,
+            word = word,
+            audios = audios,
+            definition = definition,
+            partOfSpeech = partOfSpeech
+        )
+    }
+
 }

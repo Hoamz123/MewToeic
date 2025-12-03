@@ -1,10 +1,6 @@
 package com.hoamz.toeic.ui.screen.vocabulary.screen
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.expandVertically
@@ -14,7 +10,6 @@ import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -48,13 +43,11 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -68,7 +61,7 @@ import androidx.navigation.NavController
 import com.hoamz.toeic.R
 import com.hoamz.toeic.base.BaseSharePref
 import com.hoamz.toeic.data.remote.Vocabulary
-import com.hoamz.toeic.ui.screen.home.HomeNavScreen
+import com.hoamz.toeic.ui.screen.navigation.HomeNavScreen
 import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.component.StatisticsChart
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
@@ -480,7 +473,7 @@ fun Vocabulary(
                 },
                 shape = RoundedCornerShape(10.dp)
             ) {
-                Contains.listDropPeriod.forEach { it ->
+                Contains.listDropPeriod.forEach {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -542,7 +535,6 @@ fun Vocabulary(
         var isShuffle by remember {
             mutableStateOf(false)
         }
-
         /*
         filter words to learn
          */
@@ -648,7 +640,7 @@ fun Vocabulary(
                         .weight(1f)
                         .padding(vertical = 5.dp),
                     onClick = {
-
+                        navController.navigate(HomeNavScreen.FlashCard.route)
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorResource(R.color.masteredWord)
@@ -718,70 +710,3 @@ data class Vocab(
     val en: String, val vi: String
 )
 
-@Composable
-fun FlashCard(
-    modifier: Modifier = Modifier, front: String, back: String
-) {
-    var flipped by rememberSaveable {
-        mutableStateOf(false)
-    }
-
-    val rotation by animateFloatAsState(
-        targetValue = if (flipped) 180f else 0f, animationSpec = tween(
-            durationMillis = 500, easing = LinearOutSlowInEasing
-        )
-    )
-
-    Box(
-        modifier = modifier.noRippleClickable {
-                flipped = !flipped
-            }, contentAlignment = Alignment.Center
-    ) {
-        //card
-        Card(
-            modifier = Modifier
-                .fillMaxSize()
-                .graphicsLayer {
-                    rotationY = rotation
-                    cameraDistance = 12f * density
-                }, colors = CardDefaults.cardColors(
-                containerColor = colorResource(R.color.bg_btn)
-            ), elevation = CardDefaults.cardElevation(
-                defaultElevation = 2.dp
-            ), shape = RoundedCornerShape(10.dp)
-        ) {
-            if (rotation <= 90f) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(color = colorResource(R.color.bg_btn)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = front,
-                        fontSize = 23.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Color.White
-                    )
-                }
-            } else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(color = colorResource(R.color.bg_btn)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        modifier = Modifier.graphicsLayer(
-                                rotationY = 180f
-                            ),
-                        text = back,
-                        fontSize = 23.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Color.White
-                    )
-                }
-            }
-        }
-    }
-}

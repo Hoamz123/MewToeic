@@ -40,11 +40,9 @@ import com.hoamz.toeic.base.BaseSharePref
 import com.hoamz.toeic.baseviewmodel.MainViewModel
 import com.hoamz.toeic.data.local.Question
 import com.hoamz.toeic.data.local.VocabularyEntity
-import com.hoamz.toeic.data.local.Word
 import com.hoamz.toeic.ui.component.TopBar
-import com.hoamz.toeic.ui.screen.home.HomeNavScreen
+import com.hoamz.toeic.ui.screen.navigation.HomeNavScreen
 import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
-import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.VocabularyViewModel
 import com.hoamz.toeic.utils.AppToast
 import com.hoamz.toeic.utils.Contains

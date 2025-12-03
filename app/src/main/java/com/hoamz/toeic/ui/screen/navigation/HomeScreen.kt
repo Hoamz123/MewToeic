@@ -1,7 +1,7 @@
-package com.hoamz.toeic.ui.screen.home
+package com.hoamz.toeic.ui.screen.navigation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -50,6 +50,8 @@ import com.hoamz.toeic.ui.screen.questionStar.QuestionStarScreen
 import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.screen.ShowNewWords
 import com.hoamz.toeic.ui.screen.vocabulary.screen.WordDetail
+import com.hoamz.toeic.ui.screen.vocabulary.screen.learnvocab.FlashCard
+import com.hoamz.toeic.ui.screen.vocabulary.screen.learnvocab.MiniGame
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.VocabularyViewModel
 
@@ -71,14 +73,16 @@ fun HomeScreen(
     ) {
 
         NavHost(
-            navController = navController, startDestination = "splash"
+            navController = navController,
+            startDestination = "splash"
         ) {
             //splash
             composable(route = "splash") {
                 SplashScreen {
+                    //ham dieu huong dc chay ngoai nay
                     navController.navigate("home") {
                         popUpTo("splash") {
-                            inclusive = true
+                            inclusive = true//huy luon man hinh hien tai,
                         }
                     }
                 }
@@ -154,8 +158,46 @@ fun HomeScreen(
                 )
             }
 
+            composable(
+                route = HomeNavScreen.FlashCard.route,
+            ) {
+                FlashCard(
+                    navController = navController
+                )
+            }
+
+            composable(route = HomeNavScreen.MiniGame.route){
+                MiniGame(
+                    navController = navController
+                )
+            }
+
             //show detail of word
-            composable(route = HomeNavScreen.WordDetail.route) {
+            composable(
+                route = HomeNavScreen.WordDetail.route,
+                //animation hien thi UI
+                enterTransition = {
+                    if (initialState.destination.route == HomeNavScreen.FlashCard.route) {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Up,
+                            animationSpec = tween(350)
+                        )
+                    } else {
+                        null
+                    }
+                },
+                popExitTransition = {
+                    if(targetState.destination.route == HomeNavScreen.FlashCard.route){
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Down,
+                            animationSpec = tween(450)
+                        )
+                    }
+                    else {
+                        null
+                    }
+                }
+            ) {
                 WordDetail(
                     navController = navController,
                     vocabularyViewModel = vocabularyViewModel,

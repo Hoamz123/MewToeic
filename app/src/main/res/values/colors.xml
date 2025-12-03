@@ -18,6 +18,7 @@
 
     <color name="bg_btn_yes">#D97474</color>
     <color name="bg_btn_cancel">#202020</color>
+    <color name="colorText">#202020</color>
     <color name="color_text_btn_dialog">#F3F3F3</color>
 
 </resources>

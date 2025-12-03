@@ -8,9 +8,9 @@ import com.hoamz.toeic.data.remote.Phonetic
 data class VocabularyEntity(
     @PrimaryKey(autoGenerate = true)
     val id : Long? = null,//lay cai nay cho display
-    val word : String = "",//lay cai nay
-    val phonetics : List<Phonetic> = emptyList(),//cai nay
-    val partOfSpeech : String = "",//cai nay
+    val word : String = "",//text cua tu
+    val phonetics : List<Phonetic> = emptyList(),//audio cua word
+    val partOfSpeech : String = "",//tu loai
     val definition : String = "",
     val date : String = "",//2025/11/07
     var isMastered : Boolean = false,//da hoc hay chua

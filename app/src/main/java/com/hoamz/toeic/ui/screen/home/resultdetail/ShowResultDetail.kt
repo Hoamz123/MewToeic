@@ -40,8 +40,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.packInts
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -355,11 +357,11 @@ fun TopBarTestScreen(
             )
 
             Icon(
-                imageVector = if (!isStar) Icons.Outlined.StarOutline
-                else Icons.Filled.Star,
+                painter = if (!isStar) painterResource(R.drawable.ic_unmastered)
+                else painterResource(R.drawable.ic_mastered),
                 contentDescription = null,
                 tint = if (!isStar) Color.Black.copy(0.5f)
-                else colorResource(R.color.progressColor),
+                else colorResource(R.color.masteredWord),
                 modifier = Modifier
                     .padding(13.dp)
                     .noRippleClickable {

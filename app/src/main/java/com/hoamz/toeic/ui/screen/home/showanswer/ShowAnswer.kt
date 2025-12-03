@@ -1,6 +1,5 @@
 package com.hoamz.toeic.ui.screen.home.showanswer
 
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,16 +14,12 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,7 +35,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -49,10 +43,9 @@ import com.hoamz.toeic.R
 import com.hoamz.toeic.base.BannerAdView
 import com.hoamz.toeic.base.BaseSharePref
 import com.hoamz.toeic.ui.component.TopBar
-import com.hoamz.toeic.ui.screen.home.HomeNavScreen
+import com.hoamz.toeic.ui.screen.navigation.HomeNavScreen
 import com.hoamz.toeic.ui.screen.home.test.Answer
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
-import com.hoamz.toeic.utils.DeviceController
 import kotlin.collections.listOf
 
 
@@ -231,9 +224,9 @@ fun ShowAnswer(
                                     .size(35.dp)
                                     .clip(CircleShape),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = when {
-                                        i == listShow[index].indexUserClicked && i != listShow[index].indexCorrectAnswer -> Color.Red.copy(0.8f) // sai
-                                        i == listShow[index].indexCorrectAnswer -> Color.Green // dung
+                                    containerColor = when (i) {
+                                        listShow[index].indexUserClicked if i != listShow[index].indexCorrectAnswer -> Color.Red.copy(0.8f) // sai
+                                        listShow[index].indexCorrectAnswer -> Color.Green // dung
                                         else -> Color.White
                                     }
                                 ),

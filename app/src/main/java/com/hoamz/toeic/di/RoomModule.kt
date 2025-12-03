@@ -2,10 +2,10 @@ package com.hoamz.toeic.di
 
 import android.content.Context
 import androidx.room.Room
-import com.hoamz.toeic.data.ActivityRecentDatabase
-import com.hoamz.toeic.data.QuestionStarDb
-import com.hoamz.toeic.data.VocabularyDb
-import com.hoamz.toeic.data.WordsDatabase
+import com.hoamz.toeic.data.local.db.ActivityRecentDatabase
+import com.hoamz.toeic.data.local.db.QuestionStarDb
+import com.hoamz.toeic.data.local.db.VocabularyDb
+import com.hoamz.toeic.data.local.db.WordsDatabase
 import com.hoamz.toeic.data.dao.ActivityRecentDao
 import com.hoamz.toeic.data.dao.QuestionDao
 import com.hoamz.toeic.data.dao.VocabularyDao

@@ -1,9 +1,11 @@
 package com.hoamz.toeic.baseviewmodel
 
 import android.content.Context
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.hoamz.toeic.base.BaseSharePref
 import com.hoamz.toeic.data.local.ActivityRecent
 import com.hoamz.toeic.data.local.Question
 import com.hoamz.toeic.data.local.QuestionStar
@@ -13,9 +15,11 @@ import com.hoamz.toeic.data.repository.LoadQuestionRepository
 import com.hoamz.toeic.data.repository.QuestionStarRepository
 import com.hoamz.toeic.ui.screen.home.test.Answer
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -115,7 +119,6 @@ class MainViewModel @Inject constructor(
         _starQuestion.value = questionStar
     }
 
-
     //del
     fun deleteQuestionStar(questionStar: QuestionStar){
         viewModelScope.launch {
@@ -127,4 +130,31 @@ class MainViewModel @Inject constructor(
     val questionStars : StateFlow<List<QuestionStar>> =
         questionStarRepository.getAllQuestionStar()
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),emptyList())
+
+    //progress state
+    private var _progress = MutableStateFlow(BaseSharePref.getProgressSteak())
+    val progress = _progress.asStateFlow()
+
+    private var onProgressing = true//chung nao con true thi con dang trong qua trinh
+
+    //kiem tra xem trc do da hoan thanh progress hay chua
+    val finished = BaseSharePref.onFinishedProgress()
+
+    init {
+        viewModelScope.launch {
+            while(_progress.value < 120 && onProgressing){
+                delay(1000)//delay 1s
+                _progress.value ++
+                BaseSharePref.saveProgressSteak(_progress.value)
+            }
+
+            //neu da chay du 120s va chua hoan thanh -> bayh hoan thanh -> ket thuc onProgressing
+            if(_progress.value == 120 /*da du thanh progress*/ && !finished){
+                onProgressing = false
+                BaseSharePref.finishedProgress()//hoan thanh
+                BaseSharePref.saveNumberSteak()
+                _progress.value ++
+            }
+        }
+    }
 }

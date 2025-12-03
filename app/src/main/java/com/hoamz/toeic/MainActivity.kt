@@ -1,45 +1,27 @@
 package com.hoamz.toeic
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
 import com.hoamz.toeic.base.AddMod
-import com.hoamz.toeic.base.BaseSharePref
 import com.hoamz.toeic.baseviewmodel.MainViewModel
-import com.hoamz.toeic.ui.screen.home.HomeScreen
+import com.hoamz.toeic.ui.screen.navigation.HomeScreen
 import com.hoamz.toeic.ui.screen.home.showanswer.ShowAnswerViewModel
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
-import com.hoamz.toeic.ui.screen.questionStar.component.CustomDialog
 import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.VocabularyViewModel
 import com.hoamz.toeic.ui.theme.ToeicTheme
-import com.hoamz.toeic.utils.ModifierUtils
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Calendar
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -59,8 +41,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             ToeicTheme {
                 Column(
-                    modifier = Modifier.fillMaxSize().background(color = Color.White.copy(0.8f)),
+                    modifier = Modifier.fillMaxSize()
+                        .background(color = Color.White.copy(0.8f))
+                        .statusBarsPadding(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
+
+//                    FlashCard()
+
                     HomeScreen(
                         mainViewModel = mainViewModel,
                         testViewModel = testViewModel,
