@@ -43,6 +43,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,10 +61,12 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import com.hoamz.toeic.R
 import com.hoamz.toeic.base.BaseSharePref
+import com.hoamz.toeic.data.local.VocabularyEntity
 import com.hoamz.toeic.data.remote.Vocabulary
 import com.hoamz.toeic.ui.screen.navigation.HomeNavScreen
 import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.component.StatisticsChart
+import com.hoamz.toeic.ui.screen.vocabulary.screen.learnvocab.FlashCardViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.VocabularyViewModel
 import com.hoamz.toeic.utils.AppToast
@@ -77,6 +80,7 @@ fun Vocabulary(
     selectWordsViewmodel: SelectWordsViewmodel,
     appDictionaryViewModel: AppDictionaryViewModel,
     vocabularyViewModel: VocabularyViewModel,
+    flashCardViewModel: FlashCardViewModel,
     navController: NavController
 ) {
     //lay ra danh sach thong ke so tu da luu trong 3 thang gan nhat
@@ -96,11 +100,9 @@ fun Vocabulary(
     }
 
     //lay ra danh sach tu da luu
-//    val storedWords by selectWordsViewmodel.wordsStored.collectAsState() //-> so luong tu (ok)
     val storedWords by vocabularyViewModel.vocabsStored.collectAsState()
 
     LaunchedEffect(storedWords) {
-        //selectWordsViewmodel.setUpWordsToSend(storedWords)
         vocabularyViewModel.setUpVocabsToSend(storedWords)
     }
 
@@ -134,6 +136,16 @@ fun Vocabulary(
     var numberWordsSelected : Int by remember {
         mutableIntStateOf(BaseSharePref.getNumberWordNeedRemind())
     }
+
+    var flashcardData : List<VocabularyEntity> by rememberSaveable {
+        mutableStateOf(emptyList())
+    }
+    //set up gui du lieu den Flashcard
+    LaunchedEffect(flashcardData) {
+        if(flashcardData.isNotEmpty())
+            flashCardViewModel.sendVocabsCardToFlashCardScreen(flashcardData)
+    }
+
 
     ConstraintLayout(
         modifier = Modifier
@@ -586,7 +598,8 @@ fun Vocabulary(
                     .weight(1f)
                     .padding(vertical = 5.dp),
                 onClick = {
-                    //next to...
+                    //di den man hinh showVocabsScreen de hien thi list nhung vocab da dc user ghim lai
+                    // next to...
                     //khi user da tung ban=m vao tu de hoc thi danh dau reviewed
                     //khi do neu user nhan vao thi se hien thi nhung tu do
                 },
@@ -606,7 +619,7 @@ fun Vocabulary(
 
                 Text(
                     modifier = Modifier.padding(horizontal = 10.dp),
-                    text = "Learned Words",
+                    text = "Marked Words",
                     color = Color.White,
                     fontWeight = FontWeight.Normal
                 )
@@ -640,6 +653,10 @@ fun Vocabulary(
                         .weight(1f)
                         .padding(vertical = 5.dp),
                     onClick = {
+                        //random du lieu trong store
+                        //lay tam 15 item trong list
+                        flashcardData = Contains.getShuffleListVocab(storedWords)//gui du lieu qua man hinh flashCard
+//                        flashCardViewModel.sendVocabsCardToFlashCardScreen(flashcardData)
                         navController.navigate(HomeNavScreen.FlashCard.route)
                     },
                     colors = ButtonDefaults.buttonColors(

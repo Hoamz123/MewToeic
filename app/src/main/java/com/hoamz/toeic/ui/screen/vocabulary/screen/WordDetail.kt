@@ -79,7 +79,9 @@ fun WordDetail(
                     },
                     modifier = Modifier.clip(CircleShape)
                 ) {
-                    Icon(Icons.Default.ArrowBackIos, contentDescription = null)
+                    Icon(
+                        Icons.Default.ArrowBackIos,
+                        contentDescription = null)
                 }
 
                 ModifierUtils.SpaceWidth(10.dp)

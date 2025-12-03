@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -45,39 +46,49 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.hoamz.toeic.R
+import com.hoamz.toeic.data.local.VocabularyCard
 import com.hoamz.toeic.ui.component.TopBar
 import com.hoamz.toeic.ui.screen.navigation.HomeNavScreen
+import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.component.FlashCardDetail
 import com.hoamz.toeic.ui.screen.vocabulary.component.LinearProgress
 import com.hoamz.toeic.ui.screen.vocabulary.screen.Vocab
+import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.VocabularyViewModel
 import com.hoamz.toeic.utils.ModifierUtils
 
 @Composable
 fun FlashCard(
     modifier: Modifier = Modifier,
     navController: NavController,
+    flashCardViewModel: FlashCardViewModel,
+    appDictionaryViewModel: AppDictionaryViewModel,
+    vocabularyViewModel: VocabularyViewModel
     //du lieu rieng custom cho flashcard
 ) {
-    //fake data
-    val vocabList = listOf(
-        Vocab("Ephemeral", "Ngắn ngủi, thoáng qua"),
-        Vocab("Ubiquitous", "Có mặt khắp nơi"),
-        Vocab("Inevitable", "Không thể tránh khỏi"),
-        Vocab("Ambiguous", "Mơ hồ, khó hiểu"),
-        Vocab("Meticulous", "Tỉ mỉ, kỹ lưỡng"),
-        Vocab("Scrutinize", "Xem xét kỹ lưỡng"),
-        Vocab("Conspicuous", "Dễ thấy, nổi bật"),
-        Vocab("Impeccable", "Hoàn hảo, không tì vết"),
-        Vocab("Tenacious", "Kiên trì, bền bỉ"),
-        Vocab("Eloquent", "Hùng hồn, có tài hùng biện"),
-        Vocab("Pragmatic", "Thực dụng, thực tế"),
-        Vocab("Arduous", "Khó khăn, gian khổ"),
-        Vocab("Obsolete", "Lỗi thời, không còn dùng"),
-        Vocab("Candid", "Thẳng thắn, thật thà"),
-        Vocab("Notorious", "Khét tiếng (theo nghĩa xấu)"),
-        Vocab("Prolific", "Phong phú, dồi dào (tác giả, cây cối...)"),
-        Vocab("Ambivalent", "Vừa yêu vừa ghét, mâu thuẫn trong cảm xúc")
-    )
+
+//    //fake data
+//    val vocabList = listOf(
+//        Vocab("Ephemeral", "Ngắn ngủi, thoáng qua"),
+//        Vocab("Ubiquitous", "Có mặt khắp nơi"),
+//        Vocab("Inevitable", "Không thể tránh khỏi"),
+//        Vocab("Ambiguous", "Mơ hồ, khó hiểu"),
+//        Vocab("Meticulous", "Tỉ mỉ, kỹ lưỡng"),
+//        Vocab("Scrutinize", "Xem xét kỹ lưỡng"),
+//        Vocab("Conspicuous", "Dễ thấy, nổi bật"),
+//        Vocab("Impeccable", "Hoàn hảo, không tì vết"),
+//        Vocab("Tenacious", "Kiên trì, bền bỉ"),
+//        Vocab("Eloquent", "Hùng hồn, có tài hùng biện"),
+//        Vocab("Pragmatic", "Thực dụng, thực tế"),
+//        Vocab("Arduous", "Khó khăn, gian khổ"),
+//        Vocab("Obsolete", "Lỗi thời, không còn dùng"),
+//        Vocab("Candid", "Thẳng thắn, thật thà"),
+//        Vocab("Notorious", "Khét tiếng (theo nghĩa xấu)"),
+//        Vocab("Prolific", "Phong phú, dồi dào (tác giả, cây cối...)"),
+//        Vocab("Ambivalent", "Vừa yêu vừa ghét, mâu thuẫn trong cảm xúc")
+//    )
+
+    //nhan du lieu tu man hinh khac gui den
+    val flashCardData : List<VocabularyCard> by flashCardViewModel.vocabsCard.collectAsState()
 
     Column(
         Modifier
@@ -97,7 +108,7 @@ fun FlashCard(
         TopBar(
             nameTab = "FlashCard"
         ) {
-            navController.popBackStack()//bacn va thoat khoi chuong trinh on luyen tu vgun thep flashcard
+            navController.popBackStack()//back va thoat khoi chuong trinh on luyen tu vgun thep flashcard
         }
 
         //progress
@@ -108,7 +119,7 @@ fun FlashCard(
             horizontalArrangement = Arrangement.Center
         ) {
             LinearProgress(
-                count = index + 1, maxCount = vocabList.size
+                count = index + 1, maxCount = flashCardData.size
             )
         }
 
@@ -116,7 +127,7 @@ fun FlashCard(
 
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = "Words ${index + 1} of ${vocabList.size}",
+            text = "Words ${index + 1} of ${flashCardData.size}",
             color = colorResource(R.color.colorText),
             fontWeight = FontWeight.Normal,
             textAlign = TextAlign.Center
@@ -143,10 +154,11 @@ fun FlashCard(
                         ContentTransform(slideInHorizontally { -it } + fadeIn(),
                             slideOutHorizontally { it } + fadeOut())
                     }
-                }) { id ->
+                }
+            ) { id ->
                 FlashCardDetail(
-                    front = vocabList[id].en,
-                    back = vocabList[id].vi
+                    front = flashCardData[id].word + " (${flashCardData[id].partOfSpeech})",
+                    back = flashCardData[id].definition
                 )
             }
         }
@@ -199,8 +211,10 @@ fun FlashCard(
                         .fillMaxSize()
                         .clip(CircleShape),
                     onClick = {
+                        appDictionaryViewModel.setUpDescriptionOfWords(flashCardData[index].word)
                         navController.navigate(HomeNavScreen.WordDetail.route)
                     },
+                    //Marked Words : Thay the cho learned words
                 ) {
                     Icon(
                         modifier = Modifier.fillMaxSize(),
@@ -218,9 +232,9 @@ fun FlashCard(
                     .weight(1f)
                     .padding(horizontal = 5.dp),
                 onClick = {
-                    if (index < vocabList.size - 1) {
+                    if (index < flashCardData.size - 1) {
                         index++
-                        if(index == vocabList.size - 1){
+                        if(index == flashCardData.size - 1){
                             isFinished = true
                         }
                     }
@@ -245,7 +259,8 @@ fun FlashCard(
 
         Button(
             onClick = {
-
+                vocabularyViewModel.masteredVocab(flashCardData[index].id)
+                if(index < flashCardData.size - 1) index++
             },
             modifier = Modifier
                 .fillMaxWidth()

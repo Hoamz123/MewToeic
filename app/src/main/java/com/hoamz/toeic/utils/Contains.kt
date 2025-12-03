@@ -78,4 +78,41 @@ object Contains {
         partOfSpeech = "interjection",
         definition = "Used as a greeting or to begin a conversation."
     )
+
+    fun getShuffleListVocab(vocabs : List<VocabularyEntity>) : List<VocabularyEntity>{
+        //neu so tu hien co nho hon 15 tu thi lay tat
+        if(vocabs.size < 15){
+            return vocabs
+        }
+        return vocabs.shuffled().take(15)
+    }
+
+    fun mapPartOfSpeech(pos: String): String {
+        return when (pos.lowercase()) {
+            "noun" -> "n"
+            "verb" -> "v"
+            "adjective" -> "adj"
+            "adverb" -> "adv"
+            "pronoun" -> "pron"
+            "preposition" -> "prep"
+            "conjunction" -> "conj"
+            "interjection" -> "interj"
+            "article" -> "art"
+            "determiner" -> "det"
+
+            // loại chi tiết
+            "transitive verb" -> "vt"
+            "intransitive verb" -> "vi"
+            "phrasal verb" -> "phrv"
+            "auxiliary verb" -> "auxv"
+            "modal verb" -> "modal"
+
+            "countable noun" -> "n(C)"
+            "uncountable noun" -> "n(U)"
+            "proper noun" -> "propn"
+
+            else -> pos
+        }
+    }
+
 }

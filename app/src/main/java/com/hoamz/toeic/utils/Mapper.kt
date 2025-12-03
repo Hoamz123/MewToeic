@@ -16,9 +16,8 @@ object Mapper {
         val word = vocabulary.word.toString()//lay ra tu
         //lay ra ds phat am
         val phonetics = mutableListOf<Phonetic>()
-        vocabulary.phonetics?.let {
-            it.forEach { phonetic ->
-                //neu nhu co audio
+        vocabulary.phonetics?.let {list ->
+            for(phonetic in list){
                 if (phonetic.audio?.isNotEmpty() == true) {
                     phonetics.add(
                         Phonetic(
@@ -27,13 +26,15 @@ object Mapper {
                         )
                     )
                 }
+                if(phonetics.size == 2) break
             }
         }
         //ds nghia cua tu
         val meanings  = mutableListOf<Means>()
         //dong nghia / trai nghia
-        val synonyms = mutableListOf<String>()
-        val antonyms = mutableListOf<String>()
+        val synonymsSet = mutableSetOf<String>()
+        val antonymsSet = mutableSetOf<String>()
+
 
         vocabulary.meanings?.let {
             it.forEach { meaning ->
@@ -48,29 +49,32 @@ object Mapper {
                 }
                 //lay dong nghia  /trai nghia
                 if(meaning.antonyms != null && meaning.antonyms.isNotEmpty()){
-                    antonyms += meaning.antonyms
+                    antonymsSet.addAll(meaning.antonyms)
                 }
                 if(meaning.synonyms != null && meaning.synonyms.isNotEmpty()){
-                    synonyms += meaning.synonyms
+                    synonymsSet.addAll(meaning.synonyms)
                 }
             }
         }
-
         meanings.forEach {
             it.definitions?.let { definitions ->
                 definitions.forEach { definition ->
                     if(definition.synonyms != null && definition.synonyms.isNotEmpty()){
-                        if(!synonyms.contains(definition.synonyms.toString())){
-                            synonyms += definition.synonyms
-                        }
+                        synonymsSet.addAll(definition.synonyms)
                     }
                     if(definition.antonyms != null && definition.antonyms.isNotEmpty()){
-                        if(!antonyms.contains(definition.antonyms.toString())){
-                            antonyms += definition.antonyms
-                        }
+                        antonymsSet.addAll(definition.antonyms)
                     }
                 }
             }
+        }
+        val synonyms = mutableListOf<String>()
+        synonymsSet.forEach {
+            synonyms.add(it)
+        }
+        val antonyms = mutableListOf<String>()
+        antonymsSet.forEach {
+            antonyms.add(it)
         }
         return VocabDisplay(
             word = word,
@@ -124,8 +128,7 @@ object Mapper {
         val word = vocabularyEntity.word
         val audios = mutableListOf<String>()//chi lay 2 audio thui
         val definition = vocabularyEntity.definition
-        val partOfSpeech = vocabularyEntity.partOfSpeech[0].toString()
-
+        val partOfSpeech = Contains.mapPartOfSpeech(vocabularyEntity.partOfSpeech)
 
         val audiosTemp = mutableListOf<String>()
 
@@ -151,5 +154,4 @@ object Mapper {
             partOfSpeech = partOfSpeech
         )
     }
-
 }

@@ -51,6 +51,7 @@ import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.screen.ShowNewWords
 import com.hoamz.toeic.ui.screen.vocabulary.screen.WordDetail
 import com.hoamz.toeic.ui.screen.vocabulary.screen.learnvocab.FlashCard
+import com.hoamz.toeic.ui.screen.vocabulary.screen.learnvocab.FlashCardViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.screen.learnvocab.MiniGame
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.VocabularyViewModel
@@ -63,7 +64,8 @@ fun HomeScreen(
     showAnswerViewModel: ShowAnswerViewModel,
     selectWordsViewmodel: SelectWordsViewmodel,
     appDictionaryViewModel : AppDictionaryViewModel,
-    vocabularyViewModel: VocabularyViewModel
+    vocabularyViewModel: VocabularyViewModel,
+    flashCardViewModel: FlashCardViewModel
 ) {
     val navController = rememberNavController()
     Box(
@@ -94,7 +96,8 @@ fun HomeScreen(
                 testViewModel = testViewModel,
                 selectWordsViewmodel = selectWordsViewmodel,
                 appDictionaryViewModel = appDictionaryViewModel,
-                vocabularyViewModel = vocabularyViewModel
+                vocabularyViewModel = vocabularyViewModel,
+                flashCardViewModel = flashCardViewModel
             )
 
             //cac man hinh chi tiet
@@ -162,7 +165,10 @@ fun HomeScreen(
                 route = HomeNavScreen.FlashCard.route,
             ) {
                 FlashCard(
-                    navController = navController
+                    navController = navController,
+                    flashCardViewModel = flashCardViewModel,
+                    appDictionaryViewModel = appDictionaryViewModel,
+                    vocabularyViewModel = vocabularyViewModel
                 )
             }
 
@@ -221,7 +227,8 @@ fun NavGraphBuilder.mainHome(
     testViewModel: TestViewModel,
     selectWordsViewmodel: SelectWordsViewmodel,
     appDictionaryViewModel: AppDictionaryViewModel,
-    vocabularyViewModel: VocabularyViewModel
+    vocabularyViewModel: VocabularyViewModel,
+    flashCardViewModel: FlashCardViewModel
 ) {
     navigation(
         startDestination = HomeNavScreen.ListTestScreen.route,
@@ -234,7 +241,8 @@ fun NavGraphBuilder.mainHome(
                 testViewModel = testViewModel,
                 selectWordsViewmodel = selectWordsViewmodel,
                 appDictionaryViewModel = appDictionaryViewModel,
-                vocabularyViewModel = vocabularyViewModel
+                vocabularyViewModel = vocabularyViewModel,
+                flashCardViewModel = flashCardViewModel
             )
         }
     }
@@ -248,7 +256,8 @@ fun MainHome(
     testViewModel: TestViewModel,
     selectWordsViewmodel: SelectWordsViewmodel,
     appDictionaryViewModel: AppDictionaryViewModel,
-    vocabularyViewModel: VocabularyViewModel
+    vocabularyViewModel: VocabularyViewModel,
+    flashCardViewModel: FlashCardViewModel
 ) {
     val listItemMenu by remember {
         mutableStateOf(
@@ -293,7 +302,8 @@ fun MainHome(
                     selectWordsViewmodel = selectWordsViewmodel,
                     appDictionaryViewModel = appDictionaryViewModel,
                     navController = rootNavController,
-                    vocabularyViewModel = vocabularyViewModel
+                    vocabularyViewModel = vocabularyViewModel,
+                    flashCardViewModel = flashCardViewModel
                 )
             }
         }

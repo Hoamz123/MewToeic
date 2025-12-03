@@ -18,6 +18,7 @@ import com.hoamz.toeic.ui.screen.navigation.HomeScreen
 import com.hoamz.toeic.ui.screen.home.showanswer.ShowAnswerViewModel
 import com.hoamz.toeic.ui.screen.home.test.TestViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.AppDictionaryViewModel
+import com.hoamz.toeic.ui.screen.vocabulary.screen.learnvocab.FlashCardViewModel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.SelectWordsViewmodel
 import com.hoamz.toeic.ui.screen.vocabulary.viewmodel.VocabularyViewModel
 import com.hoamz.toeic.ui.theme.ToeicTheme
@@ -31,6 +32,7 @@ class MainActivity : ComponentActivity() {
     private val selectWordsViewmodel : SelectWordsViewmodel by viewModels()
     private val appDictionaryViewModel : AppDictionaryViewModel by viewModels()
     private val vocabularyViewModel : VocabularyViewModel by viewModels()
+    private val flashCardViewModel : FlashCardViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +57,8 @@ class MainActivity : ComponentActivity() {
                         showAnswerViewModel = showAnswerViewModel,
                         selectWordsViewmodel = selectWordsViewmodel,
                         appDictionaryViewModel = appDictionaryViewModel,
-                        vocabularyViewModel = vocabularyViewModel
+                        vocabularyViewModel = vocabularyViewModel,
+                        flashCardViewModel = flashCardViewModel
                     )
                 }
             }

@@ -52,7 +52,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
@@ -316,7 +318,8 @@ fun AWord(
         colors = CardDefaults.cardColors(
             containerColor = if (!mastered) colorResource(R.color.colorBgWord)
             else colorResource(R.color.masteredWord)
-        )) {
+        )
+    ) {
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
@@ -329,7 +332,9 @@ fun AWord(
                     top.linkTo(parent.top)
                     start.linkTo(parent.start, margin = 10.dp)
                 },
-                fontWeight = FontWeight.Normal, color = Color.Black
+                fontWeight = FontWeight.Normal,
+                textDecoration = if(mastered) TextDecoration.LineThrough else TextDecoration.None,
+                color = Color.Black
             )
 
             CustomIcon(
