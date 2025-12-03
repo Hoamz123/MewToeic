@@ -5,9 +5,6 @@ Phát triển bằng Kotlin, Jetpack Compose và kiến trúc MVVM + Clean Archi
 
 📱 Giao diện
 
-👉 Tạo thư mục screenshots/ và thêm ảnh:
-home.png – study.png – exam.png – flashcard.png – game.png – stats.png – reminder.png
-
 <p> 
 <img src="screenshots/Screenshot_20251030_124355.png"  width="250" height="600"  alt=""/>
 <img src="screenshots/Screenshot_20251104_110720.png"  width="250" height="600"  alt=""/> 
