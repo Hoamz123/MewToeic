@@ -27,45 +27,30 @@ Phát triển bằng Kotlin, Jetpack Compose và kiến trúc MVVM + Clean Archi
 Hai chế độ luyện tập:
 ✔️ Study Mode – xem từng câu, có gợi ý & giải thích
 ✔️ Exam Mode – thi mô phỏng như thật
-
 Chấm điểm chi tiết: đúng/sai, giải thích rõ ràng
 
 📚 Vocabulary Learning
-
 Flashcards tương tác
-
 Mini-games ghi nhớ từ vựng
-
 Lưu – quản lý – xem lại từ vựng bất cứ lúc nào
 
 📊 Progress Tracking
-
 Thống kê trực quan bằng Vico Chart
-
 Theo dõi độ chính xác, lịch sử làm bài, tiến độ học từ vựng theo thời gian
 
 ⏰ Daily Reminders
-
 Nhắc nhở học từ vựng hằng ngày
-
 Kết hợp WorkManager + AlarmManager
 
 💰 AdMob Integration
-
 Tích hợp quảng cáo để tạo doanh thu
 
 🧱 Kiến trúc & Công nghệ
-
 Language: Kotlin
-
 UI: Jetpack Compose
-
 Architecture: MVVM + Clean Architecture
-
 Dependency Injection: Hilt
-
 Local Database: Room
-
 Networking: Retrofit
 
 Background tasks:
@@ -73,22 +58,14 @@ Background tasks:
 ⚙️ WorkManager 
 
 Charts: Vico Chart
-
 Ads: Google AdMob
 
 🛠️ Cài đặt & chạy thử
-
-Clone dự án:
-
-git clone https://github.com/Hoamz123/MewToeic
-
+Clone dự án: git clone https://github.com/Hoamz123/MewToeic
 
 Mở bằng Android Studio
-
 Chạy trên emulator hoặc thiết bị thật (Android 6.0+)
-
 🧑‍💻 Người phát triển
-
 👤 hoamz — https://github.com/Hoamz123
 
 📧 Email: hoamzdev@gmail.com
